@@ -1,0 +1,33 @@
+{
+    "name": "mattiabasone/pagonline",
+    "description": "PagOnline API Library",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Mattia Basone",
+            "email": "mattia.basone@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=7.1",
+        "ext-libxml": "*",
+        "ext-mbstring": "*",
+        "ext-simplexml": "*"
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^2.14",
+        "phpunit/phpunit": "^7.0",
+        "vimeo/psalm": "^3.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "PagOnline\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    }
+}
