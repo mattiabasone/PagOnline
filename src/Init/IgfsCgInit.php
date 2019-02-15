@@ -1,12 +1,20 @@
 <?php
 
-require_once 'IGFS_CG_API/init/BaseIgfsCgInit.php';
-require_once 'IGFS_CG_API/init/InitTerminalInfo.php';
-require_once 'IGFS_CG_API/Level3Info.php';
-require_once 'IGFS_CG_API/MandateInfo.php';
+namespace PagOnline\Init;
 
+use PagOnline\IgfsUtils;
+use PagOnline\Exceptions\IgfsMissingParException;
+
+/**
+ * Class IgfsCgInit
+ */
 class IgfsCgInit extends BaseIgfsCgInit
 {
+    /**
+     * @var string
+     */
+    protected $requestNamespace = Requests\IgfsCgInitRequest::class;
+
     public $shopUserRef;
     public $shopUserName;
     public $shopUserAccount;
@@ -46,11 +54,6 @@ class IgfsCgInit extends BaseIgfsCgInit
 
     public $paymentID;
     public $redirectURL;
-
-    public function __construct()
-    {
-        parent::__construct();
-    }
 
     protected function resetFields()
     {

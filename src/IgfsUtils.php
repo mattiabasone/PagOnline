@@ -2,8 +2,19 @@
 
 namespace PagOnline;
 
+use DateTime;
+
+/**
+ * Class IgfsUtils
+ * @package PagOnline
+ */
 class IgfsUtils
 {
+    /**
+     * @param $ksig
+     * @param $fields
+     * @return string
+     */
     public static function getSignature($ksig, $fields)
     {
         $data = '';
@@ -14,11 +25,19 @@ class IgfsUtils
         return \base64_encode(\hash_hmac('sha256', $data, $ksig, true));
     }
 
+    /**
+     * @param $map
+     * @param $key
+     * @return null
+     */
     public static function getValue($map, $key)
     {
         return isset($map[$key]) ? $map[$key] : null;
     }
 
+    /**
+     * @return string
+     */
     public static function getUniqueBoundaryValue()
     {
         return \uniqid();
@@ -38,6 +57,12 @@ class IgfsUtils
         return $fields;
     }
 
+    /**
+     * @param $haystack
+     * @param $needle
+     * @param bool $case
+     * @return bool
+     */
     public static function startsWith($haystack, $needle, $case = true)
     {
         if ($case) {
@@ -47,6 +72,12 @@ class IgfsUtils
         return 0 === \strcasecmp(\mb_substr($haystack, 0, \mb_strlen($needle)), $needle);
     }
 
+    /**
+     * @param $haystack
+     * @param $needle
+     * @param bool $case
+     * @return bool
+     */
     public static function endsWith($haystack, $needle, $case = true)
     {
         if ($case) {
@@ -56,6 +87,10 @@ class IgfsUtils
         return 0 === \strcasecmp(\mb_substr($haystack, \mb_strlen($haystack) - \mb_strlen($needle)), $needle);
     }
 
+    /**
+     * @param $odt
+     * @return string|null
+     */
     public static function formatXMLGregorianCalendar($odt)
     {
         try {
@@ -71,66 +106,77 @@ class IgfsUtils
             $sb .= $format3;
 
             return $sb;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
+            return null;
         }
-
-        return null;
     }
 
+    /**
+     * @param $text
+     * @return \DateTime|null
+     */
     public static function parseXMLGregorianCalendar($text)
     {
         if (null == $text) {
             return null;
         }
-        $date = parseXMLGregorianCalendarTZ($text, 'j-M-Y H:i:s.000P');
+        $date = self::parseXMLGregorianCalendarTZ($text, 'j-M-Y H:i:s.000P');
         if (null == $date) {
-            $date = parseXMLGregorianCalendarTZ($text, 'j-M-Y H:i:s.00P');
+            $date = self::parseXMLGregorianCalendarTZ($text, 'j-M-Y H:i:s.00P');
         }
         if (null == $date) {
-            $date = parseXMLGregorianCalendarTZ($text, 'j-M-Y H:i:s.0P');
+            $date = self::parseXMLGregorianCalendarTZ($text, 'j-M-Y H:i:s.0P');
         }
         if (null == $date) {
-            $date = parseXMLGregorianCalendarTZ($text, 'j-M-Y H:i:sP');
+            $date = self::parseXMLGregorianCalendarTZ($text, 'j-M-Y H:i:sP');
         }
         if (null == $date) {
-            $date = parseXMLGregorianCalendarDT($text, 'j-M-Y H:i:s.000');
+            $date = self::parseXMLGregorianCalendarDT($text, 'j-M-Y H:i:s.000');
         }
         if (null == $date) {
-            $date = parseXMLGregorianCalendarDT($text, 'j-M-Y H:i:s.00');
+            $date = self::parseXMLGregorianCalendarDT($text, 'j-M-Y H:i:s.00');
         }
         if (null == $date) {
-            $date = parseXMLGregorianCalendarDT($text, 'j-M-Y H:i:s.0');
+            $date = self::parseXMLGregorianCalendarDT($text, 'j-M-Y H:i:s.0');
         }
         if (null == $date) {
-            $date = parseXMLGregorianCalendarDT($text, 'j-M-Y H:i:s');
+            $date = self::parseXMLGregorianCalendarDT($text, 'j-M-Y H:i:s');
         }
 
         return $date;
     }
 
+    /**
+     * @param $text
+     * @param $format
+     * @return bool|\DateTime|null
+     */
     private static function parseXMLGregorianCalendarTZ($text, $format)
     {
         $count = 1;
         try {
             $tmp = \str_replace('T', ' ', $text, $count);
 
-            return DateTime::createFromFormat(format, $tmp);
-        } catch (Exception $e) {
+            return DateTime::createFromFormat($format, $tmp);
+        } catch (\Exception $e) {
+            return null;
         }
-
-        return null;
     }
 
+    /**
+     * @param $text
+     * @param $format
+     * @return bool|DateTime|null
+     */
     private static function parseXMLGregorianCalendarDT($text, $format)
     {
         $count = 1;
         try {
             $tmp = \str_replace('T', ' ', $text, $count);
 
-            return DateTime::createFromFormat(format, $tmp);
-        } catch (Exception $e) {
+            return DateTime::createFromFormat($format, $tmp);
+        } catch (\Exception $e) {
+            return null;
         }
-
-        return null;
     }
 }

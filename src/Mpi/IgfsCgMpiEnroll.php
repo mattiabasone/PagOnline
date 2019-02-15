@@ -1,7 +1,11 @@
 <?php
 
-require_once 'IGFS_CG_API/mpi/BaseIgfsCgMpi.php';
+namespace PagOnline\Mpi;
 
+/**
+ * Class IgfsCgMpiEnroll
+ * @package PagOnline\Mpi
+ */
 class IgfsCgMpiEnroll extends BaseIgfsCgMpi
 {
     public $shopUserRef;

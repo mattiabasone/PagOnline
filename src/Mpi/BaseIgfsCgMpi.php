@@ -1,17 +1,20 @@
 <?php
 
-require_once 'IGFS_CG_API/BaseIgfsCg.php';
+namespace PagOnline\Mpi;
 
+use PagOnline\BaseIgfsCg;
+use PagOnline\Exceptions\IgfsMissingParException;
+use PagOnline\IgfsUtils;
+
+/**
+ * Class BaseIgfsCgMpi
+ * @package PagOnline\Mpi
+ */
 abstract class BaseIgfsCgMpi extends BaseIgfsCg
 {
     public $shopID; // chiave messaggio
 
     public $xid;
-
-    public function __construct()
-    {
-        parent::__construct();
-    }
 
     protected function resetFields()
     {

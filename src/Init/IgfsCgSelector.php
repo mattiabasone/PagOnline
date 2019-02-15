@@ -13,6 +13,11 @@ use SimpleXMLElement;
  */
 class IgfsCgSelector extends BaseIgfsCgInit
 {
+    /**
+     * @var string
+     */
+    protected $requestNamespace = Requests\IgfsCgSelectorRequest::class;
+
     public $shopUserRef;
     public $trType = 'AUTH';
     public $amount;

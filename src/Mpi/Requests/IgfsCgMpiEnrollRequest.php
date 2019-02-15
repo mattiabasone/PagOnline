@@ -1,3 +1,10 @@
+<?php
+
+namespace PagOnline\Mpi\Requests;
+
+final class IgfsCgMpiEnrollRequest extends BaseIgfsCgRequest
+{
+    const CONTENT = <<<XML
 <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://services.api.web.cg.igfs.apps.netsw.it/">
 <soapenv:Body>
 <ser:Enroll>
@@ -27,3 +34,5 @@
 </ser:Enroll>
 </soapenv:Body>
 </soapenv:Envelope>
+XML;
+}

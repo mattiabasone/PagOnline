@@ -2,6 +2,10 @@
 
 namespace PagOnline;
 
+/**
+ * Class MandateInfo
+ * @package PagOnline
+ */
 class MandateInfo
 {
     public $mandateID;

@@ -1,3 +1,12 @@
+<?php
+
+namespace PagOnline\Init\Requests;
+
+use PagOnline\BaseIgfsCgRequest;
+
+final class IgfsCgInitRequest extends BaseIgfsCgRequest
+{
+    const CONTENT = <<<XML
 <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://services.api.web.cg.igfs.apps.netsw.it/">
 <soapenv:Body>
 <ser:Init>
@@ -48,3 +57,6 @@
 </ser:Init>
 </soapenv:Body>
 </soapenv:Envelope>
+XML;
+
+}

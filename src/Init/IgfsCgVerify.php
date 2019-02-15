@@ -14,6 +14,11 @@ use SimpleXMLElement;
  */
 class IgfsCgVerify extends BaseIgfsCgInit
 {
+    /**
+     * @var string
+     */
+    protected $requestNamespace = Requests\IgfsCgVerifyRequest::class;
+
     public $paymentID;
     public $refTranID;
 

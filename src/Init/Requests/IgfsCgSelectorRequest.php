@@ -1,3 +1,16 @@
+<?php
+
+namespace PagOnline\Init\Requests;
+
+use PagOnline\BaseIgfsCgRequest;
+
+/**
+ * Class IgfsCgVerifyRequest
+ * @package PagOnline\Init\Requests
+ */
+final class IgfsCgSelectorRequest extends BaseIgfsCgRequest
+{
+    const CONTENT = <<<XML
 <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://services.api.web.cg.igfs.apps.netsw.it/">
 <soapenv:Body>
 <ser:Selector>
@@ -24,3 +37,5 @@
 </ser:Selector>
 </soapenv:Body>
 </soapenv:Envelope>
+XML;
+}

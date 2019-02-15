@@ -1,6 +1,19 @@
+<?php
+
+namespace PagOnline\Init\Requests;
+
+use PagOnline\BaseIgfsCgRequest;
+
+/**
+ * Class IgfsCgVerifyRequest
+ * @package PagOnline\Init\Requests
+ */
+final class IgfsCgVerifyRequest extends BaseIgfsCgRequest
+{
+    const CONTENT = <<<XML
 <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://services.api.web.cg.igfs.apps.netsw.it/">
 <soapenv:Body>
-<ser:Auth>
+<ser:Verify>
 <request>
 <apiVersion><![CDATA[{apiVersion}]]></apiVersion>
 {tid}
@@ -8,9 +21,11 @@
 {payInstr}
 <signature><![CDATA[{signature}]]></signature>
 <shopID><![CDATA[{shopID}]]></shopID>
-<paRes><![CDATA[{paRes}]]></paRes>
-<md><![CDATA[{md}]]></md>
+<paymentID><![CDATA[{paymentID}]]></paymentID>
+{refTranID}
 </request>
-</ser:Auth>
+</ser:Verify>
 </soapenv:Body>
 </soapenv:Envelope>
+XML;
+}

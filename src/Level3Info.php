@@ -2,6 +2,8 @@
 
 namespace PagOnline;
 
+use SimpleXMLElement;
+
 /**
  * Class Level3Info
  * @package PagOnline

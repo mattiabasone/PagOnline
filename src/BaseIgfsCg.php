@@ -6,6 +6,7 @@ use PagOnline\Exceptions\ConnectionException;
 use PagOnline\Exceptions\IgfsException;
 use PagOnline\Exceptions\IgfsMissingParException;
 use PagOnline\Exceptions\ReadWriteException;
+use SimpleXMLElement;
 
 /**
  * Class BaseIgfsCg
@@ -13,7 +14,19 @@ use PagOnline\Exceptions\ReadWriteException;
  */
 abstract class BaseIgfsCg
 {
+    /**
+     * Package version
+     *
+     * @var string
+     */
     const VERSION = '2.4.1.5';
+
+    /**
+     * Set the request namespace here
+     *
+     * @var string
+     */
+    protected $requestNamespace = '';
 
     /**
      * Signature Key
@@ -85,6 +98,14 @@ abstract class BaseIgfsCg
     }
 
     /**
+     * @return string
+     */
+    public function getRequest()
+    {
+        return (string) new $this->requestNamespace;
+    }
+
+    /**
      * Check required fields, if any of the required parameter is missing it'll throw an IgfsMissingParException
      *
      * @throws IgfsMissingParException
@@ -140,7 +161,7 @@ abstract class BaseIgfsCg
 
     protected function buildRequest()
     {
-        $request = $this->readFromJARFile($this->getFileName());
+        $request = $this->getRequest();
         $request = $this->replaceRequest($request, '{apiVersion}', $this->getVersion());
         if (null != $this->tid) {
             $request = $this->replaceRequest($request, '{tid}', '<tid><![CDATA['.$this->tid.']]></tid>');
@@ -159,27 +180,6 @@ abstract class BaseIgfsCg
         }
 
         return $request;
-    }
-
-    abstract protected function getFileName();
-
-    /**
-     * TODO: We really need this?
-     *
-     * @param $filename
-     * @return false|string
-     */
-    protected function readFromJARFile($filename)
-    {
-        if (null != $this->installPath) {
-            if ('/' == \mb_substr($this->installPath, -1)) {
-                return \file_get_contents($this->installPath.$filename);
-            } else {
-                return \file_get_contents($this->installPath.'/'.$filename);
-            }
-        } else {
-            return \file_get_contents($filename);
-        }
     }
 
     abstract protected function setRequestSignature($request);
@@ -368,7 +368,7 @@ abstract class BaseIgfsCg
             } else {
                 return false;
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->resetFields();
             $this->fields2Reset = true;
             $this->error = true;

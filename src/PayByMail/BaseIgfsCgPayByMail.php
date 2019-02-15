@@ -1,22 +1,29 @@
 <?php
 
-require_once 'IGFS_CG_API/BaseIgfsCg.php';
+namespace PagOnline\PayByMail;
 
+use PagOnline\BaseIgfsCg;
+
+/**
+ * Class BaseIgfsCgPayByMail
+ * @package PagOnline\PayByMail
+ */
 abstract class BaseIgfsCgPayByMail extends BaseIgfsCg
 {
     public $shopID; // chiave messaggio
 
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
+    /**
+     *
+     */
     protected function resetFields()
     {
         parent::resetFields();
         $this->shopID = null;
     }
 
+    /**
+     * @throws \PagOnline\Exceptions\IgfsMissingParException
+     */
     protected function checkFields()
     {
         parent::checkFields();
@@ -25,6 +32,9 @@ abstract class BaseIgfsCgPayByMail extends BaseIgfsCg
         }
     }
 
+    /**
+     * @return mixed|string
+     */
     protected function buildRequest()
     {
         $request = parent::buildRequest();
@@ -33,6 +43,9 @@ abstract class BaseIgfsCgPayByMail extends BaseIgfsCg
         return $request;
     }
 
+    /**
+     * @return string
+     */
     protected function getServicePort()
     {
         return 'PayByMailGatewayPort';
