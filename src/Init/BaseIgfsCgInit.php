@@ -6,21 +6,17 @@ use PagOnline\BaseIgfsCg;
 use PagOnline\Exceptions\IgfsMissingParException;
 
 /**
- * Class BaseIgfsCgInit
- * @package PagOnline\Init
+ * Class BaseIgfsCgInit.
  */
 abstract class BaseIgfsCgInit extends BaseIgfsCg
 {
     /**
-     * Merchant identifier
+     * Merchant identifier.
      *
      * @var string
      */
     public $shopID;
 
-    /**
-     *
-     */
     protected function resetFields()
     {
         parent::resetFields();
@@ -44,6 +40,7 @@ abstract class BaseIgfsCgInit extends BaseIgfsCg
     protected function buildRequest()
     {
         $request = parent::buildRequest();
+
         return $this->replaceRequest($request, '{shopID}', $this->shopID);
     }
 

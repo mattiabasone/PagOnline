@@ -1,20 +1,26 @@
 <?php
 
-require_once 'IGFS_CG_API/mpi/BaseIgfsCgMpi.php';
+namespace PagOnline\Mpi;
 
+use PagOnline\IgfsUtils;
+use PagOnline\Exceptions\IgfsMissingParException;
+
+/**
+ * Class IgfsCgMpiAuth.
+ */
 class IgfsCgMpiAuth extends BaseIgfsCgMpi
 {
+    /**
+     * @var string
+     */
+    protected $requestNamespace = Requests\IgfsCgMpiAuthRequest::class;
+
     public $paRes;
     public $md;
 
     public $authStatus;
     public $cavv;
     public $eci;
-
-    public function __construct()
-    {
-        parent::__construct();
-    }
 
     protected function resetFields()
     {
@@ -57,15 +63,15 @@ class IgfsCgMpiAuth extends BaseIgfsCgMpi
     {
         // signature dove il buffer e' cosi composto APIVERSION|TID|SHOPID|PARES|MD
         $fields = [
-                $this->getVersion(), // APIVERSION
-                $this->tid, // TID
-                $this->merID, // MERID
-                $this->payInstr, // PAYINSTR
-                $this->shopID, // SHOPID
-                $this->paRes, // PARES
-                $this->md, ]; // MD
+            $this->getVersion(), // APIVERSION
+            $this->tid, // TID
+            $this->merID, // MERID
+            $this->payInstr, // PAYINSTR
+            $this->shopID, // SHOPID
+            $this->paRes, // PARES
+            $this->md, ]; // MD
         $signature = $this->getSignature($this->kSig, // KSIGN
-                $fields);
+            $fields);
         $request = $this->replaceRequest($request, '{signature}', $signature);
 
         return $request;
@@ -84,20 +90,16 @@ class IgfsCgMpiAuth extends BaseIgfsCgMpi
     protected function getResponseSignature($response)
     {
         $fields = [
-                IgfsUtils::getValue($response, 'tid'), // TID
-                IgfsUtils::getValue($response, 'shopID'), // SHOPID
-                IgfsUtils::getValue($response, 'rc'), // RC
-                IgfsUtils::getValue($response, 'errorDesc'), // ERRORDESC
-                IgfsUtils::getValue($response, 'authStatus'), // AUTHSTATUS
-                IgfsUtils::getValue($response, 'cavv'), // CAVV
-                IgfsUtils::getValue($response, 'eci'), ]; // ECI
+            IgfsUtils::getValue($response, 'tid'), // TID
+            IgfsUtils::getValue($response, 'shopID'), // SHOPID
+            IgfsUtils::getValue($response, 'rc'), // RC
+            IgfsUtils::getValue($response, 'errorDesc'), // ERRORDESC
+            IgfsUtils::getValue($response, 'authStatus'), // AUTHSTATUS
+            IgfsUtils::getValue($response, 'cavv'), // CAVV
+            IgfsUtils::getValue($response, 'eci'),
+        ]; // ECI
         // signature dove il buffer e' cosi composto TID|SHOPID|RC|ERRORCODE|AUTHSTATUS|CAVV|ECI
         return $this->getSignature($this->kSig, // KSIGN
-                $fields);
-    }
-
-    protected function getFileName()
-    {
-        return 'IGFS_CG_API/mpi/IgfsCgMpiAuth.request';
+            $fields);
     }
 }

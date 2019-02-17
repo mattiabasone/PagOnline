@@ -3,7 +3,8 @@
 namespace PagOnline\Exceptions;
 
 /**
- * Class IOException
- * @package PagOnline\Exceptions
+ * Class IOException.
  */
-class IOException extends \Exception {}
+class IOException extends \Exception
+{
+}

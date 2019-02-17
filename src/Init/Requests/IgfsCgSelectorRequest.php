@@ -5,8 +5,7 @@ namespace PagOnline\Init\Requests;
 use PagOnline\BaseIgfsCgRequest;
 
 /**
- * Class IgfsCgVerifyRequest
- * @package PagOnline\Init\Requests
+ * Class IgfsCgVerifyRequest.
  */
 final class IgfsCgSelectorRequest extends BaseIgfsCgRequest
 {

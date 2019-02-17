@@ -2,14 +2,13 @@
 
 namespace PagOnline\Init;
 
+use SimpleXMLElement;
+use PagOnline\IgfsUtils;
 use PagOnline\BaseIgfsCg;
 use PagOnline\Exceptions\IgfsMissingParException;
-use PagOnline\IgfsUtils;
-use SimpleXMLElement;
 
 /**
- * Class IgfsCgSelector
- * @package PagOnline\Init
+ * Class IgfsCgSelector.
  */
 class IgfsCgSelector extends BaseIgfsCgInit
 {
@@ -211,10 +210,5 @@ class IgfsCgSelector extends BaseIgfsCgInit
         // signature dove il buffer e' cosi composto TID|SHOPID|RC|ERRORDESC|PAYMENTID|REDIRECTURL
         return $this->getSignature($this->kSig, // KSIGN
             $fields);
-    }
-
-    protected function getFileName()
-    {
-        return 'IGFS_CG_API/init/IgfsCgSelector.request';
     }
 }

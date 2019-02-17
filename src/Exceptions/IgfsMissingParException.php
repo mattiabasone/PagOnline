@@ -3,7 +3,8 @@
 namespace PagOnline\Exceptions;
 
 /**
- * Class IgfsMissingParException
- * @package PagOnline\Exceptions
+ * Class IgfsMissingParException.
  */
-class IgfsMissingParException extends \Exception {}
+class IgfsMissingParException extends \Exception
+{
+}

@@ -2,41 +2,40 @@
 
 namespace PagOnline;
 
-use PagOnline\Exceptions\ConnectionException;
-use PagOnline\Exceptions\IgfsException;
-use PagOnline\Exceptions\IgfsMissingParException;
-use PagOnline\Exceptions\ReadWriteException;
 use SimpleXMLElement;
+use PagOnline\Exceptions\IgfsException;
+use PagOnline\Exceptions\ReadWriteException;
+use PagOnline\Exceptions\ConnectionException;
+use PagOnline\Exceptions\IgfsMissingParException;
 
 /**
- * Class BaseIgfsCg
- * @package PagOnline
+ * Class BaseIgfsCg.
  */
 abstract class BaseIgfsCg
 {
     /**
-     * Package version
+     * Package version.
      *
      * @var string
      */
     const VERSION = '2.4.1.5';
 
     /**
-     * Set the request namespace here
+     * Set the request namespace here.
      *
      * @var string
      */
     protected $requestNamespace = '';
 
     /**
-     * Signature Key
+     * Signature Key.
      *
      * @var string
      */
     public $kSig;
 
     /**
-     * Payment Gateway server url
+     * Payment Gateway server url.
      *
      * @var string|null
      */
@@ -72,7 +71,7 @@ abstract class BaseIgfsCg
     }
 
     /**
-     * Reset fields
+     * Reset fields.
      */
     protected function resetFields()
     {
@@ -88,7 +87,7 @@ abstract class BaseIgfsCg
     abstract protected function getServicePort();
 
     /**
-     * It returns the package version
+     * It returns the package version.
      *
      * @return string
      */
@@ -102,11 +101,11 @@ abstract class BaseIgfsCg
      */
     public function getRequest()
     {
-        return (string) new $this->requestNamespace;
+        return (string) new $this->requestNamespace();
     }
 
     /**
-     * Check required fields, if any of the required parameter is missing it'll throw an IgfsMissingParException
+     * Check required fields, if any of the required parameter is missing it'll throw an IgfsMissingParException.
      *
      * @throws IgfsMissingParException
      */
@@ -136,9 +135,10 @@ abstract class BaseIgfsCg
     }
 
     /**
-     * Get configured server url
+     * Get configured server url.
      *
      * @param $surl
+     *
      * @return string
      */
     protected function getServerUrl($surl)
@@ -270,10 +270,11 @@ abstract class BaseIgfsCg
 
     /**
      * Execute a POST request
-     * TODO: Guzzle
+     * TODO: Guzzle.
      *
      * @param $url
      * @param $request
+     *
      * @return bool|string
      */
     private function post($url, $request)
@@ -322,12 +323,13 @@ abstract class BaseIgfsCg
     }
 
     /**
-     * TODO: Refactor this
+     * TODO: Refactor this.
      *
-     * @return bool
      * @throws ConnectionException
      * @throws IgfsException
      * @throws IgfsMissingParException
+     *
+     * @return bool
      */
     public function execute()
     {
@@ -394,11 +396,13 @@ abstract class BaseIgfsCg
     }
 
     /**
-     * TODO: unused variables
+     * TODO: unused variables.
      *
      * @param $url
-     * @return array|void
+     *
      * @throws IgfsException
+     *
+     * @return array|void
      */
     private function executeHttp($url)
     {
@@ -433,8 +437,10 @@ abstract class BaseIgfsCg
     /**
      * @param $key
      * @param $fields
-     * @return string
+     *
      * @throws IgfsException
+     *
+     * @return string
      */
     protected function getSignature($key, $fields)
     {

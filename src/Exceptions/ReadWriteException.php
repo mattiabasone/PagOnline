@@ -3,8 +3,7 @@
 namespace PagOnline\Exceptions;
 
 /**
- * Class ReadWriteException
- * @package PagOnline\Exceptions
+ * Class ReadWriteException.
  */
 class ReadWriteException extends IOException
 {

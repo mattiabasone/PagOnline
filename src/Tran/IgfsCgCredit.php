@@ -1,9 +1,19 @@
 <?php
 
-require_once 'IGFS_CG_API/tran/BaseIgfsCgTran.php';
+namespace PagOnline\Tran;
 
+use PagOnline\IgfsUtils;
+
+/**
+ * Class IgfsCgCredit.
+ */
 class IgfsCgCredit extends BaseIgfsCgTran
 {
+    /**
+     * @var string
+     */
+    protected $requestNamespace = Requests\IgfsCgCreditRequest::class;
+
     public $shopUserRef;
     public $amount;
     public $currencyCode;
@@ -16,11 +26,6 @@ class IgfsCgCredit extends BaseIgfsCgTran
     public $description;
 
     public $pendingAmount;
-
-    public function __construct()
-    {
-        parent::__construct();
-    }
 
     protected function resetFields()
     {
@@ -183,10 +188,5 @@ class IgfsCgCredit extends BaseIgfsCgTran
         // signature dove il buffer e' cosi composto TID|SHOPID|RC|ERRORDESC|ORDERID|DATE|UDF1|UDF2|UDF3|UDF4|UDF5
         return $this->getSignature($this->kSig, // KSIGN
                 $fields);
-    }
-
-    protected function getFileName()
-    {
-        return 'IGFS_CG_API/tran/IgfsCgCredit.request';
     }
 }

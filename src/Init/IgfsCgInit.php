@@ -6,7 +6,7 @@ use PagOnline\IgfsUtils;
 use PagOnline\Exceptions\IgfsMissingParException;
 
 /**
- * Class IgfsCgInit
+ * Class IgfsCgInit.
  */
 class IgfsCgInit extends BaseIgfsCgInit
 {

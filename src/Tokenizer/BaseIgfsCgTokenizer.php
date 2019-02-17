@@ -1,15 +1,13 @@
 <?php
 
-require_once 'IGFS_CG_API/BaseIgfsCg.php';
+namespace PagOnline\Tokenizer;
+
+use PagOnline\BaseIgfsCg;
+use PagOnline\Exceptions\IgfsMissingParException;
 
 abstract class BaseIgfsCgTokenizer extends BaseIgfsCg
 {
     public $shopID; // chiave messaggio
-
-    public function __construct()
-    {
-        parent::__construct();
-    }
 
     protected function resetFields()
     {

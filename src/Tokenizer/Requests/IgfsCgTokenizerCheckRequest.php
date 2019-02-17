@@ -1,6 +1,18 @@
+<?php
+
+namespace PagOnline\Tokenizer\Requests;
+
+use PagOnline\BaseIgfsCgRequest;
+
+/**
+ * Class IgfsCgTokenizerCheckRequest.
+ */
+final class IgfsCgTokenizerCheckRequest extends BaseIgfsCgRequest
+{
+    const CONTENT = <<<XML
 <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://services.api.web.cg.igfs.apps.netsw.it/">
 <soapenv:Body>
-<ser:VoidAuth>
+<ser:Check>
 <request>
 <apiVersion><![CDATA[{apiVersion}]]></apiVersion>
 {tid}
@@ -8,14 +20,11 @@
 {payInstr}
 <signature><![CDATA[{signature}]]></signature>
 <shopID><![CDATA[{shopID}]]></shopID>
-<amount><![CDATA[{amount}]]></amount>
-<refTranID><![CDATA[{refTranID}]]></refTranID>
-{addInfo1}
-{addInfo2}
-{addInfo3}
-{addInfo4}
-{addInfo5}
+<payInstrToken><![CDATA[{payInstrToken}]]></payInstrToken>
+{billingID}
 </request>
-</ser:VoidAuth>
+</ser:Check>
 </soapenv:Body>
 </soapenv:Envelope>
+XML;
+}

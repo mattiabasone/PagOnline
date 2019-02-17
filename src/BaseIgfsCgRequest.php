@@ -3,8 +3,7 @@
 namespace PagOnline;
 
 /**
- * Class BaseIgfsCgRequest
- * @package PagOnline
+ * Class BaseIgfsCgRequest.
  */
 abstract class BaseIgfsCgRequest
 {

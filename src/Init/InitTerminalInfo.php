@@ -3,8 +3,7 @@
 namespace PagOnline\Init;
 
 /**
- * Class InitTerminalInfo
- * @package PagOnline\Init
+ * Class InitTerminalInfo.
  */
 class InitTerminalInfo
 {
@@ -14,6 +13,7 @@ class InitTerminalInfo
 
     /**
      * @param $tname
+     *
      * @return string
      */
     public function toXml($tname)

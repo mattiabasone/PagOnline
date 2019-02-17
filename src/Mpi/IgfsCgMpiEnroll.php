@@ -3,11 +3,15 @@
 namespace PagOnline\Mpi;
 
 /**
- * Class IgfsCgMpiEnroll
- * @package PagOnline\Mpi
+ * Class IgfsCgMpiEnroll.
  */
 class IgfsCgMpiEnroll extends BaseIgfsCgMpi
 {
+    /**
+     * @var string
+     */
+    protected $requestNamespace = Requests\IgfsCgMpiEnrollRequest::class;
+
     public $shopUserRef;
     public $amount;
     public $currencyCode;

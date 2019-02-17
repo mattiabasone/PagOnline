@@ -1,9 +1,20 @@
 <?php
 
-require_once 'IGFS_CG_API/tokenizer/BaseIgfsCgTokenizer.php';
+namespace PagOnline\Tokenizer;
 
+use PagOnline\IgfsUtils;
+use PagOnline\Exceptions\IgfsMissingParException;
+
+/**
+ * Class IgfsCgTokenizerCheck.
+ */
 class IgfsCgTokenizerCheck extends BaseIgfsCgTokenizer
 {
+    /**
+     * @var string
+     */
+    protected $requestNamespace = Requests\IgfsCgTokenizerCheckRequest::class;
+
     public $payInstrToken;
     public $billingID;
 
@@ -11,11 +22,6 @@ class IgfsCgTokenizerCheck extends BaseIgfsCgTokenizer
     public $expireMonth;
     public $expireYear;
     public $accountName;
-
-    public function __construct()
-    {
-        parent::__construct();
-    }
 
     protected function resetFields()
     {
@@ -90,10 +96,5 @@ class IgfsCgTokenizerCheck extends BaseIgfsCgTokenizer
         // signature dove il buffer e' cosi composto TID|SHOPID|RC|ERRORDESC
         return $this->getSignature($this->kSig, // KSIGN
                 $fields);
-    }
-
-    protected function getFileName()
-    {
-        return 'IGFS_CG_API/tokenizer/IgfsCgTokenizerCheck.request';
     }
 }

@@ -1,16 +1,21 @@
 <?php
 
-require_once 'IGFS_CG_API/tokenizer/BaseIgfsCgTokenizer.php';
+namespace PagOnline\Tokenizer;
 
+use PagOnline\IgfsUtils;
+
+/**
+ * Class IgfsCgTokenizerDelete.
+ */
 class IgfsCgTokenizerDelete extends BaseIgfsCgTokenizer
 {
+    /**
+     * @var string
+     */
+    protected $requestNamespace = Requests\IgfsCgTokenizerDeleteRequest::class;
+
     public $payInstrToken;
     public $billingID;
-
-    public function __construct()
-    {
-        parent::__construct();
-    }
 
     protected function resetFields()
     {
@@ -44,14 +49,15 @@ class IgfsCgTokenizerDelete extends BaseIgfsCgTokenizer
     {
         // signature dove il buffer e' cosi composto APIVERSION|TID|SHOPID|PAYINSTRTOKEN
         $fields = [
-                $this->getVersion(), // APIVERSION
-                $this->tid, // TID
-                $this->merID, // MERID
-                $this->payInstr, // PAYINSTR
-                $this->shopID, // SHOPID
-                $this->payInstrToken, ]; // PAYINSTRTOKEN
+            $this->getVersion(), // APIVERSION
+            $this->tid, // TID
+            $this->merID, // MERID
+            $this->payInstr, // PAYINSTR
+            $this->shopID, // SHOPID
+            $this->payInstrToken,
+        ]; // PAYINSTRTOKEN
         $signature = $this->getSignature($this->kSig, // KSIGN
-                $fields);
+            $fields);
         $request = $this->replaceRequest($request, '{signature}', $signature);
 
         return $request;
@@ -65,17 +71,12 @@ class IgfsCgTokenizerDelete extends BaseIgfsCgTokenizer
     protected function getResponseSignature($response)
     {
         $fields = [
-                IgfsUtils::getValue($response, 'tid'), // TID
-                IgfsUtils::getValue($response, 'shopID'), // SHOPID
-                IgfsUtils::getValue($response, 'rc'), // RC
-                IgfsUtils::getValue($response, 'errorDesc'), ]; // ERRORDESC
+            IgfsUtils::getValue($response, 'tid'), // TID
+            IgfsUtils::getValue($response, 'shopID'), // SHOPID
+            IgfsUtils::getValue($response, 'rc'), // RC
+            IgfsUtils::getValue($response, 'errorDesc'), ]; // ERRORDESC
         // signature dove il buffer e' cosi composto TID|SHOPID|RC|ERRORDESC
         return $this->getSignature($this->kSig, // KSIGN
-                $fields);
-    }
-
-    protected function getFileName()
-    {
-        return 'IGFS_CG_API/tokenizer/IgfsCgTokenizerDelete.request';
+            $fields);
     }
 }

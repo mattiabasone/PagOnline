@@ -3,8 +3,7 @@
 namespace PagOnline;
 
 /**
- * Class MandateInfo
- * @package PagOnline
+ * Class MandateInfo.
  */
 class MandateInfo
 {

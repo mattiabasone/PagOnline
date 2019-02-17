@@ -1,9 +1,20 @@
 <?php
 
-require_once 'IGFS_CG_API/paybymail/BaseIgfsCgPayByMail.php';
+namespace PagOnline\PayByMail;
 
+use PagOnline\IgfsUtils;
+use PagOnline\Exceptions\IgfsMissingParException;
+
+/**
+ * Class IgfsCgPayByMailVerify.
+ */
 class IgfsCgPayByMailVerify extends BaseIgfsCgPayByMail
 {
+    /**
+     * @var string
+     */
+    protected $requestNamespace = Requests\IgfsCgPayByMailVerifyRequest::class;
+
     public $mailID;
 
     public $tranID;
@@ -13,11 +24,6 @@ class IgfsCgPayByMailVerify extends BaseIgfsCgPayByMail
     public $addInfo3;
     public $addInfo4;
     public $addInfo5;
-
-    public function __construct()
-    {
-        parent::__construct();
-    }
 
     protected function resetFields()
     {
@@ -99,10 +105,5 @@ class IgfsCgPayByMailVerify extends BaseIgfsCgPayByMail
         // signature dove il buffer e' cosi composto TID|SHOPID|RC|ERRORDESC|MAILID|STATUS
         return $this->getSignature($this->kSig, // KSIGN
                 $fields);
-    }
-
-    protected function getFileName()
-    {
-        return 'IGFS_CG_API/paybymail/IgfsCgPayByMailVerify.request';
     }
 }

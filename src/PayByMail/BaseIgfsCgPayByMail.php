@@ -3,18 +3,15 @@
 namespace PagOnline\PayByMail;
 
 use PagOnline\BaseIgfsCg;
+use PagOnline\Exceptions\IgfsMissingParException;
 
 /**
- * Class BaseIgfsCgPayByMail
- * @package PagOnline\PayByMail
+ * Class BaseIgfsCgPayByMail.
  */
 abstract class BaseIgfsCgPayByMail extends BaseIgfsCg
 {
     public $shopID; // chiave messaggio
 
-    /**
-     *
-     */
     protected function resetFields()
     {
         parent::resetFields();
@@ -38,9 +35,8 @@ abstract class BaseIgfsCgPayByMail extends BaseIgfsCg
     protected function buildRequest()
     {
         $request = parent::buildRequest();
-        $request = $this->replaceRequest($request, '{shopID}', $this->shopID);
 
-        return $request;
+        return $this->replaceRequest($request, '{shopID}', $this->shopID);
     }
 
     /**

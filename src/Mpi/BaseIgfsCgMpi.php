@@ -2,16 +2,20 @@
 
 namespace PagOnline\Mpi;
 
+use PagOnline\IgfsUtils;
 use PagOnline\BaseIgfsCg;
 use PagOnline\Exceptions\IgfsMissingParException;
-use PagOnline\IgfsUtils;
 
 /**
- * Class BaseIgfsCgMpi
- * @package PagOnline\Mpi
+ * Class BaseIgfsCgMpi.
  */
 abstract class BaseIgfsCgMpi extends BaseIgfsCg
 {
+    /**
+     * @var string
+     */
+    protected $requestNamespace = Requests\IgfsCgMpiEnrollRequest::class;
+
     public $shopID; // chiave messaggio
 
     public $xid;
@@ -20,7 +24,6 @@ abstract class BaseIgfsCgMpi extends BaseIgfsCg
     {
         parent::resetFields();
         $this->shopID = null;
-
         $this->xid = null;
     }
 

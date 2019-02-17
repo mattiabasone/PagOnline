@@ -2,15 +2,14 @@
 
 namespace PagOnline\Init;
 
-use PagOnline\BaseIgfsCg;
 use PagOnline\Entry;
-use PagOnline\Exceptions\IgfsMissingParException;
-use PagOnline\IgfsUtils;
 use SimpleXMLElement;
+use PagOnline\IgfsUtils;
+use PagOnline\BaseIgfsCg;
+use PagOnline\Exceptions\IgfsMissingParException;
 
 /**
- * Class IgfsCgVerify
- * @package PagOnline\Init
+ * Class IgfsCgVerify.
  */
 class IgfsCgVerify extends BaseIgfsCgInit
 {

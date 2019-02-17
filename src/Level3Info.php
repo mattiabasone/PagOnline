@@ -5,8 +5,7 @@ namespace PagOnline;
 use SimpleXMLElement;
 
 /**
- * Class Level3Info
- * @package PagOnline
+ * Class Level3Info.
  */
 class Level3Info
 {

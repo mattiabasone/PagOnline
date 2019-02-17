@@ -6,8 +6,7 @@ use SimpleXMLElement;
 use PagOnline\IgfsUtils;
 
 /**
- * Class SelectorTerminalInfo
- * @package PagOnline\Init
+ * Class SelectorTerminalInfo.
  */
 class SelectorTerminalInfo
 {
@@ -20,6 +19,7 @@ class SelectorTerminalInfo
     /**
      * @param $xml
      * @param $tname
+     *
      * @return SelectorTerminalInfo|void|null
      */
     public static function fromXml($xml, $tname)

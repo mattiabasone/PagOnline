@@ -1,7 +1,14 @@
 <?php
 
-require_once 'IGFS_CG_API/BaseIgfsCg.php';
+namespace PagOnline\Tran;
 
+use PagOnline\IgfsUtils;
+use PagOnline\BaseIgfsCg;
+use PagOnline\Exceptions\IgfsMissingParException;
+
+/**
+ * Class BaseIgfsCgTran.
+ */
 abstract class BaseIgfsCgTran extends BaseIgfsCg
 {
     public $shopID; // chiave messaggio
@@ -12,11 +19,6 @@ abstract class BaseIgfsCgTran extends BaseIgfsCg
     public $addInfo5;
 
     public $tranID;
-
-    public function __construct()
-    {
-        parent::__construct();
-    }
 
     protected function resetFields()
     {

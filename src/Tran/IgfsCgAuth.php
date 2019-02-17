@@ -1,11 +1,21 @@
 <?php
 
-require_once 'IGFS_CG_API/tran/BaseIgfsCgTran.php';
-require_once 'IGFS_CG_API/Level3Info.php';
-require_once 'IGFS_CG_API/Entry.php';
+namespace PagOnline\Tran;
 
+use SimpleXMLElement;
+use PagOnline\IgfsUtils;
+use PagOnline\Exceptions\IgfsMissingParException;
+
+/**
+ * Class IgfsCgAuth.
+ */
 class IgfsCgAuth extends BaseIgfsCgTran
 {
+    /**
+     * @var string
+     */
+    protected $requestNamespace = Requests\IgfsCgAuthRequest::class;
+
     public $shopUserRef;
     public $shopUserName;
     public $shopUserAccount;
@@ -122,11 +132,11 @@ class IgfsCgAuth extends BaseIgfsCgTran
     protected function checkFields()
     {
         parent::checkFields();
-        if (null == $this->trType) {
+        if (null === $this->trType) {
             throw new IgfsMissingParException('Missing trType');
         }
-        if ('VERIFY' == $this->trType) {
-        } else {
+
+        if ('VERIFY' != $this->trType) {
             if (null == $this->amount) {
                 throw new IgfsMissingParException('Missing amount');
             }
@@ -156,13 +166,13 @@ class IgfsCgAuth extends BaseIgfsCgTran
             if (null != $this->level3Info->product) {
                 foreach ($this->level3Info->product as $product) {
                     if (null == $product->productCode) {
-                        throw new IgfsMissingParException('Missing productCode['.i.']');
+                        throw new IgfsMissingParException('Missing productCode['.$i.']');
                     }
                     if (null == $product->productDescription) {
-                        throw new IgfsMissingParException('Missing productDescription['.i.']');
+                        throw new IgfsMissingParException('Missing productDescription['.$i.']');
                     }
+                    ++$i;
                 }
-                ++$i;
             }
         }
     }
@@ -386,38 +396,38 @@ class IgfsCgAuth extends BaseIgfsCgTran
     {
         // signature dove il buffer e' cosi composto APIVERSION|TID|SHOPID|SHOPUSERREF|SHOPUSERNAME|SHOPUSERACCOUNT|SHOPUSERMOBILEPHONE|SHOPUSERIMEI|SHOPUSERIP|TRTYPE|AMOUNT|CURRENCYCODE|CALLBACKURL|PAN|PAYINSTRTOKEN|PAYLOAD|CVV2|EXPIREMONTH|EXPIREYEAR|UDF1|UDF2|UDF3|UDF4|UDF5
         $fields = [
-                $this->getVersion(), // APIVERSION
-                $this->tid, // TID
-                $this->merID, // MERID
-                $this->payInstr, // PAYINSTR
-                $this->shopID, // SHOPID
-                $this->shopUserRef, // SHOPUSERREF
-                $this->shopUserName, // SHOPUSERNAME
-                $this->shopUserAccount, // SHOPUSERACCOUNT
-                $this->shopUserMobilePhone, //SHOPUSERMOBILEPHONE
-                $this->shopUserIMEI, //SHOPUSERIMEI
-                $this->shopUserIP, // SHOPUSERIP
-                $this->trType, // TRTYPE
-                $this->amount, // AMOUNT
-                $this->currencyCode, // CURRENCYCODE
-                $this->callbackURL, // CALLBACKURL
-                $this->pan, // PAN
-                $this->payInstrToken, // PAYINSTRTOKEN
-                $this->payload, // PAYLOAD
-                $this->cvv2, // CVV2
-                $this->expireMonth, // EXPIREMONTH
-                $this->expireYear, // EXPIREYEAR
-                $this->addInfo1, // UDF1
-                $this->addInfo2, // UDF2
-                $this->addInfo3, // UDF3
-                $this->addInfo4, // UDF4
-                $this->addInfo5, // UDF5
-                $this->topUpID, ];
+            $this->getVersion(), // APIVERSION
+            $this->tid, // TID
+            $this->merID, // MERID
+            $this->payInstr, // PAYINSTR
+            $this->shopID, // SHOPID
+            $this->shopUserRef, // SHOPUSERREF
+            $this->shopUserName, // SHOPUSERNAME
+            $this->shopUserAccount, // SHOPUSERACCOUNT
+            $this->shopUserMobilePhone, //SHOPUSERMOBILEPHONE
+            $this->shopUserIMEI, //SHOPUSERIMEI
+            $this->shopUserIP, // SHOPUSERIP
+            $this->trType, // TRTYPE
+            $this->amount, // AMOUNT
+            $this->currencyCode, // CURRENCYCODE
+            $this->callbackURL, // CALLBACKURL
+            $this->pan, // PAN
+            $this->payInstrToken, // PAYINSTRTOKEN
+            $this->payload, // PAYLOAD
+            $this->cvv2, // CVV2
+            $this->expireMonth, // EXPIREMONTH
+            $this->expireYear, // EXPIREYEAR
+            $this->addInfo1, // UDF1
+            $this->addInfo2, // UDF2
+            $this->addInfo3, // UDF3
+            $this->addInfo4, // UDF4
+            $this->addInfo5, // UDF5
+            $this->topUpID,
+        ];
         $signature = $this->getSignature($this->kSig, // KSIGN
-                $fields);
-        $request = $this->replaceRequest($request, '{signature}', $signature);
+            $fields);
 
-        return $request;
+        return $this->replaceRequest($request, '{signature}', $signature);
     }
 
     protected function parseResponseMap($response)
@@ -450,7 +460,7 @@ class IgfsCgAuth extends BaseIgfsCgTran
         // Opzionale
         try {
             $this->receiptPdf = \base64_decode(IgfsUtils::getValue($response, 'receiptPdf'), true);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->receiptPdf = null;
         }
         try {
@@ -480,7 +490,7 @@ class IgfsCgAuth extends BaseIgfsCgTran
                 }
                 $this->payAddData = $payAddData;
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->payAddData = null;
         }
     }
@@ -488,21 +498,16 @@ class IgfsCgAuth extends BaseIgfsCgTran
     protected function getResponseSignature($response)
     {
         $fields = [
-                IgfsUtils::getValue($response, 'tid'), // TID
-                IgfsUtils::getValue($response, 'shopID'), // SHOPID
-                IgfsUtils::getValue($response, 'rc'), // RC
-                IgfsUtils::getValue($response, 'errorDesc'), // ERRORDESC
-                IgfsUtils::getValue($response, 'tranID'), // ORDERID
-                IgfsUtils::getValue($response, 'date'), // TRANDATE
-                IgfsUtils::getValue($response, 'paymentID'), // PAYMENTID
-                IgfsUtils::getValue($response, 'authCode'), ]; // AUTHCODE
+            IgfsUtils::getValue($response, 'tid'), // TID
+            IgfsUtils::getValue($response, 'shopID'), // SHOPID
+            IgfsUtils::getValue($response, 'rc'), // RC
+            IgfsUtils::getValue($response, 'errorDesc'), // ERRORDESC
+            IgfsUtils::getValue($response, 'tranID'), // ORDERID
+            IgfsUtils::getValue($response, 'date'), // TRANDATE
+            IgfsUtils::getValue($response, 'paymentID'), // PAYMENTID
+            IgfsUtils::getValue($response, 'authCode'), ]; // AUTHCODE
         // signature dove il buffer e' cosi composto TID|SHOPID|RC|ERRORCODE|ORDERID|PAYMENTID|AUTHCODE
         return $this->getSignature($this->kSig, // KSIGN
-                $fields);
-    }
-
-    protected function getFileName()
-    {
-        return 'IGFS_CG_API/tran/IgfsCgAuth.request';
+            $fields);
     }
 }

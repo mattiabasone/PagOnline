@@ -1,10 +1,20 @@
 <?php
 
-require_once 'IGFS_CG_API/paybymail/BaseIgfsCgPayByMail.php';
-require_once 'IGFS_CG_API/Level3Info.php';
+namespace PagOnline\PayByMail;
 
+use PagOnline\IgfsUtils;
+use PagOnline\Exceptions\IgfsMissingParException;
+
+/**
+ * Class IgfsCgPayByMailInit.
+ */
 class IgfsCgPayByMailInit extends BaseIgfsCgPayByMail
 {
+    /**
+     * @var string
+     */
+    protected $requestNamespace = Requests\IgfsCgPayByMailInitRequest::class;
+
     public $shopUserRef;
     public $shopUserName;
     public $shopUserAccount;
@@ -28,11 +38,6 @@ class IgfsCgPayByMailInit extends BaseIgfsCgPayByMail
 
     public $mailID;
     public $linkURL;
-
-    public function __construct()
-    {
-        parent::__construct();
-    }
 
     protected function resetFields()
     {
@@ -200,33 +205,36 @@ class IgfsCgPayByMailInit extends BaseIgfsCgPayByMail
     {
         // signature dove il buffer e' cosi composto APIVERSION|TID|SHOPID|SHOPUSERREF|SHOPUSERNAME|SHOPUSERACCOUNT|SHOPUSERMOBILEPHONE|SHOPUSERIMEI|TRTYPE|AMOUNT|CURRENCYCODE|LANGID|NOTIFYURL|ERRORURL|CALLBACKURL
         $fields = [
-                $this->getVersion(), // APIVERSION
-                $this->tid, // TID
-                $this->merID, // MERID
-                $this->payInstr, // PAYINSTR
-                $this->shopID, // SHOPID
-                $this->shopUserRef, // SHOPUSERREF
-                $this->shopUserName, // SHOPUSERNAME
-                $this->shopUserAccount, // SHOPUSERACCOUNT
-                $this->shopUserMobilePhone, //SHOPUSERMOBILEPHONE
-                $this->shopUserIMEI, //SHOPUSERIMEI
-                $this->trType, // TRTYPE
-                $this->amount, // AMOUNT
-                $this->currencyCode, // CURRENCYCODE
-                $this->langID, // LANGID
-                $this->callbackURL, // CALLBACKURL
-                $this->addInfo1, // UDF1
-                $this->addInfo2, // UDF2
-                $this->addInfo3, // UDF3
-                $this->addInfo4, // UDF4
-                $this->addInfo5, ];
+            $this->getVersion(), // APIVERSION
+            $this->tid, // TID
+            $this->merID, // MERID
+            $this->payInstr, // PAYINSTR
+            $this->shopID, // SHOPID
+            $this->shopUserRef, // SHOPUSERREF
+            $this->shopUserName, // SHOPUSERNAME
+            $this->shopUserAccount, // SHOPUSERACCOUNT
+            $this->shopUserMobilePhone, //SHOPUSERMOBILEPHONE
+            $this->shopUserIMEI, //SHOPUSERIMEI
+            $this->trType, // TRTYPE
+            $this->amount, // AMOUNT
+            $this->currencyCode, // CURRENCYCODE
+            $this->langID, // LANGID
+            $this->callbackURL, // CALLBACKURL
+            $this->addInfo1, // UDF1
+            $this->addInfo2, // UDF2
+            $this->addInfo3, // UDF3
+            $this->addInfo4, // UDF4
+            $this->addInfo5,
+        ];
         $signature = $this->getSignature($this->kSig, // KSIGN
-                $fields);
-        $request = $this->replaceRequest($request, '{signature}', $signature);
+            $fields);
 
-        return $request;
+        return $this->replaceRequest($request, '{signature}', $signature);
     }
 
+    /**
+     * @param $response
+     */
     protected function parseResponseMap($response)
     {
         parent::parseResponseMap($response);
@@ -239,15 +247,15 @@ class IgfsCgPayByMailInit extends BaseIgfsCgPayByMail
     protected function getResponseSignature($response)
     {
         $fields = [
-                IgfsUtils::getValue($response, 'tid'), // TID
-                IgfsUtils::getValue($response, 'shopID'), // SHOPID
-                IgfsUtils::getValue($response, 'rc'), // RC
-                IgfsUtils::getValue($response, 'errorDesc'), // ERRORDESC
-                IgfsUtils::getValue($response, 'mailID'), // MAILID
-                IgfsUtils::getValue($response, 'linkURL'), ];
+            IgfsUtils::getValue($response, 'tid'), // TID
+            IgfsUtils::getValue($response, 'shopID'), // SHOPID
+            IgfsUtils::getValue($response, 'rc'), // RC
+            IgfsUtils::getValue($response, 'errorDesc'), // ERRORDESC
+            IgfsUtils::getValue($response, 'mailID'), // MAILID
+            IgfsUtils::getValue($response, 'linkURL'), ];
         // signature dove il buffer e' cosi composto TID|SHOPID|RC|ERRORDESC|MAILID
         return $this->getSignature($this->kSig, // KSIGN
-                $fields);
+            $fields);
     }
 
     protected function getFileName()

@@ -1,6 +1,18 @@
+<?php
+
+namespace PagOnline\Tokenizer\Requests;
+
+use PagOnline\BaseIgfsCgRequest;
+
+/**
+ * Class IgfsCgTokenizerDeleteRequest.
+ */
+final class IgfsCgTokenizerDeleteRequest extends BaseIgfsCgRequest
+{
+    const CONTENT = <<<XML
 <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://services.api.web.cg.igfs.apps.netsw.it/">
 <soapenv:Body>
-<ser:Verify>
+<ser:Delete>
 <request>
 <apiVersion><![CDATA[{apiVersion}]]></apiVersion>
 {tid}
@@ -8,8 +20,11 @@
 {payInstr}
 <signature><![CDATA[{signature}]]></signature>
 <shopID><![CDATA[{shopID}]]></shopID>
-<mailID><![CDATA[{mailID}]]></mailID>
+<payInstrToken><![CDATA[{payInstrToken}]]></payInstrToken>
+{billingID}
 </request>
-</ser:Verify>
+</ser:Delete>
 </soapenv:Body>
 </soapenv:Envelope>
+XML;
+}

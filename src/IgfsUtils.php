@@ -5,14 +5,14 @@ namespace PagOnline;
 use DateTime;
 
 /**
- * Class IgfsUtils
- * @package PagOnline
+ * Class IgfsUtils.
  */
 class IgfsUtils
 {
     /**
      * @param $ksig
      * @param $fields
+     *
      * @return string
      */
     public static function getSignature($ksig, $fields)
@@ -28,7 +28,6 @@ class IgfsUtils
     /**
      * @param $map
      * @param $key
-     * @return null
      */
     public static function getValue($map, $key)
     {
@@ -61,6 +60,7 @@ class IgfsUtils
      * @param $haystack
      * @param $needle
      * @param bool $case
+     *
      * @return bool
      */
     public static function startsWith($haystack, $needle, $case = true)
@@ -76,6 +76,7 @@ class IgfsUtils
      * @param $haystack
      * @param $needle
      * @param bool $case
+     *
      * @return bool
      */
     public static function endsWith($haystack, $needle, $case = true)
@@ -89,6 +90,7 @@ class IgfsUtils
 
     /**
      * @param $odt
+     *
      * @return string|null
      */
     public static function formatXMLGregorianCalendar($odt)
@@ -113,6 +115,7 @@ class IgfsUtils
 
     /**
      * @param $text
+     *
      * @return \DateTime|null
      */
     public static function parseXMLGregorianCalendar($text)
@@ -149,6 +152,7 @@ class IgfsUtils
     /**
      * @param $text
      * @param $format
+     *
      * @return bool|\DateTime|null
      */
     private static function parseXMLGregorianCalendarTZ($text, $format)
@@ -166,6 +170,7 @@ class IgfsUtils
     /**
      * @param $text
      * @param $format
+     *
      * @return bool|DateTime|null
      */
     private static function parseXMLGregorianCalendarDT($text, $format)

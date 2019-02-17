@@ -1,15 +1,15 @@
 <?php
 
-namespace PagOnline\Init\Requests;
+namespace PagOnline\Tran\Requests;
 
 use PagOnline\BaseIgfsCgRequest;
 
-final class IgfsCgInitRequest extends BaseIgfsCgRequest
+final class IgfsCgAuthRequest extends BaseIgfsCgRequest
 {
     const CONTENT = <<<XML
 <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://services.api.web.cg.igfs.apps.netsw.it/">
 <soapenv:Body>
-<ser:Init>
+<ser:Auth>
 <request>
 <apiVersion><![CDATA[{apiVersion}]]></apiVersion>
 {tid}
@@ -17,44 +17,52 @@ final class IgfsCgInitRequest extends BaseIgfsCgRequest
 {payInstr}
 <signature><![CDATA[{signature}]]></signature>
 <shopID><![CDATA[{shopID}]]></shopID>
+{amount}
+{currencyCode}
+{langID}
+{callbackURL}
 {shopUserRef}
 {shopUserName}
 {shopUserAccount}
 {shopUserMobilePhone}
 {shopUserIMEI}
+{shopUserIP}
 <trType><![CDATA[{trType}]]></trType>
-{amount}
-{currencyCode}
-<langID><![CDATA[{langID}]]></langID>
-<notifyURL><![CDATA[{notifyURL}]]></notifyURL>
-<errorURL><![CDATA[{errorURL}]]></errorURL>
-{callbackURL}
-{addInfo1}
-{addInfo2}
-{addInfo3}
-{addInfo4}
-{addInfo5}
+{pan}
 {payInstrToken}
 {billingID}
+{payload}
 {regenPayInstrToken}
 {keepOnRegenPayInstrToken}
 {payInstrTokenExpire}
 {payInstrTokenUsageLimit}
 {payInstrTokenAlg}
+{cvv2}
+{expireMonth}
+{expireYear}
 {accountName}
+{addInfo1}
+{addInfo2}
+{addInfo3}
+{addInfo4}
+{addInfo5}
+{enrStatus}
+{authStatus}
+{cavv}
+{xid}
 {level3Info}
-{mandateInfo}
 {description}
 {paymentReason}
 {topUpID}
 {firstTopUp}
 {payInstrTokenAsTopUpID}
+{promoCode}
+{payPassData}
+{userAgent}
+{fingerPrint}
 {validityExpire}
-{minExpireMonth}
-{minExpireYear}
-{termInfo}
 </request>
-</ser:Init>
+</ser:Auth>
 </soapenv:Body>
 </soapenv:Envelope>
 XML;

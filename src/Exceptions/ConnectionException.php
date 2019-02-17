@@ -3,13 +3,13 @@
 namespace PagOnline\Exceptions;
 
 /**
- * Class ConnectionException
- * @package PagOnline\Exceptions
+ * Class ConnectionException.
  */
 class ConnectionException extends IOException
 {
     /**
      * ConnectionException constructor.
+     *
      * @param $url
      * @param $message
      */

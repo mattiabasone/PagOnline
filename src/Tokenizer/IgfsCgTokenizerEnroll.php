@@ -1,9 +1,17 @@
 <?php
 
-require_once 'IGFS_CG_API/tokenizer/BaseIgfsCgTokenizer.php';
+namespace PagOnline\Tokenizer;
 
+/**
+ * Class IgfsCgTokenizerEnroll.
+ */
 class IgfsCgTokenizerEnroll extends BaseIgfsCgTokenizer
 {
+    /**
+     * @var string
+     */
+    protected $requestNamespace = Requests\IgfsCgTokenizerEnrollRequest::class;
+
     public $shopUserRef;
     public $pan;
     public $expireMonth;
