@@ -164,6 +164,9 @@ class IgfsCgSelector extends BaseIgfsCgInit
         return $this->replaceRequest($request, '{signature}', $signature);
     }
 
+    /**
+     * @param $response
+     */
     protected function parseResponseMap($response)
     {
         parent::parseResponseMap($response);
@@ -189,7 +192,7 @@ class IgfsCgSelector extends BaseIgfsCgInit
                 $termInfo = [];
                 foreach ($dom->response->children() as $item) {
                     if ('termInfo' == $item->getName()) {
-                        $termInfo[] = SelectorTerminalInfo::fromXml($item->asXML(), 'termInfo');
+                        array_push($termInfo, SelectorTerminalInfo::fromXml($item->asXML(), 'termInfo'));
                     }
                 }
                 $this->termInfo = $termInfo;
@@ -205,10 +208,9 @@ class IgfsCgSelector extends BaseIgfsCgInit
             IgfsUtils::getValue($response, 'tid'), // TID
             IgfsUtils::getValue($response, 'shopID'), // SHOPID
             IgfsUtils::getValue($response, 'rc'), // RC
-            IgfsUtils::getValue($response, 'errorDesc'),
-        ]; // ERRORDESC
+            IgfsUtils::getValue($response, 'errorDesc'), // ERRORDESC
+        ];
         // signature dove il buffer e' cosi composto TID|SHOPID|RC|ERRORDESC|PAYMENTID|REDIRECTURL
-        return $this->getSignature($this->kSig, // KSIGN
-            $fields);
+        return $this->getSignature($this->kSig, $fields);
     }
 }

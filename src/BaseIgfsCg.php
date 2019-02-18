@@ -117,7 +117,7 @@ abstract class BaseIgfsCg
      */
     protected function checkFields()
     {
-        if (null == $this->serverURL || '' == $this->serverURL) {
+        if (is_null($this->serverURL) || $this->serverURL == '') {
             if (null == $this->serverURLs || 0 == \count($this->serverURLs)) {
                 throw new IgfsMissingParException('Missing serverURL');
             }
@@ -213,11 +213,11 @@ abstract class BaseIgfsCg
         }
 
         $root = self::$RESPONSE;
-        if (0 == \count($dom->$root)) {
+        if (0 == \count($dom->{$root})) {
             return;
         }
 
-        $fields = IgfsUtils::parseResponseFields($dom->$root);
+        $fields = IgfsUtils::parseResponseFields($dom->{$root});
         if (isset($fields)) {
             $fields[self::$RESPONSE] = $response;
         }
@@ -289,7 +289,7 @@ abstract class BaseIgfsCg
 
     /**
      * Execute a POST request
-     * TODO: Guzzle.
+     * TODO: Guzzle?
      *
      * @param $url
      * @param $request
@@ -341,16 +341,13 @@ abstract class BaseIgfsCg
     /**
      * TODO: Refactor this.
      *
-     * @throws ConnectionException
-     * @throws IgfsException
-     * @throws IgfsMissingParException
-     *
      * @return bool
      */
     public function execute()
     {
         try {
             $this->checkFields();
+            $mapResponse = [];
 
             if (null != $this->serverURL) {
                 $mapResponse = $this->executeHttp($this->serverURL);
@@ -392,19 +389,19 @@ abstract class BaseIgfsCg
             $this->error = true;
             $this->errorDesc = $e->getMessage();
             if ($e instanceof IgfsMissingParException) {
-                $this->rc = 'IGFS_20000'; // dati mancanti
+                $this->rc = Errors::IGFS_20000; // dati mancanti
                 $this->errorDesc = $e->getMessage();
             }
             if ($e instanceof ConnectionException) {
-                $this->rc = 'IGFS_007'; // errore di comunicazione
+                $this->rc = Errors::IGFS_007; // errore di comunicazione
                 $this->errorDesc = $e->getMessage();
             }
             if ($e instanceof ReadWriteException) {
-                $this->rc = 'IGFS_007'; // errore di comunicazione
+                $this->rc = Errors::IGFS_007; // errore di comunicazione
                 $this->errorDesc = $e->getMessage();
             }
             if (null == $this->rc) {
-                $this->rc = 'IGFS_909'; // se nessuno ha settato l'errore...
+                $this->rc = Errors::IGFS_909; // se nessuno ha settato l'errore...
             }
 
             return false;

@@ -84,13 +84,13 @@ class IgfsCgPayByMailInit extends BaseIgfsCgPayByMail
             if (null != $this->level3Info->product) {
                 foreach ($this->level3Info->product as $product) {
                     if (null == $product->productCode) {
-                        throw new IgfsMissingParException('Missing productCode['.i.']');
+                        throw new IgfsMissingParException("Missing productCode[{$i}]");
                     }
                     if (null == $product->productDescription) {
-                        throw new IgfsMissingParException('Missing productDescription['.i.']');
+                        throw new IgfsMissingParException("Missing productDescription[{$i}]");
                     }
+                    ++$i;
                 }
-                ++$i;
             }
         }
     }
