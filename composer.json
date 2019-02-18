@@ -8,7 +8,6 @@
             "email": "mattia.basone@gmail.com"
         }
     ],
-    "minimum-stability": "dev",
     "require": {
         "php": ">=7.1",
         "ext-curl": "*",
