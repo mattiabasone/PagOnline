@@ -6,6 +6,7 @@ use PagOnline\Entry;
 use SimpleXMLElement;
 use PagOnline\IgfsUtils;
 use PagOnline\BaseIgfsCg;
+use PagOnline\Level3Info;
 use PagOnline\Exceptions\IgfsMissingParException;
 
 /**
@@ -202,7 +203,7 @@ class IgfsCgVerify extends BaseIgfsCgInit
                 }
                 $this->payAddData = $payAddData;
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->payAddData = null;
         }
     }

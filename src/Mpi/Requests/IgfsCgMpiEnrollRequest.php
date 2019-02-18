@@ -2,6 +2,11 @@
 
 namespace PagOnline\Mpi\Requests;
 
+use PagOnline\BaseIgfsCgRequest;
+
+/**
+ * Class IgfsCgMpiEnrollRequest.
+ */
 final class IgfsCgMpiEnrollRequest extends BaseIgfsCgRequest
 {
     const CONTENT = <<<XML

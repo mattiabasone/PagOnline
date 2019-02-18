@@ -11,11 +11,6 @@ use PagOnline\Exceptions\IgfsMissingParException;
  */
 abstract class BaseIgfsCgMpi extends BaseIgfsCg
 {
-    /**
-     * @var string
-     */
-    protected $requestNamespace = Requests\IgfsCgMpiEnrollRequest::class;
-
     public $shopID; // chiave messaggio
 
     public $xid;
@@ -38,9 +33,8 @@ abstract class BaseIgfsCgMpi extends BaseIgfsCg
     protected function buildRequest()
     {
         $request = parent::buildRequest();
-        $request = $this->replaceRequest($request, '{shopID}', $this->shopID);
 
-        return $request;
+        return $this->replaceRequest($request, '{shopID}', $this->shopID);
     }
 
     protected function getServicePort()

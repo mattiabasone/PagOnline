@@ -1,4 +1,7 @@
 .idea/*
+demo/*
 vendor/*
 composer.lock
 .php_cs.cache
+/tests/demo/paymentID.txt
+/tests/demo/shopID.txt

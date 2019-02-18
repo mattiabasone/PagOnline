@@ -3,6 +3,7 @@
 namespace PagOnline;
 
 use SimpleXMLElement;
+use PagOnline\Exceptions\IOException;
 use PagOnline\Exceptions\IgfsException;
 use PagOnline\Exceptions\ReadWriteException;
 use PagOnline\Exceptions\ConnectionException;
@@ -61,6 +62,11 @@ abstract class BaseIgfsCg
     protected $checkCert = true;
 
     public $installPath = null;
+
+    /**
+     * @var
+     */
+    public $request;
 
     /**
      * BaseIgfsCg constructor.
@@ -231,6 +237,11 @@ abstract class BaseIgfsCg
         $this->errorDesc = IgfsUtils::getValue($response, 'errorDesc');
     }
 
+    /**
+     * @param $response
+     *
+     * @return bool
+     */
     protected function checkResponseSignature($response)
     {
         if (null == IgfsUtils::getValue($response, 'signature')) {
@@ -244,6 +255,14 @@ abstract class BaseIgfsCg
         return true;
     }
 
+    /**
+     * @param $url
+     *
+     * @throws \PagOnline\Exceptions\IOException
+     * @throws \PagOnline\Exceptions\IgfsException
+     *
+     * @return array|void
+     */
     protected function process($url)
     {
         // Creiamo la richiesta
@@ -302,9 +321,6 @@ abstract class BaseIgfsCg
         if (null != $this->httpAuthUser && null != $this->httpAuthPass) {
             \curl_setopt($ch, CURLOPT_USERPWD, $this->httpAuthUser.':'.$this->httpAuthPass);
         }
-
-        // PHP <5.5.0
-        \defined('CURLE_OPERATION_TIMEDOUT') || \define('CURLE_OPERATION_TIMEDOUT', CURLE_OPERATION_TIMEOUTED);
 
         //execute post
         $result = \curl_exec($ch);
@@ -401,20 +417,17 @@ abstract class BaseIgfsCg
      * @param $url
      *
      * @throws IgfsException
+     * @throws IOException
      *
      * @return array|void
      */
     private function executeHttp($url)
     {
-        $requestMethod = 'POST';
-        // cTimeout;
-        // timeout;
         $url = $this->getServerUrl($url);
-        $contentType = $this->getContentType();
-
         try {
             $mapResponse = $this->process($url);
         } catch (IOException $e) {
+            // TODO: uhm...nice
             throw $e;
         }
         if (null == $mapResponse) {

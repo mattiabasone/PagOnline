@@ -2,8 +2,10 @@
 
 namespace PagOnline\Tran;
 
+use PagOnline\Entry;
 use SimpleXMLElement;
 use PagOnline\IgfsUtils;
+use PagOnline\BaseIgfsCg;
 use PagOnline\Exceptions\IgfsMissingParException;
 
 /**
@@ -505,7 +507,8 @@ class IgfsCgAuth extends BaseIgfsCgTran
             IgfsUtils::getValue($response, 'tranID'), // ORDERID
             IgfsUtils::getValue($response, 'date'), // TRANDATE
             IgfsUtils::getValue($response, 'paymentID'), // PAYMENTID
-            IgfsUtils::getValue($response, 'authCode'), ]; // AUTHCODE
+            IgfsUtils::getValue($response, 'authCode'), // AUTHCODE
+            ];
         // signature dove il buffer e' cosi composto TID|SHOPID|RC|ERRORCODE|ORDERID|PAYMENTID|AUTHCODE
         return $this->getSignature($this->kSig, // KSIGN
             $fields);

@@ -3,6 +3,7 @@
 namespace PagOnline\Tokenizer;
 
 use PagOnline\IgfsUtils;
+use PagOnline\Exceptions\IgfsMissingParException;
 
 /**
  * Class IgfsCgTokenizerDelete.
