@@ -7,6 +7,6 @@ return [
     'terminal_id' => env('PAGONLINE_TERMINAL_ID', null),
     // kSig
     'signature_key' => env('PAGONLINE_SIGNATURE_KEY', null),
-    'currency' => env('PAGONLINE_CURRENCY', 'EUR'),
-    'language' => env('PAGONLINE_LANGUAGE', 'IT'),
+    'currency_code' => env('PAGONLINE_CURRENCY_CODE', 'EUR'),
+    'language_id' => env('PAGONLINE_LANGUAGE_ID', 'IT'),
 ];

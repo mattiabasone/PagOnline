@@ -32,6 +32,8 @@ class IgfsCgFactory
             $igfsCgClass->timeout = config('pagonline.timeout');
             $igfsCgClass->tid = config('config.terminal_id');
             $igfsCgClass->kSig = config('config.signature_key');
+            $igfsCgClass->currencyCode = config('config.currency_code');
+            $igfsCgClass->langID = config('config.language_id');
 
             return $igfsCgClass;
         } else {

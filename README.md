@@ -35,3 +35,20 @@ if (!$init->execute()) {
     header("location: ".$init->redirectURL);
 }
 ```
+
+### Laravel Package
+
+Use `vendor:publish` command to copy `pagonline.php` config file
+
+`php artisan vendor:publish --provider="PagOnline\Laravel\PagOnlineServiceProvider"`
+
+Set the following environment variables in your `.env` file:
+- `PAGONLINE_SERVER_URL` payment gateway server url (_default: null_)
+- `PAGONLINE_TIMEOUT` maximum timeout in milliseconds for completing a request (_default: 15000_)
+- `PAGONLINE_TERMINAL_ID` identifier provided by the payment gateway (_default: null_)
+- `PAGONLINE_SIGNATURE_KEY` signature key provided by the payment gateway (_default: null_)
+- `PAGONLINE_CURRENCY_CODE` currency code (_default: EUR_)
+- `PAGONLINE_LANGUAGE_ID` language code (_default: IT_)
+
+### TODO
+- [ ] Unit Tests

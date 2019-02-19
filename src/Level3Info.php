@@ -41,6 +41,13 @@ class Level3Info
     public $note;
     public $product;
 
+    /**
+     * TODO: Refactor.
+     *
+     * @param $tname
+     *
+     * @return string
+     */
     public function toXml($tname)
     {
         $sb = '';
