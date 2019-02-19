@@ -3,8 +3,7 @@
 namespace PagOnline;
 
 /**
- * Class Errors
- * @package PagOnline
+ * Class Errors.
  */
 final class Errors
 {
@@ -161,7 +160,7 @@ final class Errors
     const IGFS_990 = 'IGFS_990';
 
     /**
-     * Array with all messages
+     * Array with all messages.
      *
      * @var array
      */
@@ -315,14 +314,15 @@ final class Errors
     ];
 
     /**
-     * Get message
+     * Get message.
      *
      * @param $errorCode
+     *
      * @return string|null
      */
     public static function getMessage($errorCode): ?string
     {
-        if (array_key_exists($errorCode, self::MESSAGES)) {
+        if (\array_key_exists($errorCode, self::MESSAGES)) {
             return self::MESSAGES[$errorCode];
         } else {
             return null;

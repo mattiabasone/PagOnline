@@ -192,7 +192,7 @@ class IgfsCgSelector extends BaseIgfsCgInit
                 $termInfo = [];
                 foreach ($dom->response->children() as $item) {
                     if ('termInfo' == $item->getName()) {
-                        array_push($termInfo, SelectorTerminalInfo::fromXml($item->asXML(), 'termInfo'));
+                        \array_push($termInfo, SelectorTerminalInfo::fromXml($item->asXML(), 'termInfo'));
                     }
                 }
                 $this->termInfo = $termInfo;

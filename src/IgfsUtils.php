@@ -26,10 +26,11 @@ class IgfsUtils
     }
 
     /**
-     * Get value from array map
+     * Get value from array map.
      *
      * @param $map
      * @param $key
+     *
      * @return string|null
      */
     public static function getValue($map, $key)

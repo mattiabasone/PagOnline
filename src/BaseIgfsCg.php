@@ -12,7 +12,7 @@ use PagOnline\Exceptions\IgfsMissingParException;
 /**
  * Class BaseIgfsCg.
  */
-abstract class BaseIgfsCg
+abstract class BaseIgfsCg implements IgfsCgInterface
 {
     /**
      * Package version.
@@ -93,19 +93,17 @@ abstract class BaseIgfsCg
     abstract protected function getServicePort();
 
     /**
-     * It returns the package version.
-     *
-     * @return string
+     * {@inheritdoc}
      */
-    public static function getVersion()
+    public static function getVersion(): string
     {
         return self::VERSION;
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
-    public function getRequest()
+    public function getRequest(): string
     {
         return (string) new $this->requestNamespace();
     }
@@ -117,7 +115,7 @@ abstract class BaseIgfsCg
      */
     protected function checkFields()
     {
-        if (is_null($this->serverURL) || $this->serverURL == '') {
+        if (null === $this->serverURL || '' == $this->serverURL) {
             if (null == $this->serverURLs || 0 == \count($this->serverURLs)) {
                 throw new IgfsMissingParException('Missing serverURL');
             }
@@ -343,7 +341,7 @@ abstract class BaseIgfsCg
      *
      * @return bool
      */
-    public function execute()
+    public function execute(): bool
     {
         try {
             $this->checkFields();
