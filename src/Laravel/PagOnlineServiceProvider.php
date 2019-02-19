@@ -17,14 +17,14 @@ class PagOnlineServiceProvider extends ServiceProvider
     public function registerPublishing()
     {
         $this->publishes([
-            __DIR__.'/../config/pagonline.php' => config_path('pagonline.php'),
+            __DIR__.'/../../config/pagonline.php' => config_path('pagonline.php'),
         ], 'pagonline-config');
     }
 
     public function register()
     {
         $this->mergeConfigFrom(
-            __DIR__.'/../config/pagonline.php', 'pagonline'
+            __DIR__.'/../../config/pagonline.php', 'pagonline'
         );
         $this->registerFactory();
     }
