@@ -30,10 +30,10 @@ class IgfsCgFactory
             $igfsCgClass = new $namespace();
             $igfsCgClass->serverURL = config('pagonline.server_url');
             $igfsCgClass->timeout = config('pagonline.timeout');
-            $igfsCgClass->tid = config('config.terminal_id');
-            $igfsCgClass->kSig = config('config.signature_key');
-            $igfsCgClass->currencyCode = config('config.currency_code');
-            $igfsCgClass->langID = config('config.language_id');
+            $igfsCgClass->tid = config('pagonline.terminal_id');
+            $igfsCgClass->kSig = config('pagonline.signature_key');
+            $igfsCgClass->currencyCode = config('pagonline.currency_code');
+            $igfsCgClass->langID = config('pagonline.language_id');
 
             return $igfsCgClass;
         } else {
