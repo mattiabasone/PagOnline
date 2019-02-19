@@ -2,6 +2,10 @@
 
 This library can be used with PagOnline Payment Gateway
 
+<p style="text-align: center;">
+[![Build Status](https://travis-ci.org/mattiabasone/PagOnline.svg?branch=master)](https://travis-ci.org/mattiabasone/PagOnline)
+</p>
+
 **Work in Progress - DO NOT USE IN PRODUCTION**
 
 ### Usage
