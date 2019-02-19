@@ -3,6 +3,7 @@
 This library can be used with PagOnline Payment Gateway
 
 [![Build Status](https://travis-ci.org/mattiabasone/PagOnline.svg?branch=master)](https://travis-ci.org/mattiabasone/PagOnline)
+[![Coverage Status](https://coveralls.io/repos/github/mattiabasone/PagOnline/badge.svg)](https://coveralls.io/github/mattiabasone/PagOnline)
 
 **Work in Progress - DO NOT USE IN PRODUCTION**
 
