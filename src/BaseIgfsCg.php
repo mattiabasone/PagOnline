@@ -115,18 +115,16 @@ abstract class BaseIgfsCg implements IgfsCgInterface
      */
     protected function checkFields()
     {
-        if (null === $this->serverURL || '' == $this->serverURL) {
-            if (null == $this->serverURLs || 0 == \count($this->serverURLs)) {
-                throw new IgfsMissingParException('Missing serverURL');
-            }
+        if (empty($this->serverURL) && (empty($this->serverURLs) || !\is_array($this->serverURLs))) {
+            throw new IgfsMissingParException('Missing serverURL');
         }
+
         if (null == $this->kSig || '' == $this->kSig) {
             throw new IgfsMissingParException('Missing kSig');
         }
-        if (null == $this->tid || '' == $this->tid) {
-            if ((null == $this->merID || '' == $this->merID) && (null == $this->payInstr || '' == $this->payInstr)) {
-                throw new IgfsMissingParException('Missing tid');
-            }
+
+        if (empty($this->tid) && (empty($this->merID) && empty($this->payInstr))) {
+            throw new IgfsMissingParException('Missing tid');
         }
     }
 
@@ -141,17 +139,17 @@ abstract class BaseIgfsCg implements IgfsCgInterface
     /**
      * Get configured server url.
      *
-     * @param $surl
+     * @param string $serverUrl
      *
      * @return string
      */
-    protected function getServerUrl($surl)
+    protected function getServerUrl($serverUrl)
     {
-        if (!IgfsUtils::endsWith($surl, '/')) {
-            $surl .= '/';
+        if (!IgfsUtils::endsWith($serverUrl, '/')) {
+            $serverUrl .= '/';
         }
 
-        return $surl.$this->getServicePort();
+        return $serverUrl.$this->getServicePort();
     }
 
     protected function replaceRequest($request, $find, $value)
@@ -259,38 +257,32 @@ abstract class BaseIgfsCg implements IgfsCgInterface
      * @throws \PagOnline\Exceptions\IOException
      * @throws \PagOnline\Exceptions\IgfsException
      *
-     * @return array|void
+     * @return array
      */
     protected function process($url)
     {
-        // Creiamo la richiesta
         $request = $this->buildRequest();
-        if (null == $request) {
+        if (null === $request) {
             throw new IgfsException('IGFS Request is null');
         }
-        // Impostiamo la signature
         $request = $this->setRequestSignature($request);
-        // Inviamo la richiesta e leggiamo la risposta
-        try {
-            // System.out.println(request);
-            $response = $this->post($url, $request);
-            // System.out.println(response);
-        } catch (IOException $e) {
-            throw $e;
-        }
-        if (null == $response) {
+        $response = $this->post($url, $request);
+
+        if (null === $response) {
             throw new IgfsException('IGFS Response is null');
         }
-        // Parsifichiamo l'XML
+
         return $this->parseResponse($response);
     }
 
     /**
-     * Execute a POST request
-     * TODO: Guzzle?
+     * Execute a POST request.
      *
      * @param $url
      * @param $request
+     *
+     * @throws ConnectionException
+     * @throws ReadWriteException
      *
      * @return bool|string
      */
@@ -347,7 +339,7 @@ abstract class BaseIgfsCg implements IgfsCgInterface
             $this->checkFields();
             $mapResponse = [];
 
-            if (null != $this->serverURL) {
+            if (null !== $this->serverURL) {
                 $mapResponse = $this->executeHttp($this->serverURL);
             } else {
                 $i = 0;
@@ -387,19 +379,19 @@ abstract class BaseIgfsCg implements IgfsCgInterface
             $this->error = true;
             $this->errorDesc = $e->getMessage();
             if ($e instanceof IgfsMissingParException) {
-                $this->rc = Errors::IGFS_20000; // dati mancanti
+                $this->rc = Errors::IGFS_20000; // Missing data
                 $this->errorDesc = $e->getMessage();
             }
             if ($e instanceof ConnectionException) {
-                $this->rc = Errors::IGFS_007; // errore di comunicazione
+                $this->rc = Errors::IGFS_007; // Communication error
                 $this->errorDesc = $e->getMessage();
             }
             if ($e instanceof ReadWriteException) {
-                $this->rc = Errors::IGFS_007; // errore di comunicazione
+                $this->rc = Errors::IGFS_007; // Communication error
                 $this->errorDesc = $e->getMessage();
             }
-            if (null == $this->rc) {
-                $this->rc = Errors::IGFS_909; // se nessuno ha settato l'errore...
+            if (null === $this->rc) {
+                $this->rc = Errors::IGFS_909; // System error
             }
 
             return false;
@@ -414,7 +406,7 @@ abstract class BaseIgfsCg implements IgfsCgInterface
      * @throws IgfsException
      * @throws IOException
      *
-     * @return array|void
+     * @return array
      */
     private function executeHttp($url)
     {
@@ -425,21 +417,11 @@ abstract class BaseIgfsCg implements IgfsCgInterface
             // TODO: uhm...nice
             throw $e;
         }
-        if (null == $mapResponse) {
+        if (empty($mapResponse)) {
             throw new IgfsException('Invalid IGFS Response');
         }
 
         return $mapResponse;
-    }
-
-    /**
-     * TODO: Lol?
-     *
-     * @return string
-     */
-    protected function getContentType()
-    {
-        return 'text/xml; charset="utf-8"';
     }
 
     /**

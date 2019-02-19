@@ -20,7 +20,8 @@
         "friendsofphp/php-cs-fixer": "^2.14",
         "phpunit/phpunit": "^7.0",
         "phpstan/phpstan": "^0.11.0@dev",
-        "illuminate/config": "^5.1,<5.8"
+        "illuminate/config": "^5.1,<5.8",
+        "php-coveralls/php-coveralls": "^2.1"
     },
     "autoload": {
         "psr-4": {

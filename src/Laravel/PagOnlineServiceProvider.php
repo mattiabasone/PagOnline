@@ -2,6 +2,7 @@
 
 namespace PagOnline\Laravel;
 
+use PagOnline\IgfsCgFactory;
 use Illuminate\Support\ServiceProvider;
 
 /**
@@ -14,6 +15,9 @@ class PagOnlineServiceProvider extends ServiceProvider
         $this->registerPublishing();
     }
 
+    /**
+     * Register resources that can be published.
+     */
     public function registerPublishing()
     {
         $this->publishes([
@@ -29,6 +33,9 @@ class PagOnlineServiceProvider extends ServiceProvider
         $this->registerFactory();
     }
 
+    /**
+     * Register Factory Facade.
+     */
     public function registerFactory()
     {
         $this->app->singleton('igfscg', function () {

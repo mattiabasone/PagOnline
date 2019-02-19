@@ -9,7 +9,20 @@ use DateTime;
  */
 class IgfsUtils
 {
+    const DATE_FORMATS = [
+        'j-M-Y H:i:s.000P',
+        'j-M-Y H:i:s.00P',
+        'j-M-Y H:i:s.0P',
+        'j-M-Y H:i:sP',
+        'j-M-Y H:i:s.000',
+        'j-M-Y H:i:s.00',
+        'j-M-Y H:i:s.0',
+        'j-M-Y H:i:s',
+    ];
+
     /**
+     * Creates signature for requests.
+     *
      * @param $ksig
      * @param $fields
      *
@@ -39,6 +52,8 @@ class IgfsUtils
     }
 
     /**
+     * TODO: migrateto UUID?
+     *
      * @return string
      */
     public static function getUniqueBoundaryValue()
@@ -46,6 +61,11 @@ class IgfsUtils
         return \uniqid();
     }
 
+    /**
+     * @param $nodes
+     *
+     * @return array
+     */
     public static function parseResponseFields($nodes)
     {
         $fields = [];
@@ -122,32 +142,18 @@ class IgfsUtils
      *
      * @return \DateTime|null
      */
-    public static function parseXMLGregorianCalendar($text)
+    public static function parseXMLGregorianCalendar(?string $text)
     {
-        if (null == $text) {
+        if (empty($text)) {
             return null;
         }
-        $date = self::parseXMLGregorianCalendarTZ($text, 'j-M-Y H:i:s.000P');
-        if (null == $date) {
-            $date = self::parseXMLGregorianCalendarTZ($text, 'j-M-Y H:i:s.00P');
-        }
-        if (null == $date) {
-            $date = self::parseXMLGregorianCalendarTZ($text, 'j-M-Y H:i:s.0P');
-        }
-        if (null == $date) {
-            $date = self::parseXMLGregorianCalendarTZ($text, 'j-M-Y H:i:sP');
-        }
-        if (null == $date) {
-            $date = self::parseXMLGregorianCalendarDT($text, 'j-M-Y H:i:s.000');
-        }
-        if (null == $date) {
-            $date = self::parseXMLGregorianCalendarDT($text, 'j-M-Y H:i:s.00');
-        }
-        if (null == $date) {
-            $date = self::parseXMLGregorianCalendarDT($text, 'j-M-Y H:i:s.0');
-        }
-        if (null == $date) {
-            $date = self::parseXMLGregorianCalendarDT($text, 'j-M-Y H:i:s');
+
+        $date = null;
+        foreach (self::DATE_FORMATS as $dateFormat) {
+            $date = self::parseDateFormat($text, $dateFormat);
+            if (null !== $date) {
+                break;
+            }
         }
 
         return $date;
@@ -159,31 +165,13 @@ class IgfsUtils
      *
      * @return bool|\DateTime|null
      */
-    private static function parseXMLGregorianCalendarTZ($text, $format)
+    private static function parseDateFormat($text, $format): ?DateTime
     {
-        $count = 1;
         try {
-            $tmp = \str_replace('T', ' ', $text, $count);
+            $text = \str_replace('T', ' ', $text);
+            $date = DateTime::createFromFormat($format, $text);
 
-            return DateTime::createFromFormat($format, $tmp);
-        } catch (\Exception $e) {
-            return null;
-        }
-    }
-
-    /**
-     * @param $text
-     * @param $format
-     *
-     * @return bool|DateTime|null
-     */
-    private static function parseXMLGregorianCalendarDT($text, $format)
-    {
-        $count = 1;
-        try {
-            $tmp = \str_replace('T', ' ', $text, $count);
-
-            return DateTime::createFromFormat($format, $tmp);
+            return $date ? $date : null;
         } catch (\Exception $e) {
             return null;
         }

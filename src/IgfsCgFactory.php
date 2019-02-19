@@ -1,8 +1,7 @@
 <?php
 
-namespace PagOnline\Laravel;
+namespace PagOnline;
 
-use PagOnline\IgfsCgInterface;
 use PagOnline\Exceptions\ClassNotFoundException;
 
 /**

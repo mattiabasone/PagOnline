@@ -38,7 +38,8 @@ if (!$init->execute()) {
 
 ### Laravel Package
 
-Use `vendor:publish` command to copy `pagonline.php` config file
+Using Laravel auto-discovery feature you don't need to do that, anyway you can use artisan command `vendor:publish`  
+to copy `pagonline.php` config file
 
 `php artisan vendor:publish --provider="PagOnline\Laravel\PagOnlineServiceProvider"`
 
