@@ -21,24 +21,6 @@ class IgfsUtils
     ];
 
     /**
-     * Creates signature for requests.
-     *
-     * @param string $signatureKey
-     * @param array  $fields
-     *
-     * @return string
-     */
-    public static function getSignature($signatureKey, $fields): string
-    {
-        $data = '';
-        foreach ($fields as $value) {
-            $data .= $value;
-        }
-
-        return \base64_encode(\hash_hmac('sha256', $data, $signatureKey, true));
-    }
-
-    /**
      * Get value from array map.
      *
      * @param $map
@@ -113,6 +95,8 @@ class IgfsUtils
     }
 
     /**
+     * Format timestamp to XML Gregorian Calendar (?).
+     *
      * @param int $timestamp
      *
      * @return string|null
@@ -120,18 +104,12 @@ class IgfsUtils
     public static function formatXMLGregorianCalendar($timestamp)
     {
         try {
-            $format1 = \date('Y-m-d', $timestamp);
-            // FIX MILLISECOND
-            // CXF FORMATTA I MS senza 0 in coda
-            $format2 = \date('H:i:s', $timestamp);
-            $format3 = \date('P', $timestamp);
-            $sb = '';
-            $sb .= $format1;
-            $sb .= 'T';
-            $sb .= $format2;
-            $sb .= $format3;
+            $dateTimeObject = (new \DateTimeImmutable())->setTimestamp($timestamp);
 
-            return $sb;
+            return $dateTimeObject->format('Y-m-d').
+                'T'.
+                $dateTimeObject->format('H:i:s').
+                $dateTimeObject->format('P');
         } catch (\Exception $e) {
             return null;
         }

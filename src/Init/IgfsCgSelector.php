@@ -51,6 +51,29 @@ class IgfsCgSelector extends BaseIgfsCgInit
         $this->termInfo = null;
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    protected function getAdditionalRequestSignatureFields(): array
+    {
+        return [
+            $this->shopUserRef, // SHOPUSERREF
+            $this->trType, // TRTYPE
+            $this->amount, // AMOUNT
+            $this->currencyCode, // CURRENCYCODE
+            $this->langID, // LANGID
+            $this->addInfo1, // UDF1
+            $this->addInfo2, // UDF2
+            $this->addInfo3, // UDF3
+            $this->addInfo4, // UDF4
+            $this->addInfo5, // UDF5
+            $this->payInstrToken,
+        ];
+    }
+
+    /**
+     * @throws IgfsMissingParException
+     */
     protected function checkFields()
     {
         parent::checkFields();
@@ -68,11 +91,9 @@ class IgfsCgSelector extends BaseIgfsCgInit
         if (null == $this->langID) {
             throw new IgfsMissingParException('Missing langID');
         }
-        if (null != $this->payInstrToken) {
-            // Se è stato impostato il payInstrToken verifico...
-            if ('' == $this->payInstrToken) {
-                throw new IgfsMissingParException('Missing payInstrToken');
-            }
+
+        if (empty($this->payInstrToken)) {
+            throw new IgfsMissingParException('Missing payInstrToken');
         }
     }
 
@@ -138,32 +159,6 @@ class IgfsCgSelector extends BaseIgfsCgInit
         return $request;
     }
 
-    protected function setRequestSignature($request)
-    {
-        // signature dove il buffer e' cosi composto APIVERSION|TID|SHOPID|SHOPUSERREF|TRTYPE|AMOUNT|CURRENCYCODE|LANGID|UDF1|UDF2|UDF3|UDF4|UDF5|PAYINSTRTOKEN
-        $fields = [
-            $this->getVersion(), // APIVERSION
-            $this->tid, // TID
-            $this->merID, // MERID
-            $this->payInstr, // PAYINSTR
-            $this->shopID, // SHOPID
-            $this->shopUserRef, // SHOPUSERREF
-            $this->trType, // TRTYPE
-            $this->amount, // AMOUNT
-            $this->currencyCode, // CURRENCYCODE
-            $this->langID, // LANGID
-            $this->addInfo1, // UDF1
-            $this->addInfo2, // UDF2
-            $this->addInfo3, // UDF3
-            $this->addInfo4, // UDF4
-            $this->addInfo5, // UDF5
-            $this->payInstrToken, ]; // PAYINSTRTOKEN
-        $signature = $this->getSignature($this->kSig, // KSIGN
-            $fields);
-
-        return $this->replaceRequest($request, '{signature}', $signature);
-    }
-
     /**
      * @param $response
      */
@@ -202,6 +197,13 @@ class IgfsCgSelector extends BaseIgfsCgInit
         }
     }
 
+    /**
+     * @param $response
+     *
+     * @throws \PagOnline\Exceptions\IgfsException
+     *
+     * @return string
+     */
     protected function getResponseSignature($response)
     {
         $fields = [
@@ -211,6 +213,6 @@ class IgfsCgSelector extends BaseIgfsCgInit
             IgfsUtils::getValue($response, 'errorDesc'), // ERRORDESC
         ];
         // signature dove il buffer e' cosi composto TID|SHOPID|RC|ERRORDESC|PAYMENTID|REDIRECTURL
-        return $this->getSignature($this->kSig, $fields);
+        return $this->getSignature($fields);
     }
 }

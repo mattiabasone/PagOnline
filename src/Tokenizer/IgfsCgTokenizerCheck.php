@@ -23,6 +23,19 @@ class IgfsCgTokenizerCheck extends BaseIgfsCgTokenizer
     public $expireYear;
     public $accountName;
 
+    /**
+     * {@inheritdoc}
+     */
+    protected function getAdditionalRequestSignatureFields(): array
+    {
+        return [
+            $this->payInstrToken,
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function resetFields()
     {
         parent::resetFields();
@@ -35,6 +48,9 @@ class IgfsCgTokenizerCheck extends BaseIgfsCgTokenizer
         $this->accountName = null;
     }
 
+    /**
+     * @throws IgfsMissingParException
+     */
     protected function checkFields()
     {
         parent::checkFields();
@@ -43,6 +59,9 @@ class IgfsCgTokenizerCheck extends BaseIgfsCgTokenizer
         }
     }
 
+    /**
+     * @return mixed|string
+     */
     protected function buildRequest()
     {
         $request = parent::buildRequest();
@@ -52,23 +71,6 @@ class IgfsCgTokenizerCheck extends BaseIgfsCgTokenizer
         } else {
             $request = $this->replaceRequest($request, '{billingID}', '');
         }
-
-        return $request;
-    }
-
-    protected function setRequestSignature($request)
-    {
-        // signature dove il buffer e' cosi composto APIVERSION|TID|SHOPID|PAYINSTRTOKEN
-        $fields = [
-                $this->getVersion(), // APIVERSION
-                $this->tid, // TID
-                $this->merID, // MERID
-                $this->payInstr, // PAYINSTR
-                $this->shopID, // SHOPID
-                $this->payInstrToken, ]; // PAYINSTRTOKEN
-        $signature = $this->getSignature($this->kSig, // KSIGN
-                $fields);
-        $request = $this->replaceRequest($request, '{signature}', $signature);
 
         return $request;
     }
@@ -86,15 +88,22 @@ class IgfsCgTokenizerCheck extends BaseIgfsCgTokenizer
         $this->accountName = IgfsUtils::getValue($response, 'accountName');
     }
 
+    /**
+     * @param $response
+     *
+     * @throws \PagOnline\Exceptions\IgfsException
+     *
+     * @return string
+     */
     protected function getResponseSignature($response)
     {
         $fields = [
-                IgfsUtils::getValue($response, 'tid'), // TID
-                IgfsUtils::getValue($response, 'shopID'), // SHOPID
-                IgfsUtils::getValue($response, 'rc'), // RC
-                IgfsUtils::getValue($response, 'errorDesc'), ]; // ERRORDESC
+            IgfsUtils::getValue($response, 'tid'), // TID
+            IgfsUtils::getValue($response, 'shopID'), // SHOPID
+            IgfsUtils::getValue($response, 'rc'), // RC
+            IgfsUtils::getValue($response, 'errorDesc'), // ERRORDESC
+        ];
         // signature dove il buffer e' cosi composto TID|SHOPID|RC|ERRORDESC
-        return $this->getSignature($this->kSig, // KSIGN
-                $fields);
+        return $this->getSignature($fields);
     }
 }

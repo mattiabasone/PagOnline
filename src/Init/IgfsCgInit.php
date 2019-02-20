@@ -99,6 +99,37 @@ class IgfsCgInit extends BaseIgfsCgInit
         $this->redirectURL = null;
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    protected function getAdditionalRequestSignatureFields(): array
+    {
+        return [
+            $this->shopUserRef, // SHOPUSERREF
+            $this->shopUserName, // SHOPUSERNAME
+            $this->shopUserAccount, // SHOPUSERACCOUNT
+            $this->shopUserMobilePhone, //SHOPUSERMOBILEPHONE
+            $this->shopUserIMEI, //SHOPUSERIMEI
+            $this->trType, // TRTYPE
+            $this->amount, // AMOUNT
+            $this->currencyCode, // CURRENCYCODE
+            $this->langID, // LANGID
+            $this->notifyURL, // NOTIFYURL
+            $this->errorURL, // ERRORURL
+            $this->callbackURL, // CALLBACKURL
+            $this->addInfo1, // UDF1
+            $this->addInfo2, // UDF2
+            $this->addInfo3, // UDF3
+            $this->addInfo4, // UDF4
+            $this->addInfo5, // UDF5
+            $this->payInstrToken, // PAYINSTRTOKEN
+            $this->topUpID,
+        ];
+    }
+
+    /**
+     * @throws IgfsMissingParException
+     */
     protected function checkFields()
     {
         parent::checkFields();
@@ -126,12 +157,12 @@ class IgfsCgInit extends BaseIgfsCgInit
 
         if (null !== $this->level3Info) {
             $i = 0;
-            if (null != $this->level3Info->product) {
+            if (null !== $this->level3Info->product && \is_array($this->level3Info->product)) {
                 foreach ($this->level3Info->product as $product) {
-                    if (null == $product->productCode) {
+                    if (null === $product->productCode) {
                         throw new IgfsMissingParException("Missing productCode[{$i}]");
                     }
-                    if (null == $product->productDescription) {
+                    if (null === $product->productDescription) {
                         throw new IgfsMissingParException("Missing productDescription[{$i}]");
                     }
                     ++$i;
@@ -333,47 +364,6 @@ class IgfsCgInit extends BaseIgfsCgInit
     }
 
     /**
-     * @param $request
-     *
-     * @throws \PagOnline\Exceptions\IgfsException
-     *
-     * @return mixed
-     */
-    protected function setRequestSignature($request)
-    {
-        // signature dove il buffer e' cosi composto APIVERSION|TID|SHOPID|SHOPUSERREF|SHOPUSERNAME|SHOPUSERACCOUNT|SHOPUSERMOBILEPHONE|SHOPUSERIMEI|TRTYPE|AMOUNT|CURRENCYCODE|LANGID|NOTIFYURL|ERRORURL|CALLBACKURL
-        $fields = [
-            $this->getVersion(), // APIVERSION
-            $this->tid, // TID
-            $this->merID, // MERID
-            $this->payInstr, // PAYINSTR
-            $this->shopID, // SHOPID
-            $this->shopUserRef, // SHOPUSERREF
-            $this->shopUserName, // SHOPUSERNAME
-            $this->shopUserAccount, // SHOPUSERACCOUNT
-            $this->shopUserMobilePhone, //SHOPUSERMOBILEPHONE
-            $this->shopUserIMEI, //SHOPUSERIMEI
-            $this->trType, // TRTYPE
-            $this->amount, // AMOUNT
-            $this->currencyCode, // CURRENCYCODE
-            $this->langID, // LANGID
-            $this->notifyURL, // NOTIFYURL
-            $this->errorURL, // ERRORURL
-            $this->callbackURL, // CALLBACKURL
-            $this->addInfo1, // UDF1
-            $this->addInfo2, // UDF2
-            $this->addInfo3, // UDF3
-            $this->addInfo4, // UDF4
-            $this->addInfo5, // UDF5
-            $this->payInstrToken, // PAYINSTRTOKEN
-            $this->topUpID,
-        ];
-        $signature = $this->getSignature($this->kSig, $fields);
-
-        return $this->replaceRequest($request, '{signature}', $signature);
-    }
-
-    /**
      * @param $response
      */
     protected function parseResponseMap($response)
@@ -400,8 +390,9 @@ class IgfsCgInit extends BaseIgfsCgInit
             IgfsUtils::getValue($response, 'rc'), // RC
             IgfsUtils::getValue($response, 'errorDesc'), // ERRORDESC
             IgfsUtils::getValue($response, 'paymentID'), // PAYMENTID
-            IgfsUtils::getValue($response, 'redirectURL'), ]; // REDIRECTURL
+            IgfsUtils::getValue($response, 'redirectURL'),  // REDIRECTURL
+        ];
         // signature dove il buffer e' cosi composto TID|SHOPID|RC|ERRORDESC|PAYMENTID|REDIRECTURL
-        return $this->getSignature($this->kSig, $fields);
+        return $this->getSignature($fields);
     }
 }

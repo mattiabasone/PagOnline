@@ -11,7 +11,6 @@ use PagOnline\Exceptions\IgfsMissingParException;
  */
 abstract class BaseIgfsCgTran extends BaseIgfsCg
 {
-    public $shopID; // chiave messaggio
     public $addInfo1;
     public $addInfo2;
     public $addInfo3;
@@ -23,13 +22,11 @@ abstract class BaseIgfsCgTran extends BaseIgfsCg
     protected function resetFields()
     {
         parent::resetFields();
-        $this->shopID = null;
         $this->addInfo1 = null;
         $this->addInfo2 = null;
         $this->addInfo3 = null;
         $this->addInfo4 = null;
         $this->addInfo5 = null;
-
         $this->tranID = null;
     }
 
@@ -44,7 +41,6 @@ abstract class BaseIgfsCgTran extends BaseIgfsCg
     protected function buildRequest()
     {
         $request = parent::buildRequest();
-        $request = $this->replaceRequest($request, '{shopID}', $this->shopID);
         if (null != $this->addInfo1) {
             $request = $this->replaceRequest($request, '{addInfo1}', '<addInfo1><![CDATA['.$this->addInfo1.']]></addInfo1>');
         } else {

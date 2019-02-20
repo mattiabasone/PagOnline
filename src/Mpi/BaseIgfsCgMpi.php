@@ -30,13 +30,6 @@ abstract class BaseIgfsCgMpi extends BaseIgfsCg
         }
     }
 
-    protected function buildRequest()
-    {
-        $request = parent::buildRequest();
-
-        return $this->replaceRequest($request, '{shopID}', $this->shopID);
-    }
-
     protected function getServicePort()
     {
         return 'MPIGatewayPort';

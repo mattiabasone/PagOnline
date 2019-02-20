@@ -18,6 +18,16 @@ class IgfsCgTokenizerDelete extends BaseIgfsCgTokenizer
     public $payInstrToken;
     public $billingID;
 
+    /**
+     * {@inheritdoc}
+     */
+    protected function getAdditionalRequestSignatureFields(): array
+    {
+        return [
+            $this->payInstrToken,
+        ];
+    }
+
     protected function resetFields()
     {
         parent::resetFields();
@@ -46,29 +56,13 @@ class IgfsCgTokenizerDelete extends BaseIgfsCgTokenizer
         return $request;
     }
 
-    protected function setRequestSignature($request)
-    {
-        // signature dove il buffer e' cosi composto APIVERSION|TID|SHOPID|PAYINSTRTOKEN
-        $fields = [
-            $this->getVersion(), // APIVERSION
-            $this->tid, // TID
-            $this->merID, // MERID
-            $this->payInstr, // PAYINSTR
-            $this->shopID, // SHOPID
-            $this->payInstrToken,
-        ]; // PAYINSTRTOKEN
-        $signature = $this->getSignature($this->kSig, // KSIGN
-            $fields);
-        $request = $this->replaceRequest($request, '{signature}', $signature);
-
-        return $request;
-    }
-
-    protected function parseResponseMap($response)
-    {
-        parent::parseResponseMap($response);
-    }
-
+    /**
+     * @param $response
+     *
+     * @throws \PagOnline\Exceptions\IgfsException
+     *
+     * @return string
+     */
     protected function getResponseSignature($response)
     {
         $fields = [
@@ -77,7 +71,6 @@ class IgfsCgTokenizerDelete extends BaseIgfsCgTokenizer
             IgfsUtils::getValue($response, 'rc'), // RC
             IgfsUtils::getValue($response, 'errorDesc'), ]; // ERRORDESC
         // signature dove il buffer e' cosi composto TID|SHOPID|RC|ERRORDESC
-        return $this->getSignature($this->kSig, // KSIGN
-            $fields);
+        return $this->getSignature($fields);
     }
 }

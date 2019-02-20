@@ -20,7 +20,7 @@ class Level3InfoProduct extends BaseXmlEntity
      * @param $xml
      * @param $tname
      *
-     * @return Level3InfoProduct|null
+     * @return \PagOnline\XmlEntities\Level3InfoProduct|null
      */
     public static function fromXml($xml, $tname): ?self
     {

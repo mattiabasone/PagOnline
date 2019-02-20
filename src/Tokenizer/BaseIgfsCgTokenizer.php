@@ -5,16 +5,14 @@ namespace PagOnline\Tokenizer;
 use PagOnline\BaseIgfsCg;
 use PagOnline\Exceptions\IgfsMissingParException;
 
+/**
+ * Class BaseIgfsCgTokenizer.
+ */
 abstract class BaseIgfsCgTokenizer extends BaseIgfsCg
 {
-    public $shopID; // chiave messaggio
-
-    protected function resetFields()
-    {
-        parent::resetFields();
-        $this->shopID = null;
-    }
-
+    /**
+     * @throws IgfsMissingParException
+     */
     protected function checkFields()
     {
         parent::checkFields();
@@ -23,14 +21,9 @@ abstract class BaseIgfsCgTokenizer extends BaseIgfsCg
         }
     }
 
-    protected function buildRequest()
-    {
-        $request = parent::buildRequest();
-        $request = $this->replaceRequest($request, '{shopID}', $this->shopID);
-
-        return $request;
-    }
-
+    /**
+     * @return string
+     */
     protected function getServicePort()
     {
         return 'TokenizerGatewayPort';

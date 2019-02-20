@@ -70,9 +70,35 @@ class IgfsCgAuth extends BaseIgfsCgTran
     public $payAddData;
     public $payUserRef;
 
-    public function __construct()
+    /**
+     * {@inheritdoc}
+     */
+    protected function getAdditionalRequestSignatureFields(): array
     {
-        parent::__construct();
+        return [
+            $this->shopUserRef, // SHOPUSERREF
+            $this->shopUserName, // SHOPUSERNAME
+            $this->shopUserAccount, // SHOPUSERACCOUNT
+            $this->shopUserMobilePhone, //SHOPUSERMOBILEPHONE
+            $this->shopUserIMEI, //SHOPUSERIMEI
+            $this->shopUserIP, // SHOPUSERIP
+            $this->trType, // TRTYPE
+            $this->amount, // AMOUNT
+            $this->currencyCode, // CURRENCYCODE
+            $this->callbackURL, // CALLBACKURL
+            $this->pan, // PAN
+            $this->payInstrToken, // PAYINSTRTOKEN
+            $this->payload, // PAYLOAD
+            $this->cvv2, // CVV2
+            $this->expireMonth, // EXPIREMONTH
+            $this->expireYear, // EXPIREYEAR
+            $this->addInfo1, // UDF1
+            $this->addInfo2, // UDF2
+            $this->addInfo3, // UDF3
+            $this->addInfo4, // UDF4
+            $this->addInfo5, // UDF5
+            $this->topUpID,
+        ];
     }
 
     protected function resetFields()
@@ -394,44 +420,6 @@ class IgfsCgAuth extends BaseIgfsCgTran
         return $request;
     }
 
-    protected function setRequestSignature($request)
-    {
-        // signature dove il buffer e' cosi composto APIVERSION|TID|SHOPID|SHOPUSERREF|SHOPUSERNAME|SHOPUSERACCOUNT|SHOPUSERMOBILEPHONE|SHOPUSERIMEI|SHOPUSERIP|TRTYPE|AMOUNT|CURRENCYCODE|CALLBACKURL|PAN|PAYINSTRTOKEN|PAYLOAD|CVV2|EXPIREMONTH|EXPIREYEAR|UDF1|UDF2|UDF3|UDF4|UDF5
-        $fields = [
-            $this->getVersion(), // APIVERSION
-            $this->tid, // TID
-            $this->merID, // MERID
-            $this->payInstr, // PAYINSTR
-            $this->shopID, // SHOPID
-            $this->shopUserRef, // SHOPUSERREF
-            $this->shopUserName, // SHOPUSERNAME
-            $this->shopUserAccount, // SHOPUSERACCOUNT
-            $this->shopUserMobilePhone, //SHOPUSERMOBILEPHONE
-            $this->shopUserIMEI, //SHOPUSERIMEI
-            $this->shopUserIP, // SHOPUSERIP
-            $this->trType, // TRTYPE
-            $this->amount, // AMOUNT
-            $this->currencyCode, // CURRENCYCODE
-            $this->callbackURL, // CALLBACKURL
-            $this->pan, // PAN
-            $this->payInstrToken, // PAYINSTRTOKEN
-            $this->payload, // PAYLOAD
-            $this->cvv2, // CVV2
-            $this->expireMonth, // EXPIREMONTH
-            $this->expireYear, // EXPIREYEAR
-            $this->addInfo1, // UDF1
-            $this->addInfo2, // UDF2
-            $this->addInfo3, // UDF3
-            $this->addInfo4, // UDF4
-            $this->addInfo5, // UDF5
-            $this->topUpID,
-        ];
-        $signature = $this->getSignature($this->kSig, // KSIGN
-            $fields);
-
-        return $this->replaceRequest($request, '{signature}', $signature);
-    }
-
     protected function parseResponseMap($response)
     {
         parent::parseResponseMap($response);
@@ -497,6 +485,13 @@ class IgfsCgAuth extends BaseIgfsCgTran
         }
     }
 
+    /**
+     * @param $response
+     *
+     * @throws \PagOnline\Exceptions\IgfsException
+     *
+     * @return string
+     */
     protected function getResponseSignature($response)
     {
         $fields = [
@@ -510,7 +505,6 @@ class IgfsCgAuth extends BaseIgfsCgTran
             IgfsUtils::getValue($response, 'authCode'), // AUTHCODE
             ];
         // signature dove il buffer e' cosi composto TID|SHOPID|RC|ERRORCODE|ORDERID|PAYMENTID|AUTHCODE
-        return $this->getSignature($this->kSig, // KSIGN
-            $fields);
+        return $this->getSignature($fields);
     }
 }

@@ -13,7 +13,7 @@ include __DIR__.'/config.php';
 
 $server = $config['servers'][$config['enabled_server']];
 
-$verify = new \PagOnline\Init\IgfsCgInit();
+$verify = new \PagOnline\Init\IgfsCgVerify();
 $verify->serverURL = $server['url'];
 $verify->tid = $server['tid']; //per servizio MyBank usare UNI_MYBK
 $verify->kSig = $server['kSig'];

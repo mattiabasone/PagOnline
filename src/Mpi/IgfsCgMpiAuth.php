@@ -22,6 +22,17 @@ class IgfsCgMpiAuth extends BaseIgfsCgMpi
     public $cavv;
     public $eci;
 
+    /**
+     * @return array
+     */
+    protected function getAdditionalRequestSignatureFields(): array
+    {
+        return [
+            $this->paRes, // PARES
+            $this->md, // MD
+        ];
+    }
+
     protected function resetFields()
     {
         parent::resetFields();
@@ -37,46 +48,25 @@ class IgfsCgMpiAuth extends BaseIgfsCgMpi
     {
         parent::checkFields();
 
-        if (null != $this->paRes) {
-            if ('' == $this->paRes) {
-                throw new IgfsMissingParException('Missing paRes');
-            }
+        if (empty($this->paRes)) {
+            throw new IgfsMissingParException('Missing paRes');
         }
-        if (null != $this->md) {
-            if ('' == $this->md) {
-                throw new IgfsMissingParException('Missing md');
-            }
+        if (empty($this->md)) {
+            throw new IgfsMissingParException('Missing md');
         }
     }
 
     protected function buildRequest()
     {
         $request = parent::buildRequest();
-
         $request = $this->replaceRequest($request, '{paRes}', $this->paRes);
-        $request = $this->replaceRequest($request, '{md}', $this->md);
 
-        return $request;
+        return $this->replaceRequest($request, '{md}', $this->md);
     }
 
-    protected function setRequestSignature($request)
-    {
-        // signature dove il buffer e' cosi composto APIVERSION|TID|SHOPID|PARES|MD
-        $fields = [
-            $this->getVersion(), // APIVERSION
-            $this->tid, // TID
-            $this->merID, // MERID
-            $this->payInstr, // PAYINSTR
-            $this->shopID, // SHOPID
-            $this->paRes, // PARES
-            $this->md, ]; // MD
-        $signature = $this->getSignature($this->kSig, // KSIGN
-            $fields);
-        $request = $this->replaceRequest($request, '{signature}', $signature);
-
-        return $request;
-    }
-
+    /**
+     * @param $response
+     */
     protected function parseResponseMap($response)
     {
         parent::parseResponseMap($response);
@@ -87,6 +77,13 @@ class IgfsCgMpiAuth extends BaseIgfsCgMpi
         $this->eci = IgfsUtils::getValue($response, 'eci');
     }
 
+    /**
+     * @param $response
+     *
+     * @throws \PagOnline\Exceptions\IgfsException
+     *
+     * @return string
+     */
     protected function getResponseSignature($response)
     {
         $fields = [
@@ -99,7 +96,6 @@ class IgfsCgMpiAuth extends BaseIgfsCgMpi
             IgfsUtils::getValue($response, 'eci'),
         ]; // ECI
         // signature dove il buffer e' cosi composto TID|SHOPID|RC|ERRORCODE|AUTHSTATUS|CAVV|ECI
-        return $this->getSignature($this->kSig, // KSIGN
-            $fields);
+        return $this->getSignature($fields);
     }
 }

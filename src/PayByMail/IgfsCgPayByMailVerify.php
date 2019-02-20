@@ -25,11 +25,23 @@ class IgfsCgPayByMailVerify extends BaseIgfsCgPayByMail
     public $addInfo4;
     public $addInfo5;
 
+    /**
+     * {@inheritdoc}
+     */
+    protected function getAdditionalRequestSignatureFields(): array
+    {
+        return [
+            $this->mailID,
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function resetFields()
     {
         parent::resetFields();
         $this->mailID = null;
-
         $this->tranID = null;
         $this->status = null;
         $this->addInfo1 = null;
@@ -54,30 +66,6 @@ class IgfsCgPayByMailVerify extends BaseIgfsCgPayByMail
         return $this->replaceRequest($request, '{mailID}', $this->mailID);
     }
 
-    /**
-     * @param $request
-     *
-     * @throws \PagOnline\Exceptions\IgfsException
-     *
-     * @return mixed
-     */
-    protected function setRequestSignature($request)
-    {
-        $fields = [
-            $this->getVersion(), // APIVERSION
-            $this->tid, // TID
-            $this->merID, // MERID
-            $this->payInstr, // PAYINSTR
-            $this->shopID, // SHOPID
-            $this->mailID, ]; // MAILID
-        // signature dove il buffer e' cosi composto APIVERSION|TID|SHOPID|MAILID
-        $signature = $this->getSignature($this->kSig, // KSIGN
-            $fields);
-        $request = $this->replaceRequest($request, '{signature}', $signature);
-
-        return $request;
-    }
-
     protected function parseResponseMap($response)
     {
         parent::parseResponseMap($response);
@@ -98,6 +86,13 @@ class IgfsCgPayByMailVerify extends BaseIgfsCgPayByMail
         $this->addInfo5 = IgfsUtils::getValue($response, 'addInfo5');
     }
 
+    /**
+     * @param $response
+     *
+     * @throws \PagOnline\Exceptions\IgfsException
+     *
+     * @return string
+     */
     protected function getResponseSignature($response)
     {
         $fields = [
@@ -110,9 +105,6 @@ class IgfsCgPayByMailVerify extends BaseIgfsCgPayByMail
             IgfsUtils::getValue($response, 'status'), // STATUS
         ];
         // signature dove il buffer e' cosi composto TID|SHOPID|RC|ERRORDESC|MAILID|STATUS
-        return $this->getSignature(
-            $this->kSig,
-            $fields
-        );
+        return $this->getSignature($fields);
     }
 }

@@ -10,14 +10,6 @@ use PagOnline\Exceptions\IgfsMissingParException;
  */
 abstract class BaseIgfsCgPayByMail extends BaseIgfsCg
 {
-    public $shopID; // chiave messaggio
-
-    protected function resetFields()
-    {
-        parent::resetFields();
-        $this->shopID = null;
-    }
-
     /**
      * @throws \PagOnline\Exceptions\IgfsMissingParException
      */
@@ -27,16 +19,6 @@ abstract class BaseIgfsCgPayByMail extends BaseIgfsCg
         if (null == $this->shopID || '' == $this->shopID) {
             throw new IgfsMissingParException('Missing shopID');
         }
-    }
-
-    /**
-     * @return mixed|string
-     */
-    protected function buildRequest()
-    {
-        $request = parent::buildRequest();
-
-        return $this->replaceRequest($request, '{shopID}', $this->shopID);
     }
 
     /**

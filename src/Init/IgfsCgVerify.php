@@ -48,6 +48,20 @@ class IgfsCgVerify extends BaseIgfsCgInit
     public $payUserRef;
     public $shopUserMobilePhone;
 
+    /**
+     * {@inheritdoc}
+     */
+    protected function getAdditionalRequestSignatureFields(): array
+    {
+        return [
+            $this->paymentID,
+            $this->refTranID,
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function resetFields()
     {
         parent::resetFields();
@@ -101,23 +115,6 @@ class IgfsCgVerify extends BaseIgfsCgInit
         }
 
         return $request;
-    }
-
-    protected function setRequestSignature($request)
-    {
-        $fields = [
-            $this->getVersion(), // APIVERSION
-            $this->tid, // TID
-            $this->merID, // MERID
-            $this->payInstr, // PAYINSTR
-            $this->shopID, // SHOPID
-            $this->paymentID, // PAYMENTID
-            $this->refTranID,
-        ];
-        // signature dove il buffer e' cosi composto APIVERSION|TID|SHOPID|PAYMENTID
-        $signature = $this->getSignature($this->kSig, $fields);
-
-        return $this->replaceRequest($request, '{signature}', $signature);
     }
 
     protected function parseResponseMap($response)
@@ -228,11 +225,6 @@ class IgfsCgVerify extends BaseIgfsCgInit
             IgfsUtils::getValue($response, 'authStatus'), // AUTHSTATUS
         ];
         // signature dove il buffer e' cosi composto TID|SHOPID|RC|ERRORDESC|PAYMENTID|REDIRECTURL
-        return $this->getSignature($this->kSig, $fields);
-    }
-
-    protected function getFileName()
-    {
-        return 'IGFS_CG_API/init/IgfsCgVerify.request';
+        return $this->getSignature($fields);
     }
 }

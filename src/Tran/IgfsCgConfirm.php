@@ -22,6 +22,23 @@ class IgfsCgConfirm extends BaseIgfsCgTran
 
     public $pendingAmount;
 
+    /**
+     * {@inheritdoc}
+     */
+    protected function getAdditionalRequestSignatureFields(): array
+    {
+        return [
+            $this->amount, // AMOUNT
+            $this->refTranID, // REFORDERID
+            $this->addInfo1, // UDF1
+            $this->addInfo2, // UDF2
+            $this->addInfo3, // UDF3
+            $this->addInfo4, // UDF4
+            $this->addInfo5, // UDF5
+            $this->topUpID,
+        ];
+    }
+
     protected function resetFields()
     {
         parent::resetFields();
@@ -70,30 +87,9 @@ class IgfsCgConfirm extends BaseIgfsCgTran
         return $request;
     }
 
-    protected function setRequestSignature($request)
-    {
-        // signature dove il buffer e' cosi composto APIVERSION|TID|SHOPID|AMOUNT|REFORDERID
-        $fields = [
-            $this->getVersion(), // APIVERSION
-            $this->tid, // TID
-            $this->merID, // MERID
-            $this->payInstr, // PAYINSTR
-            $this->shopID, // SHOPID
-            $this->amount, // AMOUNT
-            $this->refTranID, // REFORDERID
-            $this->addInfo1, // UDF1
-            $this->addInfo2, // UDF2
-            $this->addInfo3, // UDF3
-            $this->addInfo4, // UDF4
-            $this->addInfo5, // UDF5
-            $this->topUpID, ];
-        $signature = $this->getSignature($this->kSig, // KSIGN
-            $fields);
-        $request = $this->replaceRequest($request, '{signature}', $signature);
-
-        return $request;
-    }
-
+    /**
+     * @param $response
+     */
     protected function parseResponseMap($response)
     {
         parent::parseResponseMap($response);
@@ -101,6 +97,13 @@ class IgfsCgConfirm extends BaseIgfsCgTran
         $this->pendingAmount = IgfsUtils::getValue($response, 'pendingAmount');
     }
 
+    /**
+     * @param $response
+     *
+     * @throws \PagOnline\Exceptions\IgfsException
+     *
+     * @return string
+     */
     protected function getResponseSignature($response)
     {
         $fields = [
@@ -114,9 +117,9 @@ class IgfsCgConfirm extends BaseIgfsCgTran
             IgfsUtils::getValue($response, 'addInfo2'), // UDF2
             IgfsUtils::getValue($response, 'addInfo3'), // UDF3
             IgfsUtils::getValue($response, 'addInfo4'), // UDF4
-            IgfsUtils::getValue($response, 'addInfo5'), ]; // UDF5
+            IgfsUtils::getValue($response, 'addInfo5'),  // UDF5
+        ];
         // signature dove il buffer e' cosi composto TID|SHOPID|RC|ERRORDESC|ORDERID|DATE|UDF1|UDF2|UDF3|UDF4|UDF5
-        return $this->getSignature($this->kSig, // KSIGN
-            $fields);
+        return $this->getSignature($fields);
     }
 }

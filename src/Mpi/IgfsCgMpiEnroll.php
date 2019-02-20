@@ -39,6 +39,26 @@ class IgfsCgMpiEnroll extends BaseIgfsCgMpi
     public $acsURL;
     public $acsPage;
 
+    protected function getAdditionalRequestSignatureFields(): array
+    {
+        return [
+            $this->shopUserRef, // SHOPUSERREF
+            $this->amount, // AMOUNT
+            $this->currencyCode, // CURRENCYCODE
+            $this->pan, // PAN
+            $this->payInstrToken, // PAYINSTRTOKEN
+            $this->expireMonth, // EXPIREMONTH
+            $this->expireYear, // EXPIREYEAR
+            $this->termURL, // TERMURL
+            $this->description, // DESCRIPTION
+            $this->addInfo1, // UDF1
+            $this->addInfo2, // UDF2
+            $this->addInfo3, // UDF3
+            $this->addInfo4, // UDF4
+            $this->addInfo5, // UDF5
+        ];
+    }
+
     /**
      * Reset request fields.
      */
@@ -180,38 +200,6 @@ class IgfsCgMpiEnroll extends BaseIgfsCgMpi
         return $request;
     }
 
-    protected function setRequestSignature($request)
-    {
-        // signature dove il buffer e' cosi composto APIVERSION|TID|SHOPID|SHOPUSERREF|AMOUNT|CURRENCYCODE|PAN|PAYINSTRTOKEN|EXPIREMONTH|EXPIREYEAR|TERMURL|DESCRIPTION|UDF1|UDF2|UDF3|UDF4|UDF5
-        $fields = [
-            $this->getVersion(), // APIVERSION
-            $this->tid, // TID
-            $this->merID, // MERID
-            $this->payInstr, // PAYINSTR
-            $this->shopID, // SHOPID
-            $this->shopUserRef, // SHOPUSERREF
-            $this->amount, // AMOUNT
-            $this->currencyCode, // CURRENCYCODE
-            $this->pan, // PAN
-            $this->payInstrToken, // PAYINSTRTOKEN
-            $this->expireMonth, // EXPIREMONTH
-            $this->expireYear, // EXPIREYEAR
-            $this->termURL, // TERMURL
-            $this->description, // DESCRIPTION
-            $this->addInfo1, // UDF1
-            $this->addInfo2, // UDF2
-            $this->addInfo3, // UDF3
-            $this->addInfo4, // UDF4
-            $this->addInfo5,
-        ]; // UDF5
-        $signature = $this->getSignature(
-            $this->kSig,
-            $fields
-        );
-
-        return $this->replaceRequest($request, '{signature}', $signature);
-    }
-
     protected function parseResponseMap($response)
     {
         parent::parseResponseMap($response);
@@ -226,6 +214,13 @@ class IgfsCgMpiEnroll extends BaseIgfsCgMpi
         $this->acsPage = IgfsUtils::getValue($response, 'acsPage');
     }
 
+    /**
+     * @param $response
+     *
+     * @throws \PagOnline\Exceptions\IgfsException
+     *
+     * @return string
+     */
     protected function getResponseSignature($response)
     {
         $fields = [
@@ -239,9 +234,6 @@ class IgfsCgMpiEnroll extends BaseIgfsCgMpi
             IgfsUtils::getValue($response, 'acsURL'), // ACSURL
             IgfsUtils::getValue($response, 'acsPage'), ]; // ACSPAGE
         // signature dove il buffer e' cosi composto TID|SHOPID|RC|ERRORCODE|ENRSTATUS|PAREQ|MD|ACSURL|ACSPAGE
-        return $this->getSignature(
-            $this->kSig,
-            $fields
-        );
+        return $this->getSignature($fields);
     }
 }

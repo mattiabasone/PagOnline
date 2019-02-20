@@ -33,11 +33,28 @@ class IgfsCgTokenizerEnroll extends BaseIgfsCgTokenizer
     public $addInfo4;
     public $addInfo5;
 
-    public function __construct()
+    /**
+     * {@inheritdoc}
+     */
+    protected function getAdditionalRequestSignatureFields(): array
     {
-        parent::__construct();
+        return [
+            $this->shopUserRef, // SHOPUSERREF
+            $this->pan, // PAN
+            $this->expireMonth, // EXPIREMONTH
+            $this->expireYear, // EXPIREYEAR
+            $this->payInstrToken, // PAYINSTRTOKEN
+            $this->addInfo1, // UDF1
+            $this->addInfo2, // UDF2
+            $this->addInfo3, // UDF3
+            $this->addInfo4, // UDF4
+            $this->addInfo5,
+        ];
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function resetFields()
     {
         parent::resetFields();
@@ -60,6 +77,9 @@ class IgfsCgTokenizerEnroll extends BaseIgfsCgTokenizer
         $this->addInfo5 = null;
     }
 
+    /**
+     * @throws IgfsMissingParException
+     */
     protected function checkFields()
     {
         parent::checkFields();
@@ -72,11 +92,8 @@ class IgfsCgTokenizerEnroll extends BaseIgfsCgTokenizer
         if (null == $this->expireYear) {
             throw new IgfsMissingParException('Missing expireYear');
         }
-        if (null != $this->payInstrToken) {
-            // Se è stato impostato il payInstrToken verifico...
-            if ('' == $this->payInstrToken) {
-                throw new IgfsMissingParException('Missing payInstrToken');
-            }
+        if (empty($this->payInstrToken)) {
+            throw new IgfsMissingParException('Missing payInstrToken');
         }
     }
 
@@ -164,32 +181,6 @@ class IgfsCgTokenizerEnroll extends BaseIgfsCgTokenizer
         return $request;
     }
 
-    protected function setRequestSignature($request)
-    {
-        // signature dove il buffer e' cosi composto APIVERSION|TID|SHOPID|PAYINSTRTOKEN
-        $fields = [
-                $this->getVersion(), // APIVERSION
-                $this->tid, // TID
-                $this->merID, // MERID
-                $this->payInstr, // PAYINSTR
-                $this->shopID, // SHOPID
-                $this->shopUserRef, // SHOPUSERREF
-                $this->pan, // PAN
-                $this->expireMonth, // EXPIREMONTH
-                $this->expireYear, // EXPIREYEAR
-                $this->payInstrToken, // PAYINSTRTOKEN
-                $this->addInfo1, // UDF1
-                $this->addInfo2, // UDF2
-                $this->addInfo3, // UDF3
-                $this->addInfo4, // UDF4
-                $this->addInfo5, ]; // UDF5
-        $signature = $this->getSignature($this->kSig, // KSIGN
-                $fields);
-        $request = $this->replaceRequest($request, '{signature}', $signature);
-
-        return $request;
-    }
-
     protected function parseResponseMap($response)
     {
         parent::parseResponseMap($response);
@@ -197,21 +188,22 @@ class IgfsCgTokenizerEnroll extends BaseIgfsCgTokenizer
         $this->payInstrToken = IgfsUtils::getValue($response, 'payInstrToken');
     }
 
+    /**
+     * @param $response
+     *
+     * @throws \PagOnline\Exceptions\IgfsException
+     *
+     * @return string
+     */
     protected function getResponseSignature($response)
     {
         $fields = [
-                IgfsUtils::getValue($response, 'tid'), // TID
-                IgfsUtils::getValue($response, 'shopID'), // SHOPID
-                IgfsUtils::getValue($response, 'rc'), // RC
-                IgfsUtils::getValue($response, 'errorDesc'), // ERRORDESC
-                IgfsUtils::getValue($response, 'payInstrToken'), ]; // PAYINSTRTOKEN
+            IgfsUtils::getValue($response, 'tid'), // TID
+            IgfsUtils::getValue($response, 'shopID'), // SHOPID
+            IgfsUtils::getValue($response, 'rc'), // RC
+            IgfsUtils::getValue($response, 'errorDesc'), // ERRORDESC
+            IgfsUtils::getValue($response, 'payInstrToken'), ]; // PAYINSTRTOKEN
         // signature dove il buffer e' cosi composto TID|SHOPID|RC|ERRORDESC
-        return $this->getSignature($this->kSig, // KSIGN
-                $fields);
-    }
-
-    protected function getFileName()
-    {
-        return 'IGFS_CG_API/tokenizer/IgfsCgTokenizerEnroll.request';
+        return $this->getSignature($fields);
     }
 }

@@ -45,6 +45,8 @@ abstract class BaseIgfsCg implements IgfsCgInterface
     public $cTimeout = 5000;
     public $timeout = 30000;
 
+    public $shopID = null;
+
     public $proxy = null;
 
     public $httpAuthUser = null;
@@ -60,8 +62,6 @@ abstract class BaseIgfsCg implements IgfsCgInterface
 
     protected $fields2Reset = false;
     protected $checkCert = true;
-
-    public $installPath = null;
 
     /**
      * @var
@@ -84,6 +84,7 @@ abstract class BaseIgfsCg implements IgfsCgInterface
         $this->tid = null;
         $this->merID = null;
         $this->payInstr = null;
+        $this->shopID = null;
         $this->rc = null;
         $this->error = false;
         $this->errorDesc = null;
@@ -109,6 +110,70 @@ abstract class BaseIgfsCg implements IgfsCgInterface
     }
 
     /**
+     * @return array
+     */
+    protected function getCommonRequestSignatureFields(): array
+    {
+        return [
+            $this->getVersion(),
+            $this->tid,
+            $this->merID,
+            $this->payInstr,
+            $this->shopID,
+        ];
+    }
+
+    /**
+     * Get additional signature fields (request specific).
+     *
+     * @return array
+     */
+    abstract protected function getAdditionalRequestSignatureFields(): array;
+
+    /***
+     * Generates a signature
+     *
+     * @param $signatureFields
+     *
+     * @throws IgfsException
+     *
+     * @return string
+     */
+    protected function getSignature($signatureFields): string
+    {
+        try {
+            $data = '';
+            foreach ($signatureFields as $value) {
+                $data .= $value;
+            }
+
+            return \base64_encode(\hash_hmac('sha256', $data, $this->kSig, true));
+        } catch (\Exception $e) {
+            throw new IgfsException($e);
+        }
+    }
+
+    /**
+     * Set signature key on request.
+     *
+     * @param $request
+     *
+     * @throws IgfsException
+     *
+     * @return mixed
+     */
+    protected function setRequestSignature($request)
+    {
+        $signatureFields = \array_merge(
+            $this->getCommonRequestSignatureFields(),
+            $this->getAdditionalRequestSignatureFields()
+        );
+        $signature = $this->getSignature($signatureFields);
+
+        return $this->replaceRequest($request, '{signature}', $signature);
+    }
+
+    /**
      * Check required fields, if any of the required parameter is missing it'll throw an IgfsMissingParException.
      *
      * @throws IgfsMissingParException
@@ -119,7 +184,7 @@ abstract class BaseIgfsCg implements IgfsCgInterface
             throw new IgfsMissingParException('Missing serverURL');
         }
 
-        if (null == $this->kSig || '' == $this->kSig) {
+        if (empty($this->kSig)) {
             throw new IgfsMissingParException('Missing kSig');
         }
 
@@ -161,10 +226,14 @@ abstract class BaseIgfsCg implements IgfsCgInterface
         return \str_replace($find, $value, $request);
     }
 
+    /**
+     * @return mixed|string
+     */
     protected function buildRequest()
     {
         $request = $this->getRequest();
         $request = $this->replaceRequest($request, '{apiVersion}', $this->getVersion());
+        $request = $this->replaceRequest($request, '{shopID}', $this->shopID);
         if (null != $this->tid) {
             $request = $this->replaceRequest($request, '{tid}', '<tid><![CDATA['.$this->tid.']]></tid>');
         } else {
@@ -184,33 +253,36 @@ abstract class BaseIgfsCg implements IgfsCgInterface
         return $request;
     }
 
-    abstract protected function setRequestSignature($request);
-
     abstract protected function getResponseSignature($response);
 
     protected static $SOAP_ENVELOPE = 'soap:Envelope';
     protected static $SOAP_BODY = 'soap:Body';
     protected static $RESPONSE = 'response';
 
-    protected function parseResponse($response)
+    /**
+     * @param $response
+     *
+     * @return array
+     */
+    protected function parseResponse($response): array
     {
         $response = \str_replace('<soap:', '<', $response);
         $response = \str_replace('</soap:', '</', $response);
         $dom = new SimpleXMLElement($response, LIBXML_NOERROR, false);
         if (0 == \count($dom)) {
-            return;
+            return [];
         }
 
         $tmp = \str_replace('<Body>', '', $dom->Body->asXML());
         $tmp = \str_replace('</Body>', '', $tmp);
         $dom = new SimpleXMLElement($tmp, LIBXML_NOERROR, false);
         if (0 == \count($dom)) {
-            return;
+            return [];
         }
 
         $root = self::$RESPONSE;
         if (0 == \count($dom->{$root})) {
-            return;
+            return [];
         }
 
         $fields = IgfsUtils::parseResponseFields($dom->{$root});
@@ -410,36 +482,15 @@ abstract class BaseIgfsCg implements IgfsCgInterface
      */
     private function executeHttp($url)
     {
-        $url = $this->getServerUrl($url);
-        try {
-            $mapResponse = $this->process($url);
-        } catch (IOException $e) {
-            // TODO: uhm...nice
-            throw $e;
-        }
+        $mapResponse = $this->process(
+            $this->getServerUrl($url)
+        );
+
         if (empty($mapResponse)) {
             throw new IgfsException('Invalid IGFS Response');
         }
 
         return $mapResponse;
-    }
-
-    /**
-     * @param $key
-     * @param $fields
-     *
-     * @throws IgfsException
-     *
-     * @return string
-     */
-    protected function getSignature($key, $fields)
-    {
-        try {
-            return IgfsUtils::getSignature($key, $fields);
-        } catch (\Exception $e) {
-            // TODO: this is funny
-            throw new IgfsException($e);
-        }
     }
 
     /**

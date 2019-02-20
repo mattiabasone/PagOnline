@@ -20,17 +20,17 @@ class SelectorTerminalInfo
      * @param $xml
      * @param $tname
      *
-     * @return SelectorTerminalInfo|void|null
+     * @return \PagOnline\Init\SelectorTerminalInfo|null
      */
-    public static function fromXml($xml, $tname)
+    public static function fromXml($xml, $tname): ?self
     {
-        if ('' == $xml || null == $xml) {
-            return;
+        if (empty($xml)) {
+            return null;
         }
 
         $dom = new SimpleXMLElement($xml, LIBXML_NOERROR, false);
         if (0 == \count($dom)) {
-            return;
+            return null;
         }
 
         $response = IgfsUtils::parseResponseFields($dom);

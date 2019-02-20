@@ -63,4 +63,24 @@ class IgfsUtilsTest extends TestCase
     {
         $this->assertNull(IgfsUtils::parseXMLGregorianCalendar('2019-02-19 00:00:00'));
     }
+
+    /** @test */
+    public function shouldFormatTimestampToGregorianCalendar()
+    {
+        $datetimeObject = \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2019-02-19 00:00:00');
+        $this->assertEquals(
+            $datetimeObject->format('Y-m-d\TH:i:sP'),
+            IgfsUtils::formatXMLGregorianCalendar($datetimeObject->getTimestamp())
+        );
+    }
+
+    /** @test */
+    public function shouldNotFormatTimestampToGregorianCalendar()
+    {
+        $datetimeObject = \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2019-02-19 00:00:00');
+        $this->assertNotEquals(
+            $datetimeObject->format('Y-m-d\TH:i:sP'),
+            IgfsUtils::formatXMLGregorianCalendar(0)
+        );
+    }
 }
