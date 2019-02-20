@@ -2,9 +2,9 @@
 
 namespace PagOnline\Tests\Unit\XmlEntities;
 
+use PHPUnit\Framework\TestCase;
 use PagOnline\XmlEntities\Level3Info;
 use PagOnline\XmlEntities\Level3InfoProduct;
-use PHPUnit\Framework\TestCase;
 
 class Level3InfoTest extends TestCase
 {
@@ -22,7 +22,7 @@ class Level3InfoTest extends TestCase
         $level3Info->vat = 22;
         $level3Info->product = [$level3InfoProduct];
 
-        $object = simplexml_load_string($level3Info->toXml('Level3Info'));
+        $object = \simplexml_load_string($level3Info->toXml('Level3Info'));
         $this->assertNotFalse($object);
         $this->assertInstanceOf(\SimpleXMLElement::class, $object);
     }
@@ -41,11 +41,11 @@ class Level3InfoTest extends TestCase
         $level3Info->vat = 22;
         $level3Info->product = [$level3InfoProduct];
 
-        $object = simplexml_load_string($level3Info->toXml('Level3Info'));
+        $object = \simplexml_load_string($level3Info->toXml('Level3Info'));
 
-        $this->assertObjectHasAttribute("billingEmail", $object);
-        $this->assertObjectHasAttribute("vat", $object);
-        $this->assertObjectHasAttribute("product", $object);
+        $this->assertObjectHasAttribute('billingEmail', $object);
+        $this->assertObjectHasAttribute('vat', $object);
+        $this->assertObjectHasAttribute('product', $object);
         $this->assertObjectNotHasAttribute('note', $object);
     }
 }

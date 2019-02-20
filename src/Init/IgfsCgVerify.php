@@ -209,8 +209,10 @@ class IgfsCgVerify extends BaseIgfsCgInit
 
     /**
      * @param $response
-     * @return string
+     *
      * @throws \PagOnline\Exceptions\IgfsException
+     *
+     * @return string
      */
     protected function getResponseSignature($response)
     {
