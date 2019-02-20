@@ -6,7 +6,7 @@ use PagOnline\Entry;
 use SimpleXMLElement;
 use PagOnline\IgfsUtils;
 use PagOnline\BaseIgfsCg;
-use PagOnline\Level3Info;
+use PagOnline\XmlEntities\Level3Info;
 use PagOnline\Exceptions\IgfsMissingParException;
 
 /**
@@ -106,17 +106,16 @@ class IgfsCgVerify extends BaseIgfsCgInit
     protected function setRequestSignature($request)
     {
         $fields = [
-                $this->getVersion(), // APIVERSION
-                $this->tid, // TID
-                $this->merID, // MERID
-                $this->payInstr, // PAYINSTR
-                $this->shopID, // SHOPID
-                $this->paymentID, // PAYMENTID
-                $this->refTranID,
-            ];
+            $this->getVersion(), // APIVERSION
+            $this->tid, // TID
+            $this->merID, // MERID
+            $this->payInstr, // PAYINSTR
+            $this->shopID, // SHOPID
+            $this->paymentID, // PAYMENTID
+            $this->refTranID,
+        ];
         // signature dove il buffer e' cosi composto APIVERSION|TID|SHOPID|PAYMENTID
-        $signature = $this->getSignature($this->kSig, // KSIGN
-                $fields);
+        $signature = $this->getSignature($this->kSig, $fields);
 
         return $this->replaceRequest($request, '{signature}', $signature);
     }
@@ -208,21 +207,26 @@ class IgfsCgVerify extends BaseIgfsCgInit
         }
     }
 
+    /**
+     * @param $response
+     * @return string
+     * @throws \PagOnline\Exceptions\IgfsException
+     */
     protected function getResponseSignature($response)
     {
         $fields = [
-                IgfsUtils::getValue($response, 'tid'), // TID
-                IgfsUtils::getValue($response, 'shopID'), // SHOPID
-                IgfsUtils::getValue($response, 'rc'), // RC
-                IgfsUtils::getValue($response, 'errorDesc'), // ERRORDESC
-                IgfsUtils::getValue($response, 'paymentID'), // PAYMENTID
-                IgfsUtils::getValue($response, 'tranID'), // ORDERID
-                IgfsUtils::getValue($response, 'authCode'), // AUTHCODE
-                IgfsUtils::getValue($response, 'enrStatus'), // ENRSTATUS
-                IgfsUtils::getValue($response, 'authStatus'), ]; // AUTHSTATUS
+            IgfsUtils::getValue($response, 'tid'), // TID
+            IgfsUtils::getValue($response, 'shopID'), // SHOPID
+            IgfsUtils::getValue($response, 'rc'), // RC
+            IgfsUtils::getValue($response, 'errorDesc'), // ERRORDESC
+            IgfsUtils::getValue($response, 'paymentID'), // PAYMENTID
+            IgfsUtils::getValue($response, 'tranID'), // ORDERID
+            IgfsUtils::getValue($response, 'authCode'), // AUTHCODE
+            IgfsUtils::getValue($response, 'enrStatus'), // ENRSTATUS
+            IgfsUtils::getValue($response, 'authStatus'), // AUTHSTATUS
+        ];
         // signature dove il buffer e' cosi composto TID|SHOPID|RC|ERRORDESC|PAYMENTID|REDIRECTURL
-        return $this->getSignature($this->kSig, // KSIGN
-                $fields);
+        return $this->getSignature($this->kSig, $fields);
     }
 
     protected function getFileName()

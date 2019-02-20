@@ -4,24 +4,38 @@ namespace PagOnline;
 
 use SimpleXMLElement;
 
+/**
+ * Class Entry.
+ */
 class Entry
 {
+    /**
+     * @var string
+     */
     public $key;
+
+    /**
+     * @var string
+     */
     public $value;
 
-    public function __construct()
+    /**
+     * TODO: check why $tname parameter is never used.
+     *
+     * @param $xml
+     * @param $tname
+     *
+     * @return \PagOnline\Entry|null
+     */
+    public static function fromXml($xml, $tname): ?self
     {
-    }
-
-    public static function fromXml($xml, $tname)
-    {
-        if ('' == $xml || null == $xml) {
-            return;
+        if (empty($xml)) {
+            return null;
         }
 
         $dom = new SimpleXMLElement($xml, LIBXML_NOERROR, false);
         if (0 == \count($dom)) {
-            return;
+            return null;
         }
 
         $response = IgfsUtils::parseResponseFields($dom);

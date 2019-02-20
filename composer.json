@@ -41,6 +41,8 @@
         }
     },
     "scripts": {
-        "fix": "@php vendor/bin/php-cs-fixer fix"
+        "fix": "@php vendor/bin/php-cs-fixer fix",
+        "test": "@php vendor/bin/phpunit",
+        "analyse": "@php vendor/bin/phpstan analyse src"
     }
 }

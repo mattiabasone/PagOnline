@@ -27,12 +27,15 @@ class IgfsCgFactory
              * @var \PagOnline\Tran\IgfsCgAuth|\PagOnline\Tran\IgfsCgConfirm|\PagOnline\Tran\IgfsCgCredit|\PagOnline\Tran\IgfsCgVoidAuth            $igfsCgClass
              */
             $igfsCgClass = new $namespace();
-            $igfsCgClass->serverURL = config('pagonline.server_url');
-            $igfsCgClass->timeout = config('pagonline.timeout');
-            $igfsCgClass->tid = config('pagonline.terminal_id');
-            $igfsCgClass->kSig = config('pagonline.signature_key');
-            $igfsCgClass->currencyCode = config('pagonline.currency_code');
-            $igfsCgClass->langID = config('pagonline.language_id');
+            // If Laravel helper function 'config' exists, I'll try to load configuration from .env file
+            if (\function_exists('config')) {
+                $igfsCgClass->serverURL = config('pagonline.server_url');
+                $igfsCgClass->timeout = config('pagonline.timeout');
+                $igfsCgClass->tid = config('pagonline.terminal_id');
+                $igfsCgClass->kSig = config('pagonline.signature_key');
+                $igfsCgClass->currencyCode = config('pagonline.currency_code');
+                $igfsCgClass->langID = config('pagonline.language_id');
+            }
 
             return $igfsCgClass;
         } else {

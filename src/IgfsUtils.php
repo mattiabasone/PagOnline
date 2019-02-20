@@ -23,19 +23,19 @@ class IgfsUtils
     /**
      * Creates signature for requests.
      *
-     * @param $ksig
-     * @param $fields
+     * @param string $signatureKey
+     * @param array  $fields
      *
      * @return string
      */
-    public static function getSignature($ksig, $fields)
+    public static function getSignature($signatureKey, $fields): string
     {
         $data = '';
         foreach ($fields as $value) {
             $data .= $value;
         }
 
-        return \base64_encode(\hash_hmac('sha256', $data, $ksig, true));
+        return \base64_encode(\hash_hmac('sha256', $data, $signatureKey, true));
     }
 
     /**
@@ -52,7 +52,7 @@ class IgfsUtils
     }
 
     /**
-     * TODO: migrateto UUID?
+     * TODO: migrate to UUID?
      *
      * @return string
      */
@@ -113,18 +113,18 @@ class IgfsUtils
     }
 
     /**
-     * @param $odt
+     * @param int $timestamp
      *
      * @return string|null
      */
-    public static function formatXMLGregorianCalendar($odt)
+    public static function formatXMLGregorianCalendar($timestamp)
     {
         try {
-            $format1 = \date('Y-m-d', $odt);
+            $format1 = \date('Y-m-d', $timestamp);
             // FIX MILLISECOND
             // CXF FORMATTA I MS senza 0 in coda
-            $format2 = \date('H:i:s', $odt);
-            $format3 = \date('P', $odt);
+            $format2 = \date('H:i:s', $timestamp);
+            $format3 = \date('P', $timestamp);
             $sb = '';
             $sb .= $format1;
             $sb .= 'T';
@@ -161,11 +161,11 @@ class IgfsUtils
 
     /**
      * @param $text
-     * @param $format
+     * @param string $format Date format
      *
      * @return bool|\DateTime|null
      */
-    private static function parseDateFormat($text, $format): ?DateTime
+    private static function parseDateFormat($text, string $format): ?DateTime
     {
         try {
             $text = \str_replace('T', ' ', $text);

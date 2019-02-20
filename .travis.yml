@@ -28,7 +28,7 @@ before_script:
 
 script:
   - vendor/bin/php-cs-fixer fix --dry-run --diff  --config=.php_cs.dist
-  - vendor/bin/phpunit --coverage-text --coverage-clover=coverage.xml
+  - vendor/bin/phpunit --coverage-text --coverage-clover=clover.xml
 
 after_success:
   - vendor/bin/php-coveralls -x clover.xml -o coveralls-upload.json
