@@ -21,6 +21,10 @@ abstract class BaseIgfsCg implements IgfsCgInterface
      */
     const VERSION = '2.4.1.5';
 
+    protected static $SOAP_ENVELOPE = 'soap:Envelope';
+    protected static $SOAP_BODY = 'soap:Body';
+    protected static $RESPONSE = 'response';
+
     /**
      * Set the request namespace here.
      *
@@ -139,7 +143,7 @@ abstract class BaseIgfsCg implements IgfsCgInterface
      *
      * @return string
      */
-    protected function getSignature($signatureFields): string
+    protected function getSignature(array $signatureFields): string
     {
         try {
             $data = '';
@@ -255,10 +259,6 @@ abstract class BaseIgfsCg implements IgfsCgInterface
 
     abstract protected function getResponseSignature($response);
 
-    protected static $SOAP_ENVELOPE = 'soap:Envelope';
-    protected static $SOAP_BODY = 'soap:Body';
-    protected static $RESPONSE = 'response';
-
     /**
      * @param $response
      *
@@ -293,6 +293,9 @@ abstract class BaseIgfsCg implements IgfsCgInterface
         return $fields;
     }
 
+    /**
+     * @param $response
+     */
     protected function parseResponseMap($response)
     {
         $this->tid = IgfsUtils::getValue($response, 'tid');
