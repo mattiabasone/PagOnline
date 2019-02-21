@@ -3,33 +3,32 @@
 namespace Tests\Unit\Init;
 
 use PagOnline\Actions;
-use PagOnline\Init\IgfsCgInit;
+use PagOnline\Init\IgfsCgVerify;
 use PagOnline\Exceptions\IgfsMissingParException;
 
 /**
  * Class IgfsCgInitTest.
  */
-class IgfsCgInitTest extends IgfsCgBaseTest
+class IgfsCgVerifyTest extends IgfsCgBaseTest
 {
-    const IGFSCG_CLASS = IgfsCgInit::class;
-    const IGFSCG_ACTION = Actions::IGFS_CG_INIT;
+    const IGFSCG_CLASS = IgfsCgVerify::class;
+    const IGFSCG_ACTION = Actions::IGFS_CG_VERIFY;
 
     /** @test */
     public function shouldChecksFieldsAndRaiseException()
     {
         $this->expectException(IgfsMissingParException::class);
         $foo = $this->getClassMethod('checkFields');
-        $obj = new IgfsCgInit();
+        $obj = new IgfsCgVerify();
         $foo->invoke($obj);
     }
 
     /** @test */
     public function shouldCheckFieldsAndPass()
     {
-        /** @var \PagOnline\Init\IgfsCgInit $obj */
+        /** @var \PagOnline\Init\IgfsCgVerify $obj */
         $obj = $this->makeIgfsCg(static::IGFSCG_ACTION);
-        $obj->notifyURL = 'https://example.com/verify/';
-        $obj->errorURL = 'https://example.com/error/';
+        $obj->paymentID = 'paymentId';
         $foo = $this->getClassMethod('checkFields');
 
         $exception = null;

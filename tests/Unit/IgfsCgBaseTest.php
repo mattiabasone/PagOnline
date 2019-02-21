@@ -12,6 +12,9 @@ use PHPUnit\Framework\TestCase;
  */
 abstract class IgfsCgBaseTest extends TestCase
 {
+    const IGFSCG_CLASS = '';
+    const IGFSCG_ACTION = '';
+
     /**
      * @param $class
      * @param $name
@@ -20,9 +23,9 @@ abstract class IgfsCgBaseTest extends TestCase
      *
      * @return \ReflectionMethod
      */
-    protected function getClassMethod($class, $name)
+    protected function getClassMethod($name)
     {
-        $class = new ReflectionClass($class);
+        $class = new ReflectionClass(static::IGFSCG_CLASS);
         $method = $class->getMethod($name);
         $method->setAccessible(true);
 

@@ -2,6 +2,7 @@
 
 namespace PagOnline;
 
+use Illuminate\Support\Facades\Config;
 use PagOnline\Exceptions\ClassNotFoundException;
 
 /**
@@ -28,13 +29,13 @@ class IgfsCgFactory
              */
             $igfsCgClass = new $namespace();
             // If Laravel helper function 'config' exists, I'll try to load configuration from .env file
-            if (\function_exists('config')) {
-                $igfsCgClass->serverURL = config('pagonline.server_url');
-                $igfsCgClass->timeout = config('pagonline.timeout');
-                $igfsCgClass->tid = config('pagonline.terminal_id');
-                $igfsCgClass->kSig = config('pagonline.signature_key');
-                $igfsCgClass->currencyCode = config('pagonline.currency_code');
-                $igfsCgClass->langID = config('pagonline.language_id');
+            if (\class_exists('Config')) {
+                $igfsCgClass->serverURL = Config::get('pagonline.server_url');
+                $igfsCgClass->timeout = Config::get('pagonline.timeout');
+                $igfsCgClass->tid = Config::get('pagonline.terminal_id');
+                $igfsCgClass->kSig = Config::get('pagonline.signature_key');
+                $igfsCgClass->currencyCode = Config::get('pagonline.currency_code');
+                $igfsCgClass->langID = Config::get('pagonline.language_id');
             }
 
             return $igfsCgClass;
