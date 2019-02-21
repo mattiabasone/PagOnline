@@ -101,7 +101,7 @@ class IgfsUtilsTest extends TestCase
     public function shouldGetValueFromArrayMap()
     {
         $array = [
-            'key1' => 1234
+            'key1' => 1234,
         ];
 
         $this->assertEquals($array['key1'], IgfsUtils::getValue($array, 'key1'));

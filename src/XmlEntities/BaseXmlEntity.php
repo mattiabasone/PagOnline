@@ -94,7 +94,7 @@ abstract class BaseXmlEntity implements XmlEntityInterface
      */
     protected function setCustomAttributeFromDom(SimpleXMLElement $dom, $attribute)
     {
-        if ($this->entityAttributes[$attribute]['type'] === 'array') {
+        if ('array' === $this->entityAttributes[$attribute]['type']) {
             $value = [];
             foreach ($dom->xpath($attribute) as $item) {
                 $value[] = $this->entityAttributes[$attribute]['namespace']::fromXml($item->asXML(), 'product');

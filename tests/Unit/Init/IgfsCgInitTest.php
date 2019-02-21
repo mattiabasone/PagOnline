@@ -37,4 +37,26 @@ class IgfsCgInitTest extends IgfsCgBaseTest
 
         $this->assertNull($exception);
     }
+
+    /** @test */
+    public function shouldRaiseExceptionForMissingShopId()
+    {
+        $this->expectException(IgfsMissingParException::class);
+        /** @var \PagOnline\Init\IgfsCgInit $igfsCgInit */
+        $igfsCgInit = $this->makeIgfsCg(Actions::IGFS_CG_INIT);
+        $igfsCgInit->notifyURL = 'https://example.com/verify/';
+        $igfsCgInit->errorURL = 'https://example.com/error/';
+        $igfsCgInit->shopID = null;
+        $foo = $this->getClassMethod(IgfsCgInit::class, 'checkFields');
+        $foo->invoke($igfsCgInit);
+    }
+
+    /** @test */
+    public function shouldReturnArray()
+    {
+        /** @var \PagOnline\Init\IgfsCgInit $igfsCgInit */
+        $igfsCgInit = $this->makeIgfsCg(Actions::IGFS_CG_INIT);
+        $array = $igfsCgInit->toArray();
+        $this->assertIsArray($array);
+    }
 }

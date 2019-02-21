@@ -521,7 +521,7 @@ abstract class BaseIgfsCg implements IgfsCgInterface
         $propertiesArray = [];
         $publicProperties = (new \ReflectionObject($this))->getProperties(\ReflectionProperty::IS_PUBLIC);
         foreach ($publicProperties as $publicProperty) {
-            $propertiesArray[$publicProperty->getName()] = $publicProperty->getValue();
+            $propertiesArray[$publicProperty->getName()] = $publicProperty->getValue($this);
         }
 
         return $propertiesArray;
