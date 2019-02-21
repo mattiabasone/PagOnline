@@ -142,4 +142,17 @@ abstract class BaseXmlEntity implements XmlEntityInterface
 
         return $object;
     }
+
+    /**
+     * @return array
+     */
+    public function toArray()
+    {
+        $returnArray = [];
+        foreach ($this->attributes as $attribute) {
+            $returnArray[$attribute] = $this->{$attribute};
+        }
+
+        return $returnArray;
+    }
 }

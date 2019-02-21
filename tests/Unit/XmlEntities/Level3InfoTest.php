@@ -28,6 +28,14 @@ class Level3InfoTest extends TestCase
     }
 
     /** @test */
+    public function shouldLoadProperties()
+    {
+        $level3Info = $this->getBaseElement();
+        $this->assertIsArray($level3Info->getAttributes());
+        $this->assertEquals($level3Info->toArray()['vat'], 22);
+    }
+
+    /** @test */
     public function shouldReturnXmlString()
     {
         $level3Info = $this->getBaseElement();

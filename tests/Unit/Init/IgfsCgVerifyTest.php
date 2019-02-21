@@ -2,7 +2,6 @@
 
 namespace Tests\Unit\Init;
 
-use PagOnline\Actions;
 use PagOnline\Init\IgfsCgVerify;
 use PagOnline\Exceptions\IgfsMissingParException;
 
@@ -11,15 +10,14 @@ use PagOnline\Exceptions\IgfsMissingParException;
  */
 class IgfsCgVerifyTest extends IgfsCgBaseTest
 {
-    const IGFSCG_CLASS = IgfsCgVerify::class;
-    const IGFSCG_ACTION = Actions::IGFS_CG_VERIFY;
+    protected $igfsCgClass = IgfsCgVerify::class;
 
     /** @test */
     public function shouldChecksFieldsAndRaiseException()
     {
         $this->expectException(IgfsMissingParException::class);
         $foo = $this->getClassMethod('checkFields');
-        $obj = new IgfsCgVerify();
+        $obj = new $this->igfsCgClass();
         $foo->invoke($obj);
     }
 
@@ -27,7 +25,7 @@ class IgfsCgVerifyTest extends IgfsCgBaseTest
     public function shouldCheckFieldsAndPass()
     {
         /** @var \PagOnline\Init\IgfsCgVerify $obj */
-        $obj = $this->makeIgfsCg(static::IGFSCG_ACTION);
+        $obj = $this->makeIgfsCg();
         $obj->paymentID = 'paymentId';
         $foo = $this->getClassMethod('checkFields');
 
@@ -45,7 +43,7 @@ class IgfsCgVerifyTest extends IgfsCgBaseTest
     {
         $this->expectException(IgfsMissingParException::class);
         /** @var \PagOnline\Init\IgfsCgInit $obj */
-        $obj = $this->makeIgfsCg(static::IGFSCG_ACTION);
+        $obj = $this->makeIgfsCg();
         $obj->notifyURL = 'https://example.com/verify/';
         $obj->errorURL = 'https://example.com/error/';
         $obj->shopID = null;
@@ -57,7 +55,7 @@ class IgfsCgVerifyTest extends IgfsCgBaseTest
     public function shouldReturnArray()
     {
         /** @var \PagOnline\Init\IgfsCgInit $obj */
-        $obj = $this->makeIgfsCg(static::IGFSCG_ACTION);
+        $obj = $this->makeIgfsCg();
         $array = $obj->toArray();
         $this->assertIsArray($array);
     }
@@ -66,7 +64,7 @@ class IgfsCgVerifyTest extends IgfsCgBaseTest
     public function shouldReturnServicePortString()
     {
         /** @var \PagOnline\Init\IgfsCgInit $obj */
-        $obj = $this->makeIgfsCg(static::IGFSCG_ACTION);
+        $obj = $this->makeIgfsCg();
         $foo = $this->getClassMethod('getServicePort');
         $this->assertIsString(
             $foo->invoke($obj)

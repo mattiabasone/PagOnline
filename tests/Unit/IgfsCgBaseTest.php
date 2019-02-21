@@ -12,8 +12,8 @@ use PHPUnit\Framework\TestCase;
  */
 abstract class IgfsCgBaseTest extends TestCase
 {
-    const IGFSCG_CLASS = '';
-    const IGFSCG_ACTION = '';
+    protected $igfsCgClass;
+    protected $igfsCgAction;
 
     /**
      * @param $class
@@ -25,7 +25,7 @@ abstract class IgfsCgBaseTest extends TestCase
      */
     protected function getClassMethod($name)
     {
-        $class = new ReflectionClass(static::IGFSCG_CLASS);
+        $class = new ReflectionClass($this->igfsCgClass);
         $method = $class->getMethod($name);
         $method->setAccessible(true);
 
@@ -37,9 +37,9 @@ abstract class IgfsCgBaseTest extends TestCase
      *
      * @return \PagOnline\IgfsCgInterface
      */
-    protected function makeIgfsCg($namespace): IgfsCgInterface
+    protected function makeIgfsCg(): IgfsCgInterface
     {
-        $class = new $namespace();
+        $class = new $this->igfsCgClass();
         $class->serverURL = 'https://server.com/UNI_CG_SERVICES/services';
         $class->tid = Str::random(16);
         $class->kSig = Str::random(24);
