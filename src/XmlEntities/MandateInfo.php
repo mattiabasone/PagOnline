@@ -17,6 +17,9 @@ class MandateInfo extends BaseXmlEntity
     public $finalCollectionDate;
     public $maxAmount;
 
+    /**
+     * @var array
+     */
     protected $dates = [
         'durationStartDate',
         'durationEndDate',

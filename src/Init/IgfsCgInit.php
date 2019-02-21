@@ -150,7 +150,7 @@ class IgfsCgInit extends BaseIgfsCgInit
             throw new IgfsMissingParException('Missing errorURL');
         }
 
-        if (null !== $this->payInstrToken && '' == $this->payInstrToken) {
+        if (null !== $this->payInstrToken && '' === $this->payInstrToken) {
             // Se è stato impostato il payInstrToken verifico...
             throw new IgfsMissingParException('Missing payInstrToken');
         }
@@ -170,7 +170,7 @@ class IgfsCgInit extends BaseIgfsCgInit
             }
         }
 
-        if (null !== $this->mandateInfo && null === $this->mandateInfo->mandateID) {
+        if (!empty($this->mandateInfo) && empty($this->mandateInfo->mandateID)) {
             throw new IgfsMissingParException('Missing mandateID');
         }
     }

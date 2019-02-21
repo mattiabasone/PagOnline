@@ -44,11 +44,13 @@ class IgfsUtils
     }
 
     /**
+     * Transform DOM nodes to associative array.
+     *
      * @param $nodes
      *
      * @return array
      */
-    public static function parseResponseFields($nodes)
+    public static function parseResponseFields(\SimpleXMLElement $nodes): array
     {
         $fields = [];
         foreach ($nodes->children() as $item) {

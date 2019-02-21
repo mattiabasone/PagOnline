@@ -19,7 +19,7 @@ trait CastProperties
      *
      * @return bool
      */
-    protected function isDateAttribute($attribute): bool
+    public function isDateAttribute($attribute): bool
     {
         return \in_array($attribute, $this->dates, true);
     }
@@ -31,7 +31,7 @@ trait CastProperties
      *
      * @return string
      */
-    protected function castAttribute($attribute)
+    public function castAttribute($attribute)
     {
         if ($this->isDateAttribute($attribute)) {
             $value = (string) IgfsUtils::formatXMLGregorianCalendar($this->{$attribute});

@@ -1,37 +1,16 @@
 <?php
 
-namespace PagOnline\Tests\Unit\Init;
+namespace Tests\Unit\Init;
 
-use ReflectionClass;
-use Illuminate\Support\Str;
+use PagOnline\Actions;
 use PagOnline\Init\IgfsCgInit;
-use PHPUnit\Framework\TestCase;
 use PagOnline\Exceptions\IgfsMissingParException;
 
-class IgfsCgInitTest extends TestCase
+/**
+ * Class IgfsCgInitTest.
+ */
+class IgfsCgInitTest extends IgfsCgBaseTest
 {
-    protected function getClassMethod($class, $name)
-    {
-        $class = new ReflectionClass($class);
-        $method = $class->getMethod($name);
-        $method->setAccessible(true);
-
-        return $method;
-    }
-
-    /**
-     * @param $namespace
-     */
-    protected function makeIgfsCg($namespace)
-    {
-        $class = new $namespace();
-        $class->serverURL = 'https://server.com/UNI_CG_SERVICES/services';
-        $class->tid = Str::random(16);
-        $class->kSig = Str::random(24);
-        $class->timeout = 15000;
-        $class->shopID = Str::random(24);
-    }
-
     /** @test */
     public function shouldChecksFieldsAndRaiseException()
     {
@@ -39,5 +18,23 @@ class IgfsCgInitTest extends TestCase
         $foo = $this->getClassMethod(IgfsCgInit::class, 'checkFields');
         $obj = new IgfsCgInit();
         $foo->invoke($obj);
+    }
+
+    /** @test */
+    public function shouldCheckFieldsAndPass()
+    {
+        /** @var \PagOnline\Init\IgfsCgInit $igfsCgInit */
+        $igfsCgInit = $this->makeIgfsCg(Actions::IGFS_CG_INIT);
+        $igfsCgInit->notifyURL = 'https://example.com/verify/';
+        $igfsCgInit->errorURL = 'https://example.com/error/';
+        $foo = $this->getClassMethod(IgfsCgInit::class, 'checkFields');
+
+        $exception = null;
+        try {
+            $foo->invoke($igfsCgInit);
+        } catch (\Exception $exception) {
+        }
+
+        $this->assertNull($exception);
     }
 }

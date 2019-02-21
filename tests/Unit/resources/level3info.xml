@@ -1,0 +1,10 @@
+<Level3Info>
+    <billingEmail><![CDATA[email@example.org]]></billingEmail>
+    <vat><![CDATA[22]]></vat>
+    <product>
+        <productCode><![CDATA[code]]></productCode>
+        <productDescription><![CDATA[description]]></productDescription>
+        <items><![CDATA[1]]></items>
+        <amount><![CDATA[10]]></amount>
+    </product>
+</Level3Info>

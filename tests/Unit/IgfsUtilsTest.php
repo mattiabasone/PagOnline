@@ -1,10 +1,13 @@
 <?php
 
-namespace PagOnline\Tests\Unit;
+namespace Tests\Unit;
 
 use PagOnline\IgfsUtils;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * Class IgfsUtilsTest.
+ */
 class IgfsUtilsTest extends TestCase
 {
     /**
@@ -82,5 +85,34 @@ class IgfsUtilsTest extends TestCase
             $datetimeObject->format('Y-m-d\TH:i:sP'),
             IgfsUtils::formatXMLGregorianCalendar(0)
         );
+    }
+
+    /** @test */
+    public function shouldParseResponseFields()
+    {
+        $xmlString = \file_get_contents(__DIR__.'/resources/base.xml');
+        $dom = new \SimpleXMLElement($xmlString, LIBXML_NOERROR, false);
+        $xmlArray = IgfsUtils::parseResponseFields($dom);
+        $this->assertIsArray($xmlArray);
+        $this->assertArrayHasKey('apiVersion', $xmlArray);
+    }
+
+    /** @test */
+    public function shouldGetValueFromArrayMap()
+    {
+        $array = [
+            'key1' => 1234
+        ];
+
+        $this->assertEquals($array['key1'], IgfsUtils::getValue($array, 'key1'));
+        $this->assertNull(IgfsUtils::getValue($array, 'key2'));
+    }
+
+    /** @test */
+    public function shouldReturnUniqueBoundaryValue()
+    {
+        $uniqueId = IgfsUtils::getUniqueBoundaryValue();
+        $this->assertIsString($uniqueId);
+        $this->assertRegExp('([a-z0-9]{13})', $uniqueId);
     }
 }

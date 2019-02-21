@@ -1,0 +1,9 @@
+<request>
+    <apiVersion><![CDATA[1]]></apiVersion>
+    <signature><![CDATA[signature]]></signature>
+    <shopID><![CDATA[shopID]]></shopID>
+    <trType><![CDATA[trType]]></trType>
+    <langID><![CDATA[langID]]></langID>
+    <notifyURL><![CDATA[notifyURL]]></notifyURL>
+    <errorURL><![CDATA[errorURL]]></errorURL>
+</request>

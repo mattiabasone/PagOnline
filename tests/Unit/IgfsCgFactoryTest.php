@@ -1,6 +1,6 @@
 <?php
 
-namespace PagOnline\Tests\Unit;
+namespace Tests\Unit;
 
 use PagOnline\Actions;
 use PagOnline\IgfsCgFactory;
@@ -13,18 +13,14 @@ use PagOnline\Exceptions\ClassNotFoundException;
  */
 class IgfsCgFactoryTest extends TestCase
 {
-    /**
-     * @test
-     */
+    /** @test */
     public function shouldCreateIgfsCgClass()
     {
         $igfsCgInit = new IgfsCgInit();
         $this->assertEquals($igfsCgInit, IgfsCgFactory::make(Actions::IGFS_CG_INIT));
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function shouldRaiseClassNotFoundException()
     {
         $this->expectException(ClassNotFoundException::class);

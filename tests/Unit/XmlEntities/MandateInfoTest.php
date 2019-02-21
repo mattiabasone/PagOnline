@@ -1,6 +1,6 @@
 <?php
 
-namespace PagOnline\Tests\Unit\XmlEntities;
+namespace Tests\Unit\XmlEntities;
 
 use PHPUnit\Framework\TestCase;
 use PagOnline\XmlEntities\MandateInfo;

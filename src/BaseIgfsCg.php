@@ -148,7 +148,7 @@ abstract class BaseIgfsCg implements IgfsCgInterface
         try {
             $data = '';
             foreach ($signatureFields as $value) {
-                $data .= $value;
+                $data .= (string) $value;
             }
 
             return \base64_encode(\hash_hmac('sha256', $data, $this->kSig, true));
@@ -221,9 +221,16 @@ abstract class BaseIgfsCg implements IgfsCgInterface
         return $serverUrl.$this->getServicePort();
     }
 
+    /**
+     * @param $request
+     * @param $find
+     * @param $value
+     *
+     * @return mixed
+     */
     protected function replaceRequest($request, $find, $value)
     {
-        if (null == $value) {
+        if (empty($value)) {
             $value = '';
         }
 
@@ -303,7 +310,7 @@ abstract class BaseIgfsCg implements IgfsCgInterface
         if (null == IgfsUtils::getValue($response, 'error')) {
             $this->error = true;
         } else {
-            $this->error = ('true' == IgfsUtils::getValue($response, 'error'));
+            $this->error = ('true' === (string) IgfsUtils::getValue($response, 'error'));
         }
         $this->errorDesc = IgfsUtils::getValue($response, 'errorDesc');
     }
@@ -502,5 +509,21 @@ abstract class BaseIgfsCg implements IgfsCgInterface
     protected function getUniqueBoundaryValue()
     {
         return IgfsUtils::getUniqueBoundaryValue();
+    }
+
+    /**
+     * Returns public properties to array.
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+        $propertiesArray = [];
+        $publicProperties = (new \ReflectionObject($this))->getProperties(\ReflectionProperty::IS_PUBLIC);
+        foreach ($publicProperties as $publicProperty) {
+            $propertiesArray[$publicProperty->getName()] = $publicProperty->getValue();
+        }
+
+        return $propertiesArray;
     }
 }

@@ -3,7 +3,9 @@
 namespace PagOnline\XmlEntities;
 
 use ReflectionObject;
+use SimpleXMLElement;
 use ReflectionProperty;
+use PagOnline\IgfsUtils;
 use PagOnline\XmlEntities\Traits\CastProperties;
 use PagOnline\XmlEntities\Traits\EntityAttributes;
 
@@ -39,6 +41,16 @@ abstract class BaseXmlEntity implements XmlEntityInterface
     }
 
     /**
+     * Get object attributes.
+     *
+     * @return array
+     */
+    public function getAttributes()
+    {
+        return $this->attributes;
+    }
+
+    /**
      * Format entity to Xml.
      *
      * @param string $rootNodeName
@@ -49,7 +61,7 @@ abstract class BaseXmlEntity implements XmlEntityInterface
     {
         $body = "<{$rootNodeName}>";
         foreach ($this->attributes as $attribute) {
-            if (null !== $this->{$attribute}) {
+            if (!empty($this->{$attribute})) {
                 if (!$this->isEntityAttribute($attribute)) {
                     $value = $this->castAttribute($attribute);
                     $body .= "<{$attribute}><![CDATA[{$value}]]></{$attribute}>";
@@ -61,5 +73,73 @@ abstract class BaseXmlEntity implements XmlEntityInterface
         $body .= "</{$rootNodeName}>";
 
         return $body;
+    }
+
+    /**
+     * @param array  $response
+     * @param string $attribute
+     */
+    public function setAttributeFromResponse($response, $attribute)
+    {
+        $value = (string) IgfsUtils::getValue($response, $attribute);
+        if ($this->isDateAttribute($attribute)) {
+            $value = IgfsUtils::parseXMLGregorianCalendar($this->{$attribute});
+        }
+        $this->{$attribute} = $value;
+    }
+
+    /**
+     * @param \SimpleXMLElement $dom
+     * @param $attribute
+     */
+    protected function setCustomAttributeFromDom(SimpleXMLElement $dom, $attribute)
+    {
+        if ($this->entityAttributes[$attribute]['type'] === 'array') {
+            $value = [];
+            foreach ($dom->xpath($attribute) as $item) {
+                $value[] = $this->entityAttributes[$attribute]['namespace']::fromXml($item->asXML(), 'product');
+            }
+        } else {
+            $element = $dom->xpath($attribute);
+            $value = null;
+            if (\is_array($element)) {
+                $value = $this->entityAttributes[$attribute]['namespace']::fromXml($element[0]->asXML(), 'product');
+            }
+        }
+        $this->{$attribute} = $value;
+    }
+
+    /**
+     * Generate BaseXmlEntity.
+     *
+     * @param $xml
+     *
+     * @return \PagOnline\XmlEntities\XmlEntityInterface|null
+     */
+    public static function fromXml($xml): ?XmlEntityInterface
+    {
+        if (empty($xml)) {
+            return null;
+        }
+
+        $dom = new SimpleXMLElement($xml, LIBXML_NOERROR, false);
+        if (0 == \count($dom)) {
+            return null;
+        }
+
+        $xmlArray = IgfsUtils::parseResponseFields($dom);
+        $object = null;
+        if (\count($xmlArray) > 0) {
+            $object = new static();
+            foreach ($object->getAttributes() as $attribute) {
+                if (!$object->isEntityAttribute($attribute)) {
+                    $object->setAttributeFromResponse($xmlArray, $attribute);
+                } else {
+                    $object->setCustomAttributeFromDom($dom, $attribute);
+                }
+            }
+        }
+
+        return $object;
     }
 }

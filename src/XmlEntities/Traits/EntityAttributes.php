@@ -23,7 +23,7 @@ trait EntityAttributes
      *
      * @return bool
      */
-    protected function isEntityAttribute(string $attribute): bool
+    public function isEntityAttribute(string $attribute): bool
     {
         return \array_key_exists($attribute, $this->entityAttributes);
     }
@@ -33,16 +33,16 @@ trait EntityAttributes
      *
      * @return string|null
      */
-    protected function getCustomAttributeXml(string $attribute): ?string
+    public function getCustomAttributeXml(string $attribute): ?string
     {
         if (empty($this->{$attribute})) {
             return null;
         }
         $xmlContent = '';
-        if ('array' === $this->entityAttributes[$attribute]['type']) {
+        if ($this->entityAttributes[$attribute]['type'] = 'array') {
             foreach ($this->{$attribute} as $item) {
                 /* @var \PagOnline\XmlEntities\XmlEntityInterface $item */
-                $xmlContent .= $item instanceof XmlEntityInterface ? $item->toXml('product') : '';
+                $xmlContent .= $item instanceof XmlEntityInterface ? $item->toXml($attribute) : '';
             }
         } else {
             $xmlContent .= $this->{$attribute} instanceof XmlEntityInterface ? $this->{$attribute}->toXml() : '';
