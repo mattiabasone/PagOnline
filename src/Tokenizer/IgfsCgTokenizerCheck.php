@@ -36,7 +36,7 @@ class IgfsCgTokenizerCheck extends BaseIgfsCgTokenizer
     /**
      * {@inheritdoc}
      */
-    protected function resetFields()
+    public function resetFields()
     {
         parent::resetFields();
         $this->payInstrToken = null;

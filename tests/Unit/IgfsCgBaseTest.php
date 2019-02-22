@@ -3,7 +3,6 @@
 namespace Tests\Unit\Init;
 
 use ReflectionClass;
-use Illuminate\Support\Str;
 use PagOnline\IgfsCgInterface;
 use PHPUnit\Framework\TestCase;
 
@@ -16,7 +15,6 @@ abstract class IgfsCgBaseTest extends TestCase
     protected $igfsCgAction;
 
     /**
-     * @param $class
      * @param $name
      *
      * @throws \ReflectionException
@@ -33,19 +31,35 @@ abstract class IgfsCgBaseTest extends TestCase
     }
 
     /**
-     * @param string $namespace
-     *
+     * @param \PagOnline\IgfsCgInterface $class
+     */
+    protected function setIgfsBaseValues(&$class)
+    {
+        $class->serverURL = 'https://server.com/UNI_CG_SERVICES/services';
+        $class->tid = 'UNI_MYBK';
+        $class->kSig = 'UNI_TESTKEY';
+        $class->shopID = '5c6fdf5d20485';
+        $class->langID = 'EN';
+    }
+
+    /**
      * @return \PagOnline\IgfsCgInterface
      */
     protected function makeIgfsCg(): IgfsCgInterface
     {
         $class = new $this->igfsCgClass();
-        $class->serverURL = 'https://server.com/UNI_CG_SERVICES/services';
-        $class->tid = Str::random(16);
-        $class->kSig = Str::random(24);
-        $class->timeout = 15000;
-        $class->shopID = Str::random(24);
+        $this->setIgfsBaseValues($class);
 
         return $class;
+    }
+
+    /** @test */
+    public function resetFieldsTest()
+    {
+        $class = $this->makeIgfsCg();
+        $class->resetFields();
+        $this->assertNull($class->tid);
+        $this->assertNull($class->shopID);
+        $this->assertEquals($class->langID, 'EN');
     }
 }

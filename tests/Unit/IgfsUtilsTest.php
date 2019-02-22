@@ -18,36 +18,11 @@ class IgfsUtilsTest extends TestCase
         $this->assertIsString(IgfsUtils::getUniqueBoundaryValue());
     }
 
-    /**
-     * @test
-     */
-    public function shouldStartWith()
+    /** @test */
+    public function shouldReturnUniqueBoundaryValue()
     {
-        $this->assertTrue(IgfsUtils::startsWith('MyString', 'My'));
-    }
-
-    /**
-     * @test
-     */
-    public function shouldNotStartWith()
-    {
-        $this->assertNotTrue(IgfsUtils::startsWith('MyString', 'Pi'));
-    }
-
-    /**
-     * @test
-     */
-    public function shouldEndsWith()
-    {
-        $this->assertTrue(IgfsUtils::endsWith('http://google.com/', '/'));
-    }
-
-    /**
-     * @test
-     */
-    public function shouldNotEndsWith()
-    {
-        $this->assertNotTrue(IgfsUtils::endsWith('http://google.com', '/'));
+        $uniqueId = IgfsUtils::getUniqueBoundaryValue();
+        $this->assertRegExp('([a-z0-9]{13})', $uniqueId);
     }
 
     /**
@@ -65,6 +40,7 @@ class IgfsUtilsTest extends TestCase
     public function shouldNotReturnDateTimeClass()
     {
         $this->assertNull(IgfsUtils::parseXMLGregorianCalendar('2019-02-19 00:00:00'));
+        $this->assertNull(IgfsUtils::parseXMLGregorianCalendar(null));
     }
 
     /** @test */
@@ -106,13 +82,5 @@ class IgfsUtilsTest extends TestCase
 
         $this->assertEquals($array['key1'], IgfsUtils::getValue($array, 'key1'));
         $this->assertNull(IgfsUtils::getValue($array, 'key2'));
-    }
-
-    /** @test */
-    public function shouldReturnUniqueBoundaryValue()
-    {
-        $uniqueId = IgfsUtils::getUniqueBoundaryValue();
-        $this->assertIsString($uniqueId);
-        $this->assertRegExp('([a-z0-9]{13})', $uniqueId);
     }
 }

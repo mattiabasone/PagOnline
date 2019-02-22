@@ -14,10 +14,11 @@ include __DIR__.'/config.php';
 $server = $config['servers'][$config['enabled_server']];
 
 $verify = new \PagOnline\Init\IgfsCgVerify();
+$verify->setRequestTimeout(15);
+
 $verify->serverURL = $server['url'];
 $verify->tid = $server['tid']; //per servizio MyBank usare UNI_MYBK
 $verify->kSig = $server['kSig'];
-$verify->timeout = 15000;
 $verify->shopID = \file_get_contents(__DIR__.'/shopID.txt'); // Chiave esterna UNIVOCA identificante il pagamento
 $verify->paymentID = \file_get_contents(__DIR__.'/paymentID.txt'); // NOTA: Leggo il paymentID rilasciato in fase di init (es. dalDB)...
 

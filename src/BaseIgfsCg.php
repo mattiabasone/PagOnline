@@ -3,8 +3,11 @@
 namespace PagOnline;
 
 use SimpleXMLElement;
+use Illuminate\Support\Str;
+use PagOnline\Traits\HttpClient;
 use PagOnline\Exceptions\IOException;
 use PagOnline\Exceptions\IgfsException;
+use GuzzleHttp\Exception\ConnectException;
 use PagOnline\Exceptions\ReadWriteException;
 use PagOnline\Exceptions\ConnectionException;
 use PagOnline\Exceptions\IgfsMissingParException;
@@ -14,6 +17,8 @@ use PagOnline\Exceptions\IgfsMissingParException;
  */
 abstract class BaseIgfsCg implements IgfsCgInterface
 {
+    use HttpClient;
+
     /**
      * Package version.
      *
@@ -21,8 +26,8 @@ abstract class BaseIgfsCg implements IgfsCgInterface
      */
     const VERSION = '2.4.1.5';
 
-    protected static $SOAP_ENVELOPE = 'soap:Envelope';
-    protected static $SOAP_BODY = 'soap:Body';
+    const SOAP_ENVELOPE = 'soap:Envelope';
+    const SOAP_BODY = 'soap:Body';
     protected static $RESPONSE = 'response';
 
     /**
@@ -46,15 +51,8 @@ abstract class BaseIgfsCg implements IgfsCgInterface
      */
     public $serverURL = null;
     public $serverURLs = null;
-    public $cTimeout = 5000;
-    public $timeout = 30000;
 
     public $shopID = null;
-
-    public $proxy = null;
-
-    public $httpAuthUser = null;
-    public $httpAuthPass = null;
 
     public $tid = null;
     public $merID = null;
@@ -68,22 +66,17 @@ abstract class BaseIgfsCg implements IgfsCgInterface
     protected $checkCert = true;
 
     /**
-     * @var
-     */
-    public $request;
-
-    /**
      * BaseIgfsCg constructor.
      */
     public function __construct()
     {
-        $this->resetFields();
+        $this->generateHttpClient();
     }
 
     /**
      * Reset fields.
      */
-    protected function resetFields()
+    public function resetFields()
     {
         $this->tid = null;
         $this->merID = null;
@@ -214,7 +207,7 @@ abstract class BaseIgfsCg implements IgfsCgInterface
      */
     protected function getServerUrl($serverUrl)
     {
-        if (!IgfsUtils::endsWith($serverUrl, '/')) {
+        if (!Str::endsWith($serverUrl, '/')) {
             $serverUrl .= '/';
         }
 
@@ -254,11 +247,6 @@ abstract class BaseIgfsCg implements IgfsCgInterface
             $request = $this->replaceRequest($request, '{merID}', '<merID><![CDATA['.$this->merID.']]></merID>');
         } else {
             $request = $this->replaceRequest($request, '{merID}', '');
-        }
-        if (null != $this->request) {
-            $request = $this->replaceRequest($request, '{request}', '<request><![CDATA['.$this->request.']]></request>');
-        } else {
-            $request = $this->replaceRequest($request, '{request}', '');
         }
 
         return $request;
@@ -322,10 +310,11 @@ abstract class BaseIgfsCg implements IgfsCgInterface
      */
     protected function checkResponseSignature($response)
     {
-        if (null == IgfsUtils::getValue($response, 'signature')) {
+        $signature = IgfsUtils::getValue($response, 'signature');
+        if (null === $signature) {
             return false;
         }
-        $signature = IgfsUtils::getValue($response, 'signature');
+
         if ($signature != $this->getResponseSignature($response)) {
             return false;
         }
@@ -350,7 +339,7 @@ abstract class BaseIgfsCg implements IgfsCgInterface
         $request = $this->setRequestSignature($request);
         $response = $this->post($url, $request);
 
-        if (null === $response) {
+        if (empty($response)) {
             throw new IgfsException('IGFS Response is null');
         }
 
@@ -368,46 +357,17 @@ abstract class BaseIgfsCg implements IgfsCgInterface
      *
      * @return bool|string
      */
-    private function post($url, $request)
+    private function post($url, $request): string
     {
-        //open connection
-        $ch = \curl_init();
-
-        $httpHeader = ['Content-Type: text/xml; charset="utf-8"'];
-
-        //set the url, number of POST vars, POST data
-        \curl_setopt($ch, CURLOPT_HTTPHEADER, $httpHeader);
-        \curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $this->cTimeout / 1000);
-        \curl_setopt($ch, CURLOPT_TIMEOUT, $this->timeout / 1000);
-        \curl_setopt($ch, CURLOPT_URL, $url);
-        \curl_setopt($ch, CURLOPT_POST, 1);
-        \curl_setopt($ch, CURLOPT_POSTFIELDS, $request);
-        \curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        if (null != $this->proxy) {
-            \curl_setopt($ch, CURLOPT_HTTPPROXYTUNNEL, true);
-            \curl_setopt($ch, CURLOPT_PROXY, $this->proxy);
-        }
-        if (!$this->checkCert) {
-            \curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        }
-        if (null != $this->httpAuthUser && null != $this->httpAuthPass) {
-            \curl_setopt($ch, CURLOPT_USERPWD, $this->httpAuthUser.':'.$this->httpAuthPass);
+        try {
+            $response = $this->httpPost($url, $request);
+        } catch (ConnectException $e) {
+            throw new ReadWriteException($url, $e->getMessage());
+        } catch (\Throwable $e) {
+            throw new ConnectionException($url, $e->getMessage());
         }
 
-        //execute post
-        $result = \curl_exec($ch);
-        if (\curl_errno($ch)) {
-            if (CURLE_OPERATION_TIMEDOUT == \curl_errno($ch)) {
-                throw new ReadWriteException($url, \curl_error($ch));
-            } else {
-                throw new ConnectionException($url, \curl_error($ch));
-            }
-        } else {
-            //close connection
-            \curl_close($ch);
-        }
-
-        return $result;
+        return $response->getBody()->getContents();
     }
 
     /**
@@ -420,8 +380,7 @@ abstract class BaseIgfsCg implements IgfsCgInterface
         try {
             $this->checkFields();
             $mapResponse = [];
-
-            if (null !== $this->serverURL) {
+            if (!empty($this->serverURL)) {
                 $mapResponse = $this->executeHttp($this->serverURL);
             } else {
                 $i = 0;

@@ -55,45 +55,13 @@ class IgfsUtils
         $fields = [];
         foreach ($nodes->children() as $item) {
             if (0 == \count($item)) {
-                $fields[$item->getName()] = (string) $item;
+                $fields[$item->getName()] = \trim((string) $item);
             } else {
                 $fields[$item->getName()] = (string) $item->asXML();
             }
         }
 
         return $fields;
-    }
-
-    /**
-     * @param $haystack
-     * @param $needle
-     * @param bool $case
-     *
-     * @return bool
-     */
-    public static function startsWith($haystack, $needle, $case = true)
-    {
-        if ($case) {
-            return 0 === \strcmp(\mb_substr($haystack, 0, \mb_strlen($needle)), $needle);
-        }
-
-        return 0 === \strcasecmp(\mb_substr($haystack, 0, \mb_strlen($needle)), $needle);
-    }
-
-    /**
-     * @param $haystack
-     * @param $needle
-     * @param bool $case
-     *
-     * @return bool
-     */
-    public static function endsWith($haystack, $needle, $case = true)
-    {
-        if ($case) {
-            return 0 === \strcmp(\mb_substr($haystack, \mb_strlen($haystack) - \mb_strlen($needle)), $needle);
-        }
-
-        return 0 === \strcasecmp(\mb_substr($haystack, \mb_strlen($haystack) - \mb_strlen($needle)), $needle);
     }
 
     /**
@@ -129,6 +97,7 @@ class IgfsUtils
         }
 
         $date = null;
+        $text = \str_replace('T', ' ', $text);
         foreach (self::DATE_FORMATS as $dateFormat) {
             $date = self::parseDateFormat($text, $dateFormat);
             if (null !== $date) {
@@ -145,10 +114,9 @@ class IgfsUtils
      *
      * @return bool|\DateTime|null
      */
-    private static function parseDateFormat($text, string $format): ?DateTime
+    public static function parseDateFormat($text, string $format): ?DateTime
     {
         try {
-            $text = \str_replace('T', ' ', $text);
             $date = DateTime::createFromFormat($format, $text);
 
             return $date ? $date : null;

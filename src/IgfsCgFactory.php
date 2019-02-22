@@ -31,11 +31,12 @@ class IgfsCgFactory
             // If Laravel helper function 'config' exists, I'll try to load configuration from .env file
             if (\class_exists('Config')) {
                 $igfsCgClass->serverURL = Config::get('pagonline.server_url');
-                $igfsCgClass->timeout = Config::get('pagonline.timeout');
                 $igfsCgClass->tid = Config::get('pagonline.terminal_id');
                 $igfsCgClass->kSig = Config::get('pagonline.signature_key');
                 $igfsCgClass->currencyCode = Config::get('pagonline.currency_code');
                 $igfsCgClass->langID = Config::get('pagonline.language_id');
+
+                $igfsCgClass->setRequestTimeout((int) Config::get('pagonline.timeout'));
             }
 
             return $igfsCgClass;

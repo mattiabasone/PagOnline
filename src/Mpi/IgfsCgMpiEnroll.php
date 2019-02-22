@@ -62,7 +62,7 @@ class IgfsCgMpiEnroll extends BaseIgfsCgMpi
     /**
      * Reset request fields.
      */
-    protected function resetFields()
+    public function resetFields()
     {
         parent::resetFields();
         $this->shopUserRef = null;

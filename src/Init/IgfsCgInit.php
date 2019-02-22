@@ -55,7 +55,7 @@ class IgfsCgInit extends BaseIgfsCgInit
     public $paymentID;
     public $redirectURL;
 
-    protected function resetFields()
+    public function resetFields()
     {
         parent::resetFields();
         $this->shopUserRef = null;

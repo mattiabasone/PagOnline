@@ -19,7 +19,7 @@ abstract class BaseIgfsCgTran extends BaseIgfsCg
 
     public $tranID;
 
-    protected function resetFields()
+    public function resetFields()
     {
         parent::resetFields();
         $this->addInfo1 = null;

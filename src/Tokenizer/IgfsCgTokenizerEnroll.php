@@ -55,7 +55,7 @@ class IgfsCgTokenizerEnroll extends BaseIgfsCgTokenizer
     /**
      * {@inheritdoc}
      */
-    protected function resetFields()
+    public function resetFields()
     {
         parent::resetFields();
         $this->shopUserRef = null;

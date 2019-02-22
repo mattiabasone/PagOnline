@@ -14,10 +14,11 @@ $shopID = \uniqid();
 \file_put_contents(__DIR__.'/shopID.txt', $shopID);
 
 $init = new \PagOnline\Init\IgfsCgInit();
+$init->setRequestTimeout(15);
+
 $init->serverURL = $server['url'];
 $init->tid = $server['tid'];
 $init->kSig = $server['kSig'];
-$init->timeout = 15000;
 $init->shopID = $shopID;
 $init->shopUserRef = 'email@example.org';
 $init->trType = 'AUTH';

@@ -62,7 +62,7 @@ class IgfsCgVerify extends BaseIgfsCgInit
     /**
      * {@inheritdoc}
      */
-    protected function resetFields()
+    public function resetFields()
     {
         parent::resetFields();
         $this->paymentID = null;

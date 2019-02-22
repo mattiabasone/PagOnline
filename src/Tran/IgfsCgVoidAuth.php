@@ -34,7 +34,7 @@ class IgfsCgVoidAuth extends BaseIgfsCgTran
         ];
     }
 
-    protected function resetFields()
+    public function resetFields()
     {
         parent::resetFields();
         $this->amount = null;

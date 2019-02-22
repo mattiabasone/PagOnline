@@ -28,7 +28,7 @@ class IgfsCgTokenizerDelete extends BaseIgfsCgTokenizer
         ];
     }
 
-    protected function resetFields()
+    public function resetFields()
     {
         parent::resetFields();
         $this->payInstrToken = null;

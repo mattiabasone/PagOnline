@@ -32,7 +32,10 @@ class IgfsCgSelector extends BaseIgfsCgInit
 
     public $termInfo;
 
-    protected function resetFields()
+    /**
+     * {@inheritdoc}
+     */
+    public function resetFields()
     {
         parent::resetFields();
         $this->shopUserRef = null;
