@@ -36,7 +36,12 @@ class IgfsCgFactory
                 $igfsCgClass->currencyCode = Config::get('pagonline.currency_code');
                 $igfsCgClass->langID = Config::get('pagonline.language_id');
 
-                $igfsCgClass->setRequestTimeout((int) Config::get('pagonline.timeout'));
+                // HTTP configuration
+                $igfsCgClass->setRequestTimeout((int) Config::get('pagonline.request_timeout'));
+                $igfsCgClass->setConnectTimeout((int) Config::get('pagonline.connect_timeout'));
+                $igfsCgClass->setHttpProxy(Config::get('pagonline.http_proxy'));
+                $igfsCgClass->setHttpAuthUser(Config::get('pagonline.http_basic_auth_user'));
+                $igfsCgClass->setHttpAuthUser(Config::get('pagonline.http_basic_auth_pass'));
             }
 
             return $igfsCgClass;

@@ -32,17 +32,17 @@ trait HttpClient
     /**
      * @var string
      */
-    protected $httpAuthUser;
+    protected $httpAuthUser = '';
 
     /**
      * @var string
      */
-    protected $httpAuthPass;
+    protected $httpAuthPass = '';
 
     /**
      * @var string
      */
-    protected $httpProxy;
+    protected $httpProxy = '';
 
     /**
      * @param array $configuration

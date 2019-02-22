@@ -20,7 +20,6 @@ $init = new \PagOnline\Init\IgfsCgInit();
 $init->serverURL = "https://payment-gateway-example.com/IGFS_CG_SERVICES/services";
 $init->tid = "MY-TID-CODE";
 $init->kSig = '1234567890987654321';
-$init->timeout = 15000;
 $init->shopID = 'my-transaction-id';
 $init->shopUserRef = "email@example.org";
 $init->trType = "AUTH";
@@ -30,6 +29,13 @@ $init->langID = "IT";
 $init->notifyURL = "http://my-domain.tld/verify.php";
 $init->errorURL = "http://my-domain.tld/error.php";
 $init->addInfo1 = 'myFirstAddintionalInfo';
+
+// if you need to edit http client parameters...
+$init->setRequestTimeout(10); // Seconds
+$init->setConnectTimeout(5); // Seconds
+$init->setHttpProxy('tcp://some.proxy'); // Proxy server for requests
+$init->setHttpAuthUser('username'); // HTTP Basic Auth username
+$init->setHttpAuthPass('password'); // HTTP Basic Auth password
 
 if (!$init->execute()) {
     // Something went wrong
@@ -48,7 +54,8 @@ to copy `pagonline.php` config file
 
 Set the following environment variables in your `.env` file:
 - `PAGONLINE_SERVER_URL` payment gateway server url (_default: null_)
-- `PAGONLINE_TIMEOUT` maximum timeout in milliseconds for completing a request (_default: 15000_)
+- `PAGONLINE_REQUEST_TIMEOUT` maximum timeout in seconds for completing a request (_default: 15_)
+- `PAGONLINE_CONNECT_TIMEOUT` maximum timeout in seconds for connecting to the server (_default: 5_)
 - `PAGONLINE_TERMINAL_ID` identifier provided by the payment gateway (_default: null_)
 - `PAGONLINE_SIGNATURE_KEY` signature key provided by the payment gateway (_default: null_)
 - `PAGONLINE_CURRENCY_CODE` currency code (_default: EUR_)
