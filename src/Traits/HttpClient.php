@@ -45,6 +45,11 @@ trait HttpClient
     protected $httpProxy = '';
 
     /**
+     * @var bool
+     */
+    protected $httpVerifySsl = true;
+
+    /**
      * @param array $configuration
      */
     public function setCustomHttpRequestConfig(array $configuration): void
@@ -117,6 +122,14 @@ trait HttpClient
     }
 
     /**
+     * @param bool $httpVerifySsl
+     */
+    public function setHttpVerifySsl(bool $httpVerifySsl): void
+    {
+        $this->httpVerifySsl = $httpVerifySsl;
+    }
+
+    /**
      * Create configuration array for Guzzle Client.
      *
      * @return array
@@ -126,7 +139,7 @@ trait HttpClient
         $configuration = [
             \GuzzleHttp\RequestOptions::TIMEOUT => $this->requestTimeout,
             \GuzzleHttp\RequestOptions::CONNECT_TIMEOUT => $this->connectTimeout,
-            \GuzzleHttp\RequestOptions::VERIFY => $this->checkCert,
+            \GuzzleHttp\RequestOptions::VERIFY => $this->httpVerifySsl,
             \GuzzleHttp\RequestOptions::HEADERS => [
                 'Content-Type' => 'text/xml; charset="utf-8"',
             ],

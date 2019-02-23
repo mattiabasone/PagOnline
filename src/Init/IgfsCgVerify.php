@@ -98,7 +98,7 @@ class IgfsCgVerify extends BaseIgfsCgInit
     protected function checkFields()
     {
         parent::checkFields();
-        if (null == $this->paymentID || '' == $this->paymentID) {
+        if (empty($this->paymentID)) {
             throw new IgfsMissingParException('Missing paymentID');
         }
     }
@@ -151,7 +151,7 @@ class IgfsCgVerify extends BaseIgfsCgInit
         // Opzionale
         $this->expireYear = IgfsUtils::getValue($response, 'expireYear');
         // Opzionale
-        $this->level3Info = Level3Info::fromXml(IgfsUtils::getValue($response, 'level3Info'), 'level3Info');
+        $this->level3Info = Level3Info::fromXml(IgfsUtils::getValue($response, 'level3Info'));
         // Opzionale
         $this->additionalFee = IgfsUtils::getValue($response, 'additionalFee');
         // Opzionale
@@ -194,7 +194,7 @@ class IgfsCgVerify extends BaseIgfsCgInit
                 $payAddData = [];
                 foreach ($dom->response->children() as $item) {
                     if ('payAddData' == $item->getName()) {
-                        $payAddData[] = Entry::fromXml($item->asXML(), 'payAddData');
+                        \array_push($payAddData, Entry::fromXml($item->asXML(), 'payAddData'));
                     }
                 }
                 $this->payAddData = $payAddData;

@@ -111,11 +111,9 @@ class IgfsCgMpiEnroll extends BaseIgfsCgMpi
             }
         }
 
-        if (null != $this->payInstrToken) {
+        if (null !== $this->payInstrToken && '' === (string) $this->payInstrToken) {
             // Se è stato impostato il payInstrToken verifico...
-            if ('' == $this->payInstrToken) {
-                throw new IgfsMissingParException('Missing payInstrToken');
-            }
+            throw new IgfsMissingParException('Missing payInstrToken');
         }
 
         if (null == $this->termURL) {

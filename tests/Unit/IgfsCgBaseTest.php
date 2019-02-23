@@ -43,6 +43,13 @@ abstract class IgfsCgBaseTest extends TestCase
     }
 
     /**
+     * @param $class
+     */
+    protected function setIgfsRequiredParamenters(&$class)
+    {
+    }
+
+    /**
      * @return \PagOnline\IgfsCgInterface
      */
     protected function makeIgfsCg(): IgfsCgInterface
@@ -61,5 +68,28 @@ abstract class IgfsCgBaseTest extends TestCase
         $this->assertNull($class->tid);
         $this->assertNull($class->shopID);
         $this->assertEquals($class->langID, 'EN');
+    }
+
+    /** @test */
+    public function shouldReturnServicePortString()
+    {
+        /** @var \PagOnline\Init\IgfsCgInit $obj */
+        $obj = $this->makeIgfsCg();
+        $foo = $this->getClassMethod('getServicePort');
+        $this->assertIsString(
+            $foo->invoke($obj)
+        );
+    }
+
+    /** @test */
+    public function shouldBuildValidRequest()
+    {
+        /** @var \PagOnline\Init\IgfsCgInit $obj */
+        $obj = $this->makeIgfsCg();
+        $foo = $this->getClassMethod('buildRequest');
+
+        $request = $foo->invoke($obj);
+        $this->assertIsString($request);
+        $this->assertGreaterThan(0, \mb_strlen($request));
     }
 }

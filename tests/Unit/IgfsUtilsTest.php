@@ -41,6 +41,7 @@ class IgfsUtilsTest extends TestCase
     {
         $this->assertNull(IgfsUtils::parseXMLGregorianCalendar('2019-02-19 00:00:00'));
         $this->assertNull(IgfsUtils::parseXMLGregorianCalendar(null));
+        $this->assertNull(IgfsUtils::parseXMLGregorianCalendar(''));
     }
 
     /** @test */
@@ -61,6 +62,8 @@ class IgfsUtilsTest extends TestCase
             $datetimeObject->format('Y-m-d\TH:i:sP'),
             IgfsUtils::formatXMLGregorianCalendar(0)
         );
+
+        $this->assertNull(IgfsUtils::formatXMLGregorianCalendar(''));
     }
 
     /** @test */

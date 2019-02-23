@@ -75,18 +75,7 @@ class IgfsCgInitTest extends IgfsCgBaseTest
     }
 
     /** @test */
-    public function shouldReturnServicePortString()
-    {
-        /** @var \PagOnline\Init\IgfsCgInit $obj */
-        $obj = $this->makeIgfsCg();
-        $foo = $this->getClassMethod('getServicePort');
-        $this->assertIsString(
-            $foo->invoke($obj)
-        );
-    }
-
-    /** @test */
-    public function shouldSuccessfulInit()
+    public function shouldExecuteInitRequests()
     {
         // Create a mock and queue two responses.
         $mock = new MockHandler([

@@ -2,7 +2,12 @@
 
 namespace Tests\Unit\Init;
 
+use PagOnline\Errors;
+use GuzzleHttp\Client;
+use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Psr7\Response;
 use PagOnline\Init\IgfsCgVerify;
+use GuzzleHttp\Handler\MockHandler;
 use PagOnline\Exceptions\IgfsMissingParException;
 
 /**
@@ -61,13 +66,49 @@ class IgfsCgVerifyTest extends IgfsCgBaseTest
     }
 
     /** @test */
-    public function shouldReturnServicePortString()
+    public function shouldExecuteVerifyRequests()
     {
+        // Create a mock and queue two responses.
+        $mock = new MockHandler([
+            new Response(
+                200,
+                ['Content-Type' => 'text/xml; charset="utf-8"'],
+                \file_get_contents(__DIR__.'/../resources/verify/success.xml')
+            ),
+            new Response(500),
+            new Response(
+                200,
+                ['Content-Type' => 'text/xml; charset="utf-8"'],
+                \file_get_contents(__DIR__.'/../resources/verify/invalid_signature.xml')
+            ),
+        ]);
+
+        $handler = HandlerStack::create($mock);
+
         /** @var \PagOnline\Init\IgfsCgInit $obj */
         $obj = $this->makeIgfsCg();
-        $foo = $this->getClassMethod('getServicePort');
-        $this->assertIsString(
-            $foo->invoke($obj)
-        );
+        $obj->shopID = '5c71649051ef5';
+        $obj->paymentID = '00054481661101578102';
+        $obj->setHttpClient(new Client(['handler' => $handler]));
+
+        // First test
+        $this->assertTrue($obj->execute());
+
+        // Second test
+        $obj->resetFields();
+        $this->setIgfsBaseValues($obj);
+        $obj->shopID = '5c71649051ef5';
+        $obj->paymentID = '00054481661101578102';
+        $this->assertFalse($obj->execute());
+        $this->assertEquals(Errors::IGFS_007, $obj->rc);
+
+        // Third test
+        $obj->resetFields();
+        $this->setIgfsBaseValues($obj);
+        $obj->shopID = '5c71649051ef5';
+        $obj->paymentID = '00054481661101578102';
+
+        $this->assertFalse($obj->execute());
+        $this->assertEquals(Errors::IGFS_909, $obj->rc);
     }
 }

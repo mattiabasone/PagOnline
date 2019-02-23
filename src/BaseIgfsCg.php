@@ -7,8 +7,6 @@ use Illuminate\Support\Str;
 use PagOnline\Traits\HttpClient;
 use PagOnline\Exceptions\IOException;
 use PagOnline\Exceptions\IgfsException;
-use GuzzleHttp\Exception\ConnectException;
-use PagOnline\Exceptions\ReadWriteException;
 use PagOnline\Exceptions\ConnectionException;
 use PagOnline\Exceptions\IgfsMissingParException;
 
@@ -63,7 +61,6 @@ abstract class BaseIgfsCg implements IgfsCgInterface
     public $errorDesc = null;
 
     protected $fields2Reset = false;
-    protected $checkCert = true;
 
     /**
      * BaseIgfsCg constructor.
@@ -188,14 +185,6 @@ abstract class BaseIgfsCg implements IgfsCgInterface
         if (empty($this->tid) && (empty($this->merID) && empty($this->payInstr))) {
             throw new IgfsMissingParException('Missing tid');
         }
-    }
-
-    /**
-     * Disable Certification Check on SSL HandShake.
-     */
-    public function disableCheckSSLCert()
-    {
-        $this->checkCert = false;
     }
 
     /**
@@ -353,7 +342,6 @@ abstract class BaseIgfsCg implements IgfsCgInterface
      * @param $request
      *
      * @throws ConnectionException
-     * @throws ReadWriteException
      *
      * @return bool|string
      */
@@ -361,8 +349,6 @@ abstract class BaseIgfsCg implements IgfsCgInterface
     {
         try {
             $response = $this->httpPost($url, $request);
-        } catch (ConnectException $e) {
-            throw new ReadWriteException($url, $e->getMessage());
         } catch (\Throwable $e) {
             throw new ConnectionException($url, $e->getMessage());
         }
@@ -414,7 +400,7 @@ abstract class BaseIgfsCg implements IgfsCgInterface
             } else {
                 return false;
             }
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             $this->resetFields();
             $this->fields2Reset = true;
             $this->error = true;
@@ -424,10 +410,6 @@ abstract class BaseIgfsCg implements IgfsCgInterface
                 $this->errorDesc = $e->getMessage();
             }
             if ($e instanceof ConnectionException) {
-                $this->rc = Errors::IGFS_007; // Communication error
-                $this->errorDesc = $e->getMessage();
-            }
-            if ($e instanceof ReadWriteException) {
                 $this->rc = Errors::IGFS_007; // Communication error
                 $this->errorDesc = $e->getMessage();
             }

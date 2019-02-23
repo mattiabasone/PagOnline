@@ -66,15 +66,4 @@ class IgfsCgMpiAuthTest extends IgfsCgBaseTest
         $array = $obj->toArray();
         $this->assertIsArray($array);
     }
-
-    /** @test */
-    public function shouldReturnServicePortString()
-    {
-        /** @var \PagOnline\Init\IgfsCgInit $obj */
-        $obj = $this->makeIgfsCg();
-        $foo = $this->getClassMethod('getServicePort');
-        $this->assertIsString(
-            $foo->invoke($obj)
-        );
-    }
 }

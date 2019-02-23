@@ -2,15 +2,32 @@
 
 namespace Tests\Unit\Init;
 
-use PagOnline\Init\IgfsCgSelector;
+use PagOnline\Mpi\IgfsCgMpiEnroll;
 use PagOnline\Exceptions\IgfsMissingParException;
+use PagOnline\Mpi\Requests\IgfsCgMpiEnrollRequest;
 
 /**
  * Class IgfsCgInitTest.
  */
-class IgfsCgSelectorTest extends IgfsCgBaseTest
+class IgfsCgMpiEnrollTest extends IgfsCgBaseTest
 {
-    protected $igfsCgClass = IgfsCgSelector::class;
+    protected $igfsCgClass = IgfsCgMpiEnroll::class;
+    protected $igfsCgRequest = IgfsCgMpiEnrollRequest::CONTENT;
+
+    protected function setIgfsRequiredParamenters(&$class)
+    {
+        $class->amount = 100;
+        $class->currencyCode = 'EUR';
+        $class->pan = 'pan';
+        $class->termURL = 'termURL';
+    }
+
+    /** @test */
+    public function shouldReturnRequestString()
+    {
+        $obj = new $this->igfsCgClass();
+        $this->assertEquals($obj->getRequest(), $this->igfsCgRequest);
+    }
 
     /** @test */
     public function shouldChecksFieldsAndRaiseException()
@@ -24,13 +41,10 @@ class IgfsCgSelectorTest extends IgfsCgBaseTest
     /** @test */
     public function shouldCheckFieldsAndPass()
     {
-        /** @var \PagOnline\Init\IgfsCgSelector $obj */
+        /** @var \PagOnline\Mpi\IgfsCgMpiAuth $obj */
         $obj = $this->makeIgfsCg();
-        $obj->amount = 500;
-        $obj->currencyCode = 'EU';
-        $obj->payInstrToken = 'payInstrToken';
         $foo = $this->getClassMethod('checkFields');
-
+        $this->setIgfsRequiredParamenters($obj);
         $exception = null;
         try {
             $foo->invoke($obj);
@@ -41,11 +55,12 @@ class IgfsCgSelectorTest extends IgfsCgBaseTest
     }
 
     /** @test */
-    public function shouldRaiseExceptionForMissingTrType()
+    public function shouldRaiseExceptionForMissingShopId()
     {
         $this->expectException(IgfsMissingParException::class);
         /** @var \PagOnline\Init\IgfsCgInit $obj */
         $obj = $this->makeIgfsCg();
+        $obj->shopID = null;
         $foo = $this->getClassMethod('checkFields');
         $foo->invoke($obj);
     }
