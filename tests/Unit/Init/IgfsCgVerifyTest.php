@@ -8,6 +8,7 @@ use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
 use PagOnline\Init\IgfsCgVerify;
 use GuzzleHttp\Handler\MockHandler;
+use PagOnline\Init\Requests\IgfsCgVerifyRequest;
 use PagOnline\Exceptions\IgfsMissingParException;
 
 /**
@@ -16,6 +17,7 @@ use PagOnline\Exceptions\IgfsMissingParException;
 class IgfsCgVerifyTest extends IgfsCgBaseTest
 {
     protected $igfsCgClass = IgfsCgVerify::class;
+    protected $igfsCgRequest = IgfsCgVerifyRequest::CONTENT;
 
     /** @test */
     public function shouldChecksFieldsAndRaiseException()

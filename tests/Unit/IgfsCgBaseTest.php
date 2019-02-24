@@ -5,6 +5,7 @@ namespace Tests\Unit\Init;
 use ReflectionClass;
 use PagOnline\IgfsCgInterface;
 use PHPUnit\Framework\TestCase;
+use PagOnline\Exceptions\IgfsMissingParException;
 
 /**
  * Class IgfsCgBaseTest.
@@ -61,6 +62,13 @@ abstract class IgfsCgBaseTest extends TestCase
     }
 
     /** @test */
+    public function shouldReturnRequestString()
+    {
+        $obj = new $this->igfsCgClass();
+        $this->assertEquals($obj->getRequest(), $this->igfsCgRequest);
+    }
+
+    /** @test */
     public function resetFieldsTest()
     {
         $class = $this->makeIgfsCg();
@@ -82,13 +90,34 @@ abstract class IgfsCgBaseTest extends TestCase
     }
 
     /** @test */
+    public function shouldChecksBaseFieldsAndRaiseException()
+    {
+        $foo = $this->getClassMethod('checkFields');
+        $obj = new $this->igfsCgClass();
+
+        $this->expectException(IgfsMissingParException::class);
+        $this->expectExceptionMessage('Missing serverURL');
+        $foo->invoke($obj);
+        $obj->serverURL = 'http://example.org';
+
+        $this->expectException(IgfsMissingParException::class);
+        $this->expectExceptionMessage('Missing kSig');
+        $foo->invoke($obj);
+
+        $obj->kSig = 'kSig';
+        $this->expectException(IgfsMissingParException::class);
+        $this->expectExceptionMessage('Missing tid');
+        $foo->invoke($obj);
+    }
+
+    /** @test */
     public function shouldBuildValidRequest()
     {
         /** @var \PagOnline\Init\IgfsCgInit $obj */
         $obj = $this->makeIgfsCg();
-        $foo = $this->getClassMethod('buildRequest');
-
-        $request = $foo->invoke($obj);
+        $buildRequestMethod = $this->getClassMethod('buildRequest');
+        $this->setIgfsRequiredParamenters($obj);
+        $request = $buildRequestMethod->invoke($obj);
         $this->assertIsString($request);
         $this->assertGreaterThan(0, \mb_strlen($request));
     }

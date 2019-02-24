@@ -21,13 +21,6 @@ class IgfsCgPayByMailInitTest extends IgfsCgBaseTest
     }
 
     /** @test */
-    public function shouldReturnRequestString()
-    {
-        $obj = new $this->igfsCgClass();
-        $this->assertEquals($obj->getRequest(), $this->igfsCgRequest);
-    }
-
-    /** @test */
     public function shouldChecksFieldsAndRaiseException()
     {
         $foo = $this->getClassMethod('checkFields');

@@ -156,16 +156,14 @@ class IgfsCgInit extends BaseIgfsCgInit
         }
 
         if (null !== $this->level3Info) {
-            $i = 0;
-            if (null !== $this->level3Info->product && \is_array($this->level3Info->product)) {
-                foreach ($this->level3Info->product as $product) {
-                    if (null === $product->productCode) {
+            if (!empty($this->level3Info->product) && \is_array($this->level3Info->product)) {
+                foreach ($this->level3Info->product as $i => $product) {
+                    if (empty($product->productCode)) {
                         throw new IgfsMissingParException("Missing productCode[{$i}]");
                     }
-                    if (null === $product->productDescription) {
+                    if (empty($product->productDescription)) {
                         throw new IgfsMissingParException("Missing productDescription[{$i}]");
                     }
-                    ++$i;
                 }
             }
         }

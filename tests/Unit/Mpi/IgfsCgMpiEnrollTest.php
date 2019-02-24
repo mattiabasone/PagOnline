@@ -23,13 +23,6 @@ class IgfsCgMpiEnrollTest extends IgfsCgBaseTest
     }
 
     /** @test */
-    public function shouldReturnRequestString()
-    {
-        $obj = new $this->igfsCgClass();
-        $this->assertEquals($obj->getRequest(), $this->igfsCgRequest);
-    }
-
-    /** @test */
     public function shouldChecksFieldsAndRaiseException()
     {
         $this->expectException(IgfsMissingParException::class);

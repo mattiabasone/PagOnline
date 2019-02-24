@@ -22,21 +22,15 @@ class IgfsCgAuthTest extends IgfsCgBaseTest
     }
 
     /** @test */
-    public function shouldReturnRequestString()
-    {
-        $obj = new $this->igfsCgClass();
-        $this->assertEquals($obj->getRequest(), $this->igfsCgRequest);
-    }
-
-    /** @test */
     public function shouldChecksFieldsAndRaiseException()
     {
-        $foo = $this->getClassMethod('checkFields');
-        $obj = new $this->igfsCgClass();
-
+        $checkFieldsMethod = $this->getClassMethod('checkFields');
+        $obj = $this->makeIgfsCg();
+        $obj->shopID = null;
+        $this->setIgfsRequiredParamenters($obj);
         $this->expectException(IgfsMissingParException::class);
-        $obj->langID = null;
-        $foo->invoke($obj);
+        $this->expectExceptionMessage('Missing shopID');
+        $checkFieldsMethod->invoke($obj);
     }
 
     /** @test */

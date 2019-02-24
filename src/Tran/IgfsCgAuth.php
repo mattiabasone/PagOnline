@@ -339,7 +339,7 @@ class IgfsCgAuth extends BaseIgfsCgTran
             IgfsUtils::getValue($response, 'date'), // TRANDATE
             IgfsUtils::getValue($response, 'paymentID'), // PAYMENTID
             IgfsUtils::getValue($response, 'authCode'), // AUTHCODE
-            ];
+        ];
         // signature dove il buffer e' cosi composto TID|SHOPID|RC|ERRORCODE|ORDERID|PAYMENTID|AUTHCODE
         return $this->getSignature($fields);
     }

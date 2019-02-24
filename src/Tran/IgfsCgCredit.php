@@ -73,30 +73,21 @@ class IgfsCgCredit extends BaseIgfsCgTran
         if (null == $this->amount) {
             throw new IgfsMissingParException('Missing amount');
         }
-        if (null == $this->refTranID) {
-            if (null == $this->pan) {
-                if (null == $this->payInstrToken) {
-                    throw new IgfsMissingParException('Missing refTranID');
-                }
-            }
-        }
-        if (null != $this->pan) {
-            // Se è stato impostato il pan verifico...
-            if ('' == $this->pan) {
-                throw new IgfsMissingParException('Missing pan');
-            }
-        }
-        if (null != $this->payInstrToken) {
-            // Se è stato impostato il payInstrToken verifico...
-            if ('' == $this->payInstrToken) {
-                throw new IgfsMissingParException('Missing payInstrToken');
-            }
+        if (null === $this->refTranID && null === $this->pan && null === $this->payInstrToken) {
+            throw new IgfsMissingParException('Missing refTranID');
         }
 
-        if (null != $this->pan or null != $this->payInstrToken) {
-            if (null == $this->currencyCode) {
-                throw new IgfsMissingParException('Missing currencyCode');
-            }
+        if (null !== $this->pan && '' === $this->pan) {
+            // Se è stato impostato il pan verifico...
+            throw new IgfsMissingParException('Missing pan');
+        }
+
+        if (null !== $this->payInstrToken && '' === $this->payInstrToken) {
+            throw new IgfsMissingParException('Missing payInstrToken');
+        }
+
+        if ((null !== $this->pan || null !== $this->payInstrToken) && null === $this->currencyCode) {
+            throw new IgfsMissingParException('Missing currencyCode');
         }
     }
 

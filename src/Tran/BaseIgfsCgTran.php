@@ -33,7 +33,7 @@ abstract class BaseIgfsCgTran extends BaseIgfsCg
     protected function checkFields()
     {
         parent::checkFields();
-        if (null == $this->shopID || '' == $this->shopID) {
+        if (empty($this->shopID)) {
             throw new IgfsMissingParException('Missing shopID');
         }
     }

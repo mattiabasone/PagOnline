@@ -7,6 +7,8 @@ use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
 use PagOnline\Init\IgfsCgInit;
 use GuzzleHttp\Handler\MockHandler;
+use PagOnline\XmlEntities\Level3Info;
+use PagOnline\XmlEntities\Level3InfoProduct;
 use PagOnline\Init\Requests\IgfsCgInitRequest;
 use PagOnline\Exceptions\IgfsMissingParException;
 
@@ -19,18 +21,50 @@ class IgfsCgInitTest extends IgfsCgBaseTest
     protected $igfsCgRequest = IgfsCgInitRequest::CONTENT;
 
     /** @test */
-    public function shouldReturnRequestString()
-    {
-        $obj = new $this->igfsCgClass();
-        $this->assertEquals($obj->getRequest(), $this->igfsCgRequest);
-    }
-
-    /** @test */
     public function shouldChecksFieldsAndRaiseException()
     {
-        $this->expectException(IgfsMissingParException::class);
         $foo = $this->getClassMethod('checkFields');
-        $obj = new IgfsCgInit();
+        /** @var IgfsCgInit $obj */
+        $obj = $this->makeIgfsCg();
+        $obj->trType = null;
+        $obj->langID = null;
+        $this->expectException(IgfsMissingParException::class);
+        $this->expectExceptionMessage('Missing trType');
+        $foo->invoke($obj);
+
+        $obj->trType = 'AUTH';
+        $this->expectException(IgfsMissingParException::class);
+        $this->expectExceptionMessage('Missing langID');
+        $foo->invoke($obj);
+
+        $obj->langID = 'EN';
+        $this->expectException(IgfsMissingParException::class);
+        $this->expectExceptionMessage('Missing notifyURL');
+        $foo->invoke($obj);
+
+        $obj->notifyURL = 'http://example.org/notify';
+        $this->expectException(IgfsMissingParException::class);
+        $this->expectExceptionMessage('Missing errorURL');
+        $foo->invoke($obj);
+
+        $obj->errorURL = 'http://example.org/error';
+        $obj->payInstrToken = '';
+        $this->expectException(IgfsMissingParException::class);
+        $this->expectExceptionMessage('Missing payInstrToken');
+        $foo->invoke($obj);
+
+        $obj->payInstrToken = 'Pippo';
+        $obj->level3Info = new Level3Info();
+        $obj->level3Info->product = [
+            0 => (new Level3InfoProduct()),
+        ];
+        $this->expectException(IgfsMissingParException::class);
+        $this->expectExceptionMessage('Missing productCode[0]');
+        $foo->invoke($obj);
+
+        $obj->level3Info->product[0]->productCode = 'productCode';
+        $this->expectException(IgfsMissingParException::class);
+        $this->expectExceptionMessage('Missing productDescription[0]');
         $foo->invoke($obj);
     }
 

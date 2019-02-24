@@ -2,37 +2,46 @@
 
 namespace Tests\Unit\Init;
 
-use PagOnline\Init\IgfsCgSelector;
+use PagOnline\Tran\IgfsCgCredit;
+use PagOnline\Tran\Requests\IgfsCgCreditRequest;
 use PagOnline\Exceptions\IgfsMissingParException;
-use PagOnline\Init\Requests\IgfsCgSelectorRequest;
 
 /**
  * Class IgfsCgInitTest.
  */
-class IgfsCgSelectorTest extends IgfsCgBaseTest
+class IgfsCgCreditTest extends IgfsCgBaseTest
 {
-    protected $igfsCgClass = IgfsCgSelector::class;
-    protected $igfsCgRequest = IgfsCgSelectorRequest::CONTENT;
+    protected $igfsCgClass = IgfsCgCredit::class;
+    protected $igfsCgRequest = IgfsCgCreditRequest::CONTENT;
+
+    protected function setIgfsRequiredParamenters(&$class)
+    {
+        $class->amount = 500;
+        $class->currencyCode = 'EUR';
+        $class->refTranID = '12345678';
+        $class->payInstrToken = 'payInstrToken';
+    }
 
     /** @test */
     public function shouldChecksFieldsAndRaiseException()
     {
-        $this->expectException(IgfsMissingParException::class);
         $foo = $this->getClassMethod('checkFields');
         $obj = new $this->igfsCgClass();
+
+        $this->expectException(IgfsMissingParException::class);
+        $obj->amount = null;
         $foo->invoke($obj);
+
+        $this->expectExceptionMessage();
     }
 
     /** @test */
     public function shouldCheckFieldsAndPass()
     {
-        /** @var \PagOnline\Init\IgfsCgSelector $obj */
+        /** @var \PagOnline\Mpi\IgfsCgMpiAuth $obj */
         $obj = $this->makeIgfsCg();
-        $obj->amount = 500;
-        $obj->currencyCode = 'EU';
-        $obj->payInstrToken = 'payInstrToken';
         $foo = $this->getClassMethod('checkFields');
-
+        $this->setIgfsRequiredParamenters($obj);
         $exception = null;
         try {
             $foo->invoke($obj);
@@ -43,11 +52,12 @@ class IgfsCgSelectorTest extends IgfsCgBaseTest
     }
 
     /** @test */
-    public function shouldRaiseExceptionForMissingTrType()
+    public function shouldRaiseExceptionForMissingShopId()
     {
         $this->expectException(IgfsMissingParException::class);
         /** @var \PagOnline\Init\IgfsCgInit $obj */
         $obj = $this->makeIgfsCg();
+        $obj->shopID = null;
         $foo = $this->getClassMethod('checkFields');
         $foo->invoke($obj);
     }

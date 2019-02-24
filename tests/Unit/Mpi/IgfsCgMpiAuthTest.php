@@ -15,13 +15,6 @@ class IgfsCgMpiAuthTest extends IgfsCgBaseTest
     protected $igfsCgRequest = IgfsCgMpiAuthRequest::CONTENT;
 
     /** @test */
-    public function shouldReturnRequestString()
-    {
-        $obj = new $this->igfsCgClass();
-        $this->assertEquals($obj->getRequest(), $this->igfsCgRequest);
-    }
-
-    /** @test */
     public function shouldChecksFieldsAndRaiseException()
     {
         $this->expectException(IgfsMissingParException::class);
