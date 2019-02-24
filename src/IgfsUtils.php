@@ -2,7 +2,7 @@
 
 namespace PagOnline;
 
-use DateTime;
+use DateTimeImmutable;
 
 /**
  * Class IgfsUtils.
@@ -18,6 +18,7 @@ class IgfsUtils
         'j-M-Y H:i:s.00',
         'j-M-Y H:i:s.0',
         'j-M-Y H:i:s',
+        'Y-m-d H:i:sP',
     ];
 
     /**
@@ -78,7 +79,7 @@ class IgfsUtils
         }
 
         try {
-            $dateTimeObject = (new \DateTimeImmutable())->setTimestamp($timestamp);
+            $dateTimeObject = (new DateTimeImmutable())->setTimestamp($timestamp);
 
             return $dateTimeObject->format('Y-m-d').
                 'T'.
@@ -92,7 +93,7 @@ class IgfsUtils
     /**
      * @param $text
      *
-     * @return \DateTime|null
+     * @return \DateTimeImmutable|null
      */
     public static function parseXMLGregorianCalendar(?string $text)
     {
@@ -116,12 +117,12 @@ class IgfsUtils
      * @param $text
      * @param string $format Date format
      *
-     * @return bool|\DateTime|null
+     * @return bool|\DateTimeImmutable|null
      */
-    public static function parseDateFormat($text, string $format): ?DateTime
+    public static function parseDateFormat($text, string $format): ?DateTimeImmutable
     {
         try {
-            $date = DateTime::createFromFormat($format, $text);
+            $date = DateTimeImmutable::createFromFormat($format, $text);
 
             return $date ? $date : null;
         } catch (\Exception $e) {

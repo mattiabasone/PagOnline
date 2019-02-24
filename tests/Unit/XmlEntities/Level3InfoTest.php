@@ -22,6 +22,7 @@ class Level3InfoTest extends TestCase
         $level3Info = new Level3Info();
         $level3Info->billingEmail = 'email@example.org';
         $level3Info->vat = 22;
+        $level3Info->destinationDate = \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2019-02-19 00:00:00')->getTimestamp();
         $level3Info->product = [$level3InfoProduct];
 
         return $level3Info;

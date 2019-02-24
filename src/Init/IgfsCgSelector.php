@@ -2,7 +2,6 @@
 
 namespace PagOnline\Init;
 
-use SimpleXMLElement;
 use PagOnline\IgfsUtils;
 use PagOnline\Exceptions\IgfsMissingParException;
 
@@ -125,31 +124,16 @@ class IgfsCgSelector extends BaseIgfsCgInit
     {
         parent::parseResponseMap($response);
         try {
-            $xml = $response[static::$soapResponseTag];
-
-            $xml = \str_replace('<soap:', '<', $xml);
-            $xml = \str_replace('</soap:', '</', $xml);
-            $dom = new SimpleXMLElement($xml, LIBXML_NOERROR, false);
-            if (0 == \count($dom)) {
+            $responseNode = $this->responseXmlToObject($response[static::$soapResponseTag]);
+            if (null === $responseNode || 0 === $responseNode->children()->count()) {
                 return;
             }
-
-            $tmp = \str_replace('<Body>', '', $dom->Body->asXML());
-            $tmp = \str_replace('</Body>', '', $tmp);
-            $dom = new SimpleXMLElement($tmp, LIBXML_NOERROR, false);
-            if (0 == \count($dom)) {
-                return;
-            }
-
-            $xml_response = IgfsUtils::parseResponseFields($dom->response);
-            if (isset($xml_response['termInfo'])) {
-                $termInfo = [];
-                foreach ($dom->response->children() as $item) {
-                    if ('termInfo' == $item->getName()) {
-                        \array_push($termInfo, SelectorTerminalInfo::fromXml($item->asXML(), 'termInfo'));
-                    }
+            $termInfos = $responseNode->xpath('//termInfo');
+            if (\count($termInfos) > 0) {
+                $this->termInfo = [];
+                foreach ($termInfos as $item) {
+                    \array_push($this->termInfo, SelectorTerminalInfo::fromXml($item->asXML(), 'termInfo'));
                 }
-                $this->termInfo = $termInfo;
             }
         } catch (\Exception $e) {
             $this->termInfo = null;

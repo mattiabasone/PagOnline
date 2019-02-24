@@ -1,8 +1,8 @@
 .idea/*
-demo/*
 vendor/*
 composer.lock
 clover.xml
 .php_cs.cache
+/tests/demo/config.php
 /tests/demo/paymentID.txt
 /tests/demo/shopID.txt

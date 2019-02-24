@@ -5,7 +5,7 @@ namespace PagOnline;
 /**
  * Class Actions.
  */
-class Actions
+final class Actions
 {
     // Init
     const IGFS_CG_INIT = Init\IgfsCgInit::class;

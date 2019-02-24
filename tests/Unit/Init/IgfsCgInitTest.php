@@ -20,6 +20,12 @@ class IgfsCgInitTest extends IgfsCgBaseTest
     protected $igfsCgClass = IgfsCgInit::class;
     protected $igfsCgRequest = IgfsCgInitRequest::CONTENT;
 
+    protected function setIgfsRequiredParamenters(&$class)
+    {
+        $class->notifyURL = 'https://example.com/verify/';
+        $class->errorURL = 'https://example.com/error/';
+    }
+
     /** @test */
     public function shouldChecksFieldsAndRaiseException()
     {
@@ -73,8 +79,7 @@ class IgfsCgInitTest extends IgfsCgBaseTest
     {
         /** @var \PagOnline\Init\IgfsCgInit $obj */
         $obj = $this->makeIgfsCg();
-        $obj->notifyURL = 'https://example.com/verify/';
-        $obj->errorURL = 'https://example.com/error/';
+        $this->setIgfsRequiredParamenters($obj);
         $foo = $this->getClassMethod('checkFields');
 
         $exception = null;
@@ -89,13 +94,13 @@ class IgfsCgInitTest extends IgfsCgBaseTest
     /** @test */
     public function shouldRaiseExceptionForMissingShopId()
     {
-        $this->expectException(IgfsMissingParException::class);
         /** @var \PagOnline\Init\IgfsCgInit $obj */
         $obj = $this->makeIgfsCg();
-        $obj->notifyURL = 'https://example.com/verify/';
-        $obj->errorURL = 'https://example.com/error/';
+        $this->setIgfsRequiredParamenters($obj);
         $obj->shopID = null;
         $foo = $this->getClassMethod('checkFields');
+
+        $this->expectException(IgfsMissingParException::class);
         $foo->invoke($obj);
     }
 
@@ -115,6 +120,11 @@ class IgfsCgInitTest extends IgfsCgBaseTest
                 ['Content-Type' => 'text/xml; charset="utf-8"'],
                 '<html><head></head><body></body></html>'
             ),
+            new Response(
+                200,
+                ['Content-Type' => 'text/xml; charset="utf-8"'],
+                ''
+            ),
         ]);
 
         $handler = HandlerStack::create($mock);
@@ -122,9 +132,7 @@ class IgfsCgInitTest extends IgfsCgBaseTest
         /** @var \PagOnline\Init\IgfsCgInit $obj */
         $obj = $this->makeIgfsCg();
         $obj->setHttpClient(new Client(['handler' => $handler]));
-
-        $obj->notifyURL = 'http://playground.test/pagonline/tests/demo/verify.php';
-        $obj->errorURL = 'http://playground.test/pagonline/tests/demo/error.php';
+        $this->setIgfsRequiredParamenters($obj);
 
         // First: successful test
         $this->assertTrue($obj->execute());
@@ -133,16 +141,21 @@ class IgfsCgInitTest extends IgfsCgBaseTest
         // Second: Gateway error 500
         $obj->resetFields();
         $this->setIgfsBaseValues($obj);
-        $obj->notifyURL = 'http://playground.test/pagonline/tests/demo/verify.php';
-        $obj->errorURL = 'http://playground.test/pagonline/tests/demo/error.php';
+        $this->setIgfsRequiredParamenters($obj);
 
         $this->assertFalse($obj->execute());
 
         // Third: Invalid body
         $obj->resetFields();
         $this->setIgfsBaseValues($obj);
-        $obj->notifyURL = 'http://playground.test/pagonline/tests/demo/verify.php';
-        $obj->errorURL = 'http://playground.test/pagonline/tests/demo/error.php';
+        $this->setIgfsRequiredParamenters($obj);
+
+        $this->assertFalse($obj->execute());
+
+        // Fourth: 200 + empty body
+        $obj->resetFields();
+        $this->setIgfsBaseValues($obj);
+        $this->setIgfsRequiredParamenters($obj);
 
         $this->assertFalse($obj->execute());
     }

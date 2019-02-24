@@ -83,7 +83,12 @@ abstract class BaseXmlEntity implements XmlEntityInterface
     {
         $value = (string) IgfsUtils::getValue($response, $attribute);
         if ($this->isDateAttribute($attribute)) {
-            $value = IgfsUtils::parseXMLGregorianCalendar($this->{$attribute});
+            $tmpValue = IgfsUtils::parseXMLGregorianCalendar($value);
+            if (null !== $tmpValue) {
+                $value = $tmpValue->getTimestamp();
+            } else {
+                $value = null;
+            }
         }
         $this->{$attribute} = $value;
     }

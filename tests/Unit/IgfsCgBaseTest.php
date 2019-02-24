@@ -111,6 +111,26 @@ abstract class IgfsCgBaseTest extends TestCase
     }
 
     /** @test */
+    public function shouldReplaceRequestPlaceholders()
+    {
+        $replaceRequestParameterMethod = $this->getClassMethod('replaceRequestParameter');
+        $obj = new $this->igfsCgClass();
+
+        $fakeRequest = '{mySuperField}';
+        $replaceRequestParameterMethod->invokeArgs($obj, [&$fakeRequest, 'mySuperField', null]);
+        $this->assertIsString($fakeRequest);
+        $this->assertEmpty($fakeRequest);
+
+        $fakeRequest = '{mySuperField}';
+        $replaceRequestParameterMethod->invokeArgs($obj, [&$fakeRequest, 'mySuperField', 'testValue']);
+        $this->assertEquals('<mySuperField><![CDATA[testValue]]></mySuperField>', $fakeRequest);
+
+        $fakeRequest = '{mySuperField}';
+        $replaceRequestParameterMethod->invokeArgs($obj, [&$fakeRequest, 'mySuperField', 'testValue', false]);
+        $this->assertEquals('<mySuperField>testValue</mySuperField>', $fakeRequest);
+    }
+
+    /** @test */
     public function shouldBuildValidRequest()
     {
         /** @var \PagOnline\Init\IgfsCgInit $obj */

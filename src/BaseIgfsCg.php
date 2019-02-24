@@ -245,11 +245,11 @@ abstract class BaseIgfsCg implements IgfsCgInterface
     abstract protected function getResponseSignature($response);
 
     /**
-     * @param $response
+     * @param string $response
      *
-     * @return array
+     * @return SimpleXMLElement|null
      */
-    protected function parseResponse($response): array
+    protected function responseXmlToObject(string $response): ?SimpleXMLElement
     {
         try {
             $dom = new SimpleXMLElement($response, LIBXML_NOERROR, false);
@@ -257,15 +257,23 @@ abstract class BaseIgfsCg implements IgfsCgInterface
                 ->children('ns1', true)->{static::$soapResponseParentTag}
                 ->children()
                 ->{self::$soapResponseTag};*/
-            $responseNode = $dom->xpath('//response')[0];
+            return $dom->xpath('//response')[0];
         } catch (\Throwable $e) {
+            return null;
+        }
+    }
+
+    /**
+     * @param $response
+     *
+     * @return array
+     */
+    protected function parseResponse($response): array
+    {
+        $responseNode = $this->responseXmlToObject($response);
+        if (null === $responseNode || 0 === $responseNode->children()->count()) {
             return [];
         }
-
-        if (0 === $responseNode->children()->count()) {
-            return [];
-        }
-
         $fields = IgfsUtils::parseResponseFields($responseNode);
         if (\count($fields) > 0) {
             $fields[self::$soapResponseTag] = $responseNode->asXML();
@@ -319,9 +327,6 @@ abstract class BaseIgfsCg implements IgfsCgInterface
     protected function process($url)
     {
         $request = $this->buildRequest();
-        if (null === $request) {
-            throw new IgfsException('IGFS Request is null');
-        }
         $this->setRequestSignature($request);
         $response = $this->post($url, $request);
 

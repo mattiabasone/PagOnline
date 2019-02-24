@@ -178,7 +178,8 @@ class IgfsCgPayByMailInit extends BaseIgfsCgPayByMail
             IgfsUtils::getValue($response, 'rc'), // RC
             IgfsUtils::getValue($response, 'errorDesc'), // ERRORDESC
             IgfsUtils::getValue($response, 'mailID'), // MAILID
-            IgfsUtils::getValue($response, 'linkURL'), ];
+            IgfsUtils::getValue($response, 'linkURL'),
+        ];
         // signature dove il buffer e' cosi composto TID|SHOPID|RC|ERRORDESC|MAILID
         return $this->getSignature($fields);
     }
