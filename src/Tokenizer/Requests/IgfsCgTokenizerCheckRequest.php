@@ -14,13 +14,13 @@ final class IgfsCgTokenizerCheckRequest extends BaseIgfsCgRequest
 <soapenv:Body>
 <ser:Check>
 <request>
-<apiVersion><![CDATA[{apiVersion}]]></apiVersion>
+{apiVersion}
 {tid}
 {merID}
 {payInstr}
-<signature><![CDATA[{signature}]]></signature>
-<shopID><![CDATA[{shopID}]]></shopID>
-<payInstrToken><![CDATA[{payInstrToken}]]></payInstrToken>
+{signature}
+{shopID}
+{payInstrToken}
 {billingID}
 </request>
 </ser:Check>

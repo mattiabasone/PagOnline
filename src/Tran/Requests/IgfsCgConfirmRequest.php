@@ -11,13 +11,13 @@ final class IgfsCgConfirmRequest extends BaseIgfsCgRequest
 <soapenv:Body>
 <ser:Confirm>
 <request>
-<apiVersion><![CDATA[{apiVersion}]]></apiVersion>
+{apiVersion}
 {tid}
 {merID}
 {payInstr}
-<signature><![CDATA[{signature}]]></signature>
-<shopID><![CDATA[{shopID}]]></shopID>
-<amount><![CDATA[{amount}]]></amount>
+{signature}
+{shopID}
+{amount}
 {refTranID}
 {addInfo1}
 {addInfo2}

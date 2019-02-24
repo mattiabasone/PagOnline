@@ -24,9 +24,9 @@ abstract class BaseIgfsCg implements IgfsCgInterface
      */
     const VERSION = '2.4.1.5';
 
-    const SOAP_ENVELOPE = 'soap:Envelope';
-    const SOAP_BODY = 'soap:Body';
-    protected static $RESPONSE = 'response';
+    protected static $soapBodyTag = 'Body';
+    protected static $soapResponseParentTag = '';
+    protected static $soapResponseTag = 'response';
 
     /**
      * Set the request namespace here.
@@ -156,15 +156,14 @@ abstract class BaseIgfsCg implements IgfsCgInterface
      *
      * @return mixed
      */
-    protected function setRequestSignature($request)
+    protected function setRequestSignature(&$request): void
     {
         $signatureFields = \array_merge(
             $this->getCommonRequestSignatureFields(),
             $this->getAdditionalRequestSignatureFields()
         );
         $signature = $this->getSignature($signatureFields);
-
-        return $this->replaceRequest($request, '{signature}', $signature);
+        $this->replaceRequestParameter($request, 'signature', $signature, false);
     }
 
     /**
@@ -205,38 +204,40 @@ abstract class BaseIgfsCg implements IgfsCgInterface
 
     /**
      * @param $request
-     * @param $find
+     * @param $parameter
      * @param $value
-     *
-     * @return mixed
+     * @param bool $wrap_cdata
      */
-    protected function replaceRequest($request, $find, $value)
-    {
-        if (empty($value)) {
-            $value = '';
+    protected function replaceRequestParameter(
+        string &$request,
+        string $parameter,
+        $value = null,
+        bool $wrap_cdata = true
+    ) {
+        $value = (string) $value;
+        if ('' === $value) {
+            $xmlTag = '';
+        } else {
+            $xmlTag = "<{$parameter}>";
+            $xmlTag .= $wrap_cdata ? "<![CDATA[{$value}]]>" : $value;
+            $xmlTag .= "</{$parameter}>";
         }
-
-        return \str_replace($find, $value, $request);
+        $request = \str_replace('{'.$parameter.'}', $xmlTag, $request);
     }
 
     /**
+     * Build request XML.
+     *
      * @return mixed|string
      */
     protected function buildRequest()
     {
         $request = $this->getRequest();
-        $request = $this->replaceRequest($request, '{apiVersion}', $this->getVersion());
-        $request = $this->replaceRequest($request, '{shopID}', $this->shopID);
-        if (null != $this->tid) {
-            $request = $this->replaceRequest($request, '{tid}', '<tid><![CDATA['.$this->tid.']]></tid>');
-        } else {
-            $request = $this->replaceRequest($request, '{tid}', '');
-        }
-        if (null != $this->merID) {
-            $request = $this->replaceRequest($request, '{merID}', '<merID><![CDATA['.$this->merID.']]></merID>');
-        } else {
-            $request = $this->replaceRequest($request, '{merID}', '');
-        }
+        $this->replaceRequestParameter($request, 'apiVersion', $this->getVersion());
+        $this->replaceRequestParameter($request, 'shopID', $this->shopID);
+        $this->replaceRequestParameter($request, 'tid', $this->tid);
+        $this->replaceRequestParameter($request, 'merID', $this->merID);
+        $this->replaceRequestParameter($request, 'payInstr', $this->payInstr);
 
         return $request;
     }
@@ -250,28 +251,24 @@ abstract class BaseIgfsCg implements IgfsCgInterface
      */
     protected function parseResponse($response): array
     {
-        $response = \str_replace('<soap:', '<', $response);
-        $response = \str_replace('</soap:', '</', $response);
-        $dom = new SimpleXMLElement($response, LIBXML_NOERROR, false);
-        if (0 == \count($dom)) {
+        try {
+            $dom = new SimpleXMLElement($response, LIBXML_NOERROR, false);
+            /*$responseNode = $dom->children('soap', true)->{static::$soapBodyTag}
+                ->children('ns1', true)->{static::$soapResponseParentTag}
+                ->children()
+                ->{self::$soapResponseTag};*/
+            $responseNode = $dom->xpath('//response')[0];
+        } catch (\Throwable $e) {
             return [];
         }
 
-        $tmp = \str_replace('<Body>', '', $dom->Body->asXML());
-        $tmp = \str_replace('</Body>', '', $tmp);
-        $dom = new SimpleXMLElement($tmp, LIBXML_NOERROR, false);
-        if (0 == \count($dom)) {
+        if (0 === $responseNode->children()->count()) {
             return [];
         }
 
-        $root = self::$RESPONSE;
-        if (0 == \count($dom->{$root})) {
-            return [];
-        }
-
-        $fields = IgfsUtils::parseResponseFields($dom->{$root});
-        if (isset($fields)) {
-            $fields[self::$RESPONSE] = $response;
+        $fields = IgfsUtils::parseResponseFields($responseNode);
+        if (\count($fields) > 0) {
+            $fields[self::$soapResponseTag] = $responseNode->asXML();
         }
 
         return $fields;
@@ -325,7 +322,7 @@ abstract class BaseIgfsCg implements IgfsCgInterface
         if (null === $request) {
             throw new IgfsException('IGFS Request is null');
         }
-        $request = $this->setRequestSignature($request);
+        $this->setRequestSignature($request);
         $response = $this->post($url, $request);
 
         if (empty($response)) {

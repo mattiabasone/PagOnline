@@ -2,10 +2,9 @@
 
 namespace PagOnline\Init;
 
-use PagOnline\Entry;
 use SimpleXMLElement;
 use PagOnline\IgfsUtils;
-use PagOnline\BaseIgfsCg;
+use PagOnline\XmlEntities\Entry;
 use PagOnline\XmlEntities\Level3Info;
 use PagOnline\Exceptions\IgfsMissingParException;
 
@@ -103,16 +102,14 @@ class IgfsCgVerify extends BaseIgfsCgInit
         }
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function buildRequest()
     {
         $request = parent::buildRequest();
-        $request = $this->replaceRequest($request, '{paymentID}', $this->paymentID);
-
-        if (null != $this->refTranID) {
-            $request = $this->replaceRequest($request, '{refTranID}', '<refTranID><![CDATA['.$this->refTranID.']]></refTranID>');
-        } else {
-            $request = $this->replaceRequest($request, '{refTranID}', '');
-        }
+        $this->replaceRequestParameter($request, 'paymentID', $this->paymentID);
+        $this->replaceRequestParameter($request, 'refTranID', $this->refTranID);
 
         return $request;
     }
@@ -173,7 +170,7 @@ class IgfsCgVerify extends BaseIgfsCgInit
             $this->receiptPdf = null;
         }
         try {
-            $xml = $response[BaseIgfsCg::$RESPONSE];
+            $xml = $response[static::$soapResponseTag];
 
             $xml = \str_replace('<soap:', '<', $xml);
             $xml = \str_replace('</soap:', '</', $xml);
@@ -194,7 +191,7 @@ class IgfsCgVerify extends BaseIgfsCgInit
                 $payAddData = [];
                 foreach ($dom->response->children() as $item) {
                     if ('payAddData' == $item->getName()) {
-                        \array_push($payAddData, Entry::fromXml($item->asXML(), 'payAddData'));
+                        \array_push($payAddData, Entry::fromXml($item->asXML()));
                     }
                 }
                 $this->payAddData = $payAddData;

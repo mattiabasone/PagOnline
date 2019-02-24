@@ -49,13 +49,4 @@ class IgfsCgSelectorTest extends IgfsCgBaseTest
         $foo = $this->getClassMethod('checkFields');
         $foo->invoke($obj);
     }
-
-    /** @test */
-    public function shouldReturnArray()
-    {
-        /** @var \PagOnline\Init\IgfsCgInit $obj */
-        $obj = $this->makeIgfsCg();
-        $array = $obj->toArray();
-        $this->assertIsArray($array);
-    }
 }

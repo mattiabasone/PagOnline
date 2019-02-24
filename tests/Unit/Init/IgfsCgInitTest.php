@@ -66,15 +66,6 @@ class IgfsCgInitTest extends IgfsCgBaseTest
     }
 
     /** @test */
-    public function shouldReturnArray()
-    {
-        /** @var \PagOnline\Init\IgfsCgInit $obj */
-        $obj = $this->makeIgfsCg();
-        $array = $obj->toArray();
-        $this->assertIsArray($array);
-    }
-
-    /** @test */
     public function shouldExecuteInitRequests()
     {
         // Create a mock and queue two responses.
@@ -85,6 +76,11 @@ class IgfsCgInitTest extends IgfsCgBaseTest
                 \file_get_contents(__DIR__.'/../resources/init/success.xml')
             ),
             new Response(500),
+            new Response(
+                200,
+                ['Content-Type' => 'text/xml; charset="utf-8"'],
+                '<html><head></head><body></body></html>'
+            ),
         ]);
 
         $handler = HandlerStack::create($mock);
@@ -101,6 +97,14 @@ class IgfsCgInitTest extends IgfsCgBaseTest
         $this->assertNotNull($obj->redirectURL);
 
         // Second: Gateway error 500
+        $obj->resetFields();
+        $this->setIgfsBaseValues($obj);
+        $obj->notifyURL = 'http://playground.test/pagonline/tests/demo/verify.php';
+        $obj->errorURL = 'http://playground.test/pagonline/tests/demo/error.php';
+
+        $this->assertFalse($obj->execute());
+
+        // Third: Invalid body
         $obj->resetFields();
         $this->setIgfsBaseValues($obj);
         $obj->notifyURL = 'http://playground.test/pagonline/tests/demo/verify.php';

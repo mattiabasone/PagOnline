@@ -181,173 +181,50 @@ class IgfsCgInit extends BaseIgfsCgInit
     protected function buildRequest()
     {
         $request = parent::buildRequest();
-        if (null != $this->shopUserRef) {
-            $request = $this->replaceRequest($request, '{shopUserRef}', '<shopUserRef><![CDATA['.$this->shopUserRef.']]></shopUserRef>');
-        } else {
-            $request = $this->replaceRequest($request, '{shopUserRef}', '');
-        }
-        if (null != $this->shopUserName) {
-            $request = $this->replaceRequest($request, '{shopUserName}', '<shopUserName><![CDATA['.$this->shopUserName.']]></shopUserName>');
-        } else {
-            $request = $this->replaceRequest($request, '{shopUserName}', '');
-        }
-        if (null != $this->shopUserAccount) {
-            $request = $this->replaceRequest($request, '{shopUserAccount}', '<shopUserAccount><![CDATA['.$this->shopUserAccount.']]></shopUserAccount>');
-        } else {
-            $request = $this->replaceRequest($request, '{shopUserAccount}', '');
-        }
-        if (null != $this->shopUserMobilePhone) {
-            $request = $this->replaceRequest($request, '{shopUserMobilePhone}', '<shopUserMobilePhone><![CDATA['.$this->shopUserMobilePhone.']]></shopUserMobilePhone>');
-        } else {
-            $request = $this->replaceRequest($request, '{shopUserMobilePhone}', '');
-        }
-        if (null != $this->shopUserIMEI) {
-            $request = $this->replaceRequest($request, '{shopUserIMEI}', '<shopUserIMEI><![CDATA['.$this->shopUserIMEI.']]></shopUserIMEI>');
-        } else {
-            $request = $this->replaceRequest($request, '{shopUserIMEI}', '');
-        }
-
-        $request = $this->replaceRequest($request, '{trType}', $this->trType);
-        if (null != $this->amount) {
-            $request = $this->replaceRequest($request, '{amount}', '<amount><![CDATA['.$this->amount.']]></amount>');
-        } else {
-            $request = $this->replaceRequest($request, '{amount}', '');
-        }
-        if (null != $this->currencyCode) {
-            $request = $this->replaceRequest($request, '{currencyCode}', '<currencyCode><![CDATA['.$this->currencyCode.']]></currencyCode>');
-        } else {
-            $request = $this->replaceRequest($request, '{currencyCode}', '');
-        }
-
-        $request = $this->replaceRequest($request, '{langID}', $this->langID);
-        $request = $this->replaceRequest($request, '{notifyURL}', $this->notifyURL);
-        $request = $this->replaceRequest($request, '{errorURL}', $this->errorURL);
-        if (null != $this->callbackURL) {
-            $request = $this->replaceRequest($request, '{callbackURL}', '<callbackURL><![CDATA['.$this->callbackURL.']]></callbackURL>');
-        } else {
-            $request = $this->replaceRequest($request, '{callbackURL}', '');
-        }
-
-        if (null != $this->addInfo1) {
-            $request = $this->replaceRequest($request, '{addInfo1}', '<addInfo1><![CDATA['.$this->addInfo1.']]></addInfo1>');
-        } else {
-            $request = $this->replaceRequest($request, '{addInfo1}', '');
-        }
-        if (null != $this->addInfo2) {
-            $request = $this->replaceRequest($request, '{addInfo2}', '<addInfo2><![CDATA['.$this->addInfo2.']]></addInfo2>');
-        } else {
-            $request = $this->replaceRequest($request, '{addInfo2}', '');
-        }
-        if (null != $this->addInfo3) {
-            $request = $this->replaceRequest($request, '{addInfo3}', '<addInfo3><![CDATA['.$this->addInfo3.']]></addInfo3>');
-        } else {
-            $request = $this->replaceRequest($request, '{addInfo3}', '');
-        }
-        if (null != $this->addInfo4) {
-            $request = $this->replaceRequest($request, '{addInfo4}', '<addInfo4><![CDATA['.$this->addInfo4.']]></addInfo4>');
-        } else {
-            $request = $this->replaceRequest($request, '{addInfo4}', '');
-        }
-        if (null != $this->addInfo5) {
-            $request = $this->replaceRequest($request, '{addInfo5}', '<addInfo5><![CDATA['.$this->addInfo5.']]></addInfo5>');
-        } else {
-            $request = $this->replaceRequest($request, '{addInfo5}', '');
-        }
-
-        if (null != $this->payInstrToken) {
-            $request = $this->replaceRequest($request, '{payInstrToken}', '<payInstrToken><![CDATA['.$this->payInstrToken.']]></payInstrToken>');
-        } else {
-            $request = $this->replaceRequest($request, '{payInstrToken}', '');
-        }
-        if (null != $this->billingID) {
-            $request = $this->replaceRequest($request, '{billingID}', '<billingID><![CDATA['.$this->billingID.']]></billingID>');
-        } else {
-            $request = $this->replaceRequest($request, '{billingID}', '');
-        }
-        if (null != $this->regenPayInstrToken) {
-            $request = $this->replaceRequest($request, '{regenPayInstrToken}', '<regenPayInstrToken><![CDATA['.$this->regenPayInstrToken.']]></regenPayInstrToken>');
-        } else {
-            $request = $this->replaceRequest($request, '{regenPayInstrToken}', '');
-        }
-        if (null != $this->keepOnRegenPayInstrToken) {
-            $request = $this->replaceRequest($request, '{keepOnRegenPayInstrToken}', '<keepOnRegenPayInstrToken><![CDATA['.$this->keepOnRegenPayInstrToken.']]></keepOnRegenPayInstrToken>');
-        } else {
-            $request = $this->replaceRequest($request, '{keepOnRegenPayInstrToken}', '');
-        }
-        if (null != $this->payInstrTokenExpire) {
-            $request = $this->replaceRequest($request, '{payInstrTokenExpire}', '<payInstrTokenExpire><![CDATA['.IgfsUtils::formatXMLGregorianCalendar($this->payInstrTokenExpire).']]></payInstrTokenExpire>');
-        } else {
-            $request = $this->replaceRequest($request, '{payInstrTokenExpire}', '');
-        }
-        if (null != $this->payInstrTokenUsageLimit) {
-            $request = $this->replaceRequest($request, '{payInstrTokenUsageLimit}', '<payInstrTokenUsageLimit><![CDATA['.$this->payInstrTokenUsageLimit.']]></payInstrTokenUsageLimit>');
-        } else {
-            $request = $this->replaceRequest($request, '{payInstrTokenUsageLimit}', '');
-        }
-        if (null != $this->payInstrTokenAlg) {
-            $request = $this->replaceRequest($request, '{payInstrTokenAlg}', '<payInstrTokenAlg><![CDATA['.$this->payInstrTokenAlg.']]></payInstrTokenAlg>');
-        } else {
-            $request = $this->replaceRequest($request, '{payInstrTokenAlg}', '');
-        }
-
-        if (null != $this->accountName) {
-            $request = $this->replaceRequest($request, '{accountName}', '<accountName><![CDATA['.$this->accountName.']]></accountName>');
-        } else {
-            $request = $this->replaceRequest($request, '{accountName}', '');
-        }
+        $this->replaceRequestParameter($request, 'notifyURL', $this->notifyURL);
+        $this->replaceRequestParameter($request, 'errorURL', $this->errorURL);
+        $this->replaceRequestParameter($request, 'shopUserRef', $this->shopUserRef);
+        $this->replaceRequestParameter($request, 'shopUserName', $this->shopUserName);
+        $this->replaceRequestParameter($request, 'shopUserAccount', $this->shopUserAccount);
+        $this->replaceRequestParameter($request, 'shopUserMobilePhone', $this->shopUserMobilePhone);
+        $this->replaceRequestParameter($request, 'shopUserIMEI', $this->shopUserIMEI);
+        $this->replaceRequestParameter($request, 'trType', $this->trType);
+        $this->replaceRequestParameter($request, 'amount', $this->amount);
+        $this->replaceRequestParameter($request, 'currencyCode', $this->currencyCode);
+        $this->replaceRequestParameter($request, 'langID', $this->langID);
+        $this->replaceRequestParameter($request, 'callbackURL', $this->callbackURL);
+        $this->replaceRequestParameter($request, 'addInfo1', $this->addInfo1);
+        $this->replaceRequestParameter($request, 'addInfo2', $this->addInfo2);
+        $this->replaceRequestParameter($request, 'addInfo3', $this->addInfo3);
+        $this->replaceRequestParameter($request, 'addInfo4', $this->addInfo4);
+        $this->replaceRequestParameter($request, 'addInfo5', $this->addInfo5);
+        $this->replaceRequestParameter($request, 'payInstrToken', $this->payInstrToken);
+        $this->replaceRequestParameter($request, 'billingID', $this->billingID);
+        $this->replaceRequestParameter($request, 'regenPayInstrToken', $this->regenPayInstrToken);
+        $this->replaceRequestParameter($request, 'keepOnRegenPayInstrToken', $this->keepOnRegenPayInstrToken);
+        $this->replaceRequestParameter($request, 'payInstrTokenExpire', IgfsUtils::formatXMLGregorianCalendar($this->payInstrTokenExpire));
+        $this->replaceRequestParameter($request, 'payInstrTokenUsageLimit', $this->payInstrTokenUsageLimit);
+        $this->replaceRequestParameter($request, 'payInstrTokenAlg', $this->payInstrTokenAlg);
+        $this->replaceRequestParameter($request, 'accountName', $this->accountName);
+        $this->replaceRequestParameter($request, 'description', $this->description);
+        $this->replaceRequestParameter($request, 'paymentReason', $this->paymentReason);
+        $this->replaceRequestParameter($request, 'topUpID', $this->topUpID);
+        $this->replaceRequestParameter($request, 'firstTopUp', $this->firstTopUp);
+        $this->replaceRequestParameter($request, 'payInstrTokenAsTopUpID', $this->payInstrTokenAsTopUpID);
+        $this->replaceRequestParameter($request, 'validityExpire', IgfsUtils::formatXMLGregorianCalendar($this->validityExpire));
+        $this->replaceRequestParameter($request, 'minExpireMonth', $this->minExpireMonth);
+        $this->replaceRequestParameter($request, 'minExpireYear', $this->minExpireYear);
 
         if (null != $this->level3Info) {
-            $request = $this->replaceRequest($request, '{level3Info}', $this->level3Info->toXml('level3Info'));
+            $this->replaceRequestParameter($request, 'level3Info', $this->level3Info->toXml('level3Info'), false);
         } else {
-            $request = $this->replaceRequest($request, '{level3Info}', '');
+            $this->replaceRequestParameter($request, 'level3Info', '');
         }
+
         if (null != $this->mandateInfo) {
-            $request = $this->replaceRequest($request, '{mandateInfo}', $this->mandateInfo->toXml('mandateInfo'));
+            $this->replaceRequestParameter($request, 'mandateInfo', $this->level3Info->toXml('mandateInfo'), false);
         } else {
-            $request = $this->replaceRequest($request, '{mandateInfo}', '');
-        }
-        if (null != $this->description) {
-            $request = $this->replaceRequest($request, '{description}', '<description><![CDATA['.$this->description.']]></description>');
-        } else {
-            $request = $this->replaceRequest($request, '{description}', '');
-        }
-        if (null != $this->paymentReason) {
-            $request = $this->replaceRequest($request, '{paymentReason}', '<paymentReason><![CDATA['.$this->paymentReason.']]></paymentReason>');
-        } else {
-            $request = $this->replaceRequest($request, '{paymentReason}', '');
-        }
-
-        if (null != $this->topUpID) {
-            $request = $this->replaceRequest($request, '{topUpID}', '<topUpID><![CDATA['.$this->topUpID.']]></topUpID>');
-        } else {
-            $request = $this->replaceRequest($request, '{topUpID}', '');
-        }
-        if (null != $this->firstTopUp) {
-            $request = $this->replaceRequest($request, '{firstTopUp}', '<firstTopUp><![CDATA['.$this->firstTopUp.']]></firstTopUp>');
-        } else {
-            $request = $this->replaceRequest($request, '{firstTopUp}', '');
-        }
-        if (null != $this->payInstrTokenAsTopUpID) {
-            $request = $this->replaceRequest($request, '{payInstrTokenAsTopUpID}', '<payInstrTokenAsTopUpID><![CDATA['.$this->payInstrTokenAsTopUpID.']]></payInstrTokenAsTopUpID>');
-        } else {
-            $request = $this->replaceRequest($request, '{payInstrTokenAsTopUpID}', '');
-        }
-
-        if (null != $this->validityExpire) {
-            $request = $this->replaceRequest($request, '{validityExpire}', '<validityExpire><![CDATA['.IgfsUtils::formatXMLGregorianCalendar($this->validityExpire).']]></validityExpire>');
-        } else {
-            $request = $this->replaceRequest($request, '{validityExpire}', '');
-        }
-
-        if (null != $this->minExpireMonth) {
-            $request = $this->replaceRequest($request, '{minExpireMonth}', '<minExpireMonth><![CDATA['.$this->minExpireMonth.']]></minExpireMonth>');
-        } else {
-            $request = $this->replaceRequest($request, '{minExpireMonth}', '');
-        }
-        if (null != $this->minExpireYear) {
-            $request = $this->replaceRequest($request, '{minExpireYear}', '<minExpireYear><![CDATA['.$this->minExpireYear.']]></minExpireYear>');
-        } else {
-            $request = $this->replaceRequest($request, '{minExpireYear}', '');
+            $this->replaceRequestParameter($request, 'mandateInfo', '');
         }
 
         if (null != $this->termInfo) {
@@ -355,9 +232,9 @@ class IgfsCgInit extends BaseIgfsCgInit
             foreach ($this->termInfo as $item) {
                 $sb .= $item->toXml('termInfo');
             }
-            $request = $this->replaceRequest($request, '{termInfo}', $sb);
+            $this->replaceRequestParameter($request, 'termInfo', $sb, false);
         } else {
-            $request = $this->replaceRequest($request, '{termInfo}', '');
+            $this->replaceRequestParameter($request, 'termInfo', '');
         }
 
         return $request;

@@ -14,13 +14,13 @@ final class IgfsCgPayByMailVerifyRequest extends BaseIgfsCgRequest
 <soapenv:Body>
 <ser:Verify>
 <request>
-<apiVersion><![CDATA[{apiVersion}]]></apiVersion>
+{apiVersion}
 {tid}
 {merID}
 {payInstr}
-<signature><![CDATA[{signature}]]></signature>
-<shopID><![CDATA[{shopID}]]></shopID>
-<mailID><![CDATA[{mailID}]]></mailID>
+{signature}
+{shopID}
+{mailID}
 </request>
 </ser:Verify>
 </soapenv:Body>

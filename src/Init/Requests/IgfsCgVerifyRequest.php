@@ -14,13 +14,13 @@ final class IgfsCgVerifyRequest extends BaseIgfsCgRequest
 <soapenv:Body>
 <ser:Verify>
 <request>
-<apiVersion><![CDATA[{apiVersion}]]></apiVersion>
+{apiVersion}
 {tid}
 {merID}
 {payInstr}
-<signature><![CDATA[{signature}]]></signature>
-<shopID><![CDATA[{shopID}]]></shopID>
-<paymentID><![CDATA[{paymentID}]]></paymentID>
+{signature}
+{shopID}
+{paymentID}
 {refTranID}
 </request>
 </ser:Verify>

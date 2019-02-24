@@ -46,12 +46,8 @@ class IgfsCgTokenizerDelete extends BaseIgfsCgTokenizer
     protected function buildRequest()
     {
         $request = parent::buildRequest();
-        $request = $this->replaceRequest($request, '{payInstrToken}', $this->payInstrToken);
-        if (null != $this->billingID) {
-            $request = $this->replaceRequest($request, '{billingID}', '<billingID><![CDATA['.$this->billingID.']]></billingID>');
-        } else {
-            $request = $this->replaceRequest($request, '{billingID}', '');
-        }
+        $this->replaceRequestParameter($request, 'payInstrToken', $this->payInstrToken);
+        $this->replaceRequestParameter($request, 'billingID', $this->billingID);
 
         return $request;
     }

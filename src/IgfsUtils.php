@@ -73,6 +73,10 @@ class IgfsUtils
      */
     public static function formatXMLGregorianCalendar($timestamp)
     {
+        if (null === $timestamp || !\is_int($timestamp)) {
+            return null;
+        }
+
         try {
             $dateTimeObject = (new \DateTimeImmutable())->setTimestamp($timestamp);
 

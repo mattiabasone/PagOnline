@@ -57,15 +57,6 @@ class IgfsCgVerifyTest extends IgfsCgBaseTest
     }
 
     /** @test */
-    public function shouldReturnArray()
-    {
-        /** @var \PagOnline\Init\IgfsCgInit $obj */
-        $obj = $this->makeIgfsCg();
-        $array = $obj->toArray();
-        $this->assertIsArray($array);
-    }
-
-    /** @test */
     public function shouldExecuteVerifyRequests()
     {
         // Create a mock and queue two responses.

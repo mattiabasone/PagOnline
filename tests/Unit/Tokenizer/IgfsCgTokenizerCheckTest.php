@@ -2,17 +2,22 @@
 
 namespace Tests\Unit\Init;
 
-use PagOnline\Mpi\IgfsCgMpiAuth;
-use PagOnline\Mpi\Requests\IgfsCgMpiAuthRequest;
+use PagOnline\Tokenizer\IgfsCgTokenizerCheck;
 use PagOnline\Exceptions\IgfsMissingParException;
+use PagOnline\Tokenizer\Requests\IgfsCgTokenizerCheckRequest;
 
 /**
  * Class IgfsCgInitTest.
  */
-class IgfsCgMpiAuthTest extends IgfsCgBaseTest
+class IgfsCgTokenizerCheckTest extends IgfsCgBaseTest
 {
-    protected $igfsCgClass = IgfsCgMpiAuth::class;
-    protected $igfsCgRequest = IgfsCgMpiAuthRequest::CONTENT;
+    protected $igfsCgClass = IgfsCgTokenizerCheck::class;
+    protected $igfsCgRequest = IgfsCgTokenizerCheckRequest::CONTENT;
+
+    protected function setIgfsRequiredParamenters(&$class)
+    {
+        $class->payInstrToken = 'payInstrToken';
+    }
 
     /** @test */
     public function shouldReturnRequestString()
@@ -24,9 +29,11 @@ class IgfsCgMpiAuthTest extends IgfsCgBaseTest
     /** @test */
     public function shouldChecksFieldsAndRaiseException()
     {
-        $this->expectException(IgfsMissingParException::class);
         $foo = $this->getClassMethod('checkFields');
         $obj = new $this->igfsCgClass();
+
+        $this->expectException(IgfsMissingParException::class);
+        $obj->langID = null;
         $foo->invoke($obj);
     }
 
@@ -36,8 +43,7 @@ class IgfsCgMpiAuthTest extends IgfsCgBaseTest
         /** @var \PagOnline\Mpi\IgfsCgMpiAuth $obj */
         $obj = $this->makeIgfsCg();
         $foo = $this->getClassMethod('checkFields');
-        $obj->paRes = 'paRes';
-        $obj->md = 'md';
+        $this->setIgfsRequiredParamenters($obj);
         $exception = null;
         try {
             $foo->invoke($obj);

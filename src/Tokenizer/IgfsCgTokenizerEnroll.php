@@ -100,83 +100,23 @@ class IgfsCgTokenizerEnroll extends BaseIgfsCgTokenizer
     protected function buildRequest()
     {
         $request = parent::buildRequest();
-        if (null != $this->shopUserRef) {
-            $request = $this->replaceRequest($request, '{shopUserRef}', '<shopUserRef><![CDATA['.$this->shopUserRef.']]></shopUserRef>');
-        } else {
-            $request = $this->replaceRequest($request, '{shopUserRef}', '');
-        }
-
-        $request = $this->replaceRequest($request, '{pan}', $this->pan);
-        $request = $this->replaceRequest($request, '{expireMonth}', $this->expireMonth);
-        $request = $this->replaceRequest($request, '{expireYear}', $this->expireYear);
-
-        if (null != $this->accountName) {
-            $request = $this->replaceRequest($request, '{accountName}', '<accountName><![CDATA['.$this->accountName.']]></accountName>');
-        } else {
-            $request = $this->replaceRequest($request, '{accountName}', '');
-        }
-        if (null != $this->payInstrToken) {
-            $request = $this->replaceRequest($request, '{payInstrToken}', '<payInstrToken><![CDATA['.$this->payInstrToken.']]></payInstrToken>');
-        } else {
-            $request = $this->replaceRequest($request, '{payInstrToken}', '');
-        }
-        if (null != $this->billingID) {
-            $request = $this->replaceRequest($request, '{billingID}', '<billingID><![CDATA['.$this->billingID.']]></billingID>');
-        } else {
-            $request = $this->replaceRequest($request, '{billingID}', '');
-        }
-
-        if (null != $this->regenPayInstrToken) {
-            $request = $this->replaceRequest($request, '{regenPayInstrToken}', '<regenPayInstrToken><![CDATA['.$this->regenPayInstrToken.']]></regenPayInstrToken>');
-        } else {
-            $request = $this->replaceRequest($request, '{regenPayInstrToken}', '');
-        }
-        if (null != $this->keepOnRegenPayInstrToken) {
-            $request = $this->replaceRequest($request, '{keepOnRegenPayInstrToken}', '<keepOnRegenPayInstrToken><![CDATA['.$this->keepOnRegenPayInstrToken.']]></keepOnRegenPayInstrToken>');
-        } else {
-            $request = $this->replaceRequest($request, '{keepOnRegenPayInstrToken}', '');
-        }
-        if (null != $this->payInstrTokenExpire) {
-            $request = $this->replaceRequest($request, '{payInstrTokenExpire}', '<payInstrTokenExpire><![CDATA['.IgfsUtils::formatXMLGregorianCalendar($this->payInstrTokenExpire).']]></payInstrTokenExpire>');
-        } else {
-            $request = $this->replaceRequest($request, '{payInstrTokenExpire}', '');
-        }
-        if (null != $this->payInstrTokenUsageLimit) {
-            $request = $this->replaceRequest($request, '{payInstrTokenUsageLimit}', '<payInstrTokenUsageLimit><![CDATA['.$this->payInstrTokenUsageLimit.']]></payInstrTokenUsageLimit>');
-        } else {
-            $request = $this->replaceRequest($request, '{payInstrTokenUsageLimit}', '');
-        }
-        if (null != $this->payInstrTokenAlg) {
-            $request = $this->replaceRequest($request, '{payInstrTokenAlg}', '<payInstrTokenAlg><![CDATA['.$this->payInstrTokenAlg.']]></payInstrTokenAlg>');
-        } else {
-            $request = $this->replaceRequest($request, '{payInstrTokenAlg}', '');
-        }
-
-        if (null != $this->addInfo1) {
-            $request = $this->replaceRequest($request, '{addInfo1}', '<addInfo1><![CDATA['.$this->addInfo1.']]></addInfo1>');
-        } else {
-            $request = $this->replaceRequest($request, '{addInfo1}', '');
-        }
-        if (null != $this->addInfo2) {
-            $request = $this->replaceRequest($request, '{addInfo2}', '<addInfo2><![CDATA['.$this->addInfo2.']]></addInfo2>');
-        } else {
-            $request = $this->replaceRequest($request, '{addInfo2}', '');
-        }
-        if (null != $this->addInfo3) {
-            $request = $this->replaceRequest($request, '{addInfo3}', '<addInfo3><![CDATA['.$this->addInfo3.']]></addInfo3>');
-        } else {
-            $request = $this->replaceRequest($request, '{addInfo3}', '');
-        }
-        if (null != $this->addInfo4) {
-            $request = $this->replaceRequest($request, '{addInfo4}', '<addInfo4><![CDATA['.$this->addInfo4.']]></addInfo4>');
-        } else {
-            $request = $this->replaceRequest($request, '{addInfo4}', '');
-        }
-        if (null != $this->addInfo5) {
-            $request = $this->replaceRequest($request, '{addInfo5}', '<addInfo5><![CDATA['.$this->addInfo5.']]></addInfo5>');
-        } else {
-            $request = $this->replaceRequest($request, '{addInfo5}', '');
-        }
+        $this->replaceRequestParameter($request, 'shopUserRef', $this->shopUserRef);
+        $this->replaceRequestParameter($request, 'pan', $this->pan);
+        $this->replaceRequestParameter($request, 'expireMonth', $this->expireMonth);
+        $this->replaceRequestParameter($request, 'expireYear', $this->expireYear);
+        $this->replaceRequestParameter($request, 'accountName', $this->accountName);
+        $this->replaceRequestParameter($request, 'payInstrToken', $this->payInstrToken);
+        $this->replaceRequestParameter($request, 'billingID', $this->billingID);
+        $this->replaceRequestParameter($request, 'regenPayInstrToken', $this->regenPayInstrToken);
+        $this->replaceRequestParameter($request, 'keepOnRegenPayInstrToken', $this->keepOnRegenPayInstrToken);
+        $this->replaceRequestParameter($request, 'payInstrTokenExpire', $this->payInstrTokenExpire);
+        $this->replaceRequestParameter($request, 'payInstrTokenUsageLimit', $this->payInstrTokenUsageLimit);
+        $this->replaceRequestParameter($request, 'payInstrTokenAlg', $this->payInstrTokenAlg);
+        $this->replaceRequestParameter($request, 'addInfo1', $this->addInfo1);
+        $this->replaceRequestParameter($request, 'addInfo2', $this->addInfo2);
+        $this->replaceRequestParameter($request, 'addInfo3', $this->addInfo3);
+        $this->replaceRequestParameter($request, 'addInfo4', $this->addInfo4);
+        $this->replaceRequestParameter($request, 'addInfo5', $this->addInfo5);
 
         return $request;
     }

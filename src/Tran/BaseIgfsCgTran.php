@@ -41,31 +41,11 @@ abstract class BaseIgfsCgTran extends BaseIgfsCg
     protected function buildRequest()
     {
         $request = parent::buildRequest();
-        if (null != $this->addInfo1) {
-            $request = $this->replaceRequest($request, '{addInfo1}', '<addInfo1><![CDATA['.$this->addInfo1.']]></addInfo1>');
-        } else {
-            $request = $this->replaceRequest($request, '{addInfo1}', '');
-        }
-        if (null != $this->addInfo2) {
-            $request = $this->replaceRequest($request, '{addInfo2}', '<addInfo2><![CDATA['.$this->addInfo2.']]></addInfo2>');
-        } else {
-            $request = $this->replaceRequest($request, '{addInfo2}', '');
-        }
-        if (null != $this->addInfo3) {
-            $request = $this->replaceRequest($request, '{addInfo3}', '<addInfo3><![CDATA['.$this->addInfo3.']]></addInfo3>');
-        } else {
-            $request = $this->replaceRequest($request, '{addInfo3}', '');
-        }
-        if (null != $this->addInfo4) {
-            $request = $this->replaceRequest($request, '{addInfo4}', '<addInfo4><![CDATA['.$this->addInfo4.']]></addInfo4>');
-        } else {
-            $request = $this->replaceRequest($request, '{addInfo4}', '');
-        }
-        if (null != $this->addInfo5) {
-            $request = $this->replaceRequest($request, '{addInfo5}', '<addInfo5><![CDATA['.$this->addInfo5.']]></addInfo5>');
-        } else {
-            $request = $this->replaceRequest($request, '{addInfo5}', '');
-        }
+        $this->replaceRequestParameter($request, 'addInfo1', $this->addInfo1);
+        $this->replaceRequestParameter($request, 'addInfo2', $this->addInfo2);
+        $this->replaceRequestParameter($request, 'addInfo3', $this->addInfo3);
+        $this->replaceRequestParameter($request, 'addInfo4', $this->addInfo4);
+        $this->replaceRequestParameter($request, 'addInfo5', $this->addInfo5);
 
         return $request;
     }

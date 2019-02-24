@@ -11,12 +11,12 @@ final class IgfsCgAuthRequest extends BaseIgfsCgRequest
 <soapenv:Body>
 <ser:Auth>
 <request>
-<apiVersion><![CDATA[{apiVersion}]]></apiVersion>
+{apiVersion}
 {tid}
 {merID}
 {payInstr}
-<signature><![CDATA[{signature}]]></signature>
-<shopID><![CDATA[{shopID}]]></shopID>
+{signature}
+{shopID}
 {amount}
 {currencyCode}
 {langID}
@@ -27,7 +27,7 @@ final class IgfsCgAuthRequest extends BaseIgfsCgRequest
 {shopUserMobilePhone}
 {shopUserIMEI}
 {shopUserIP}
-<trType><![CDATA[{trType}]]></trType>
+{trType}
 {pan}
 {payInstrToken}
 {billingID}

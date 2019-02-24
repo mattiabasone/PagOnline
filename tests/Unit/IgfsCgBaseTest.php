@@ -92,4 +92,38 @@ abstract class IgfsCgBaseTest extends TestCase
         $this->assertIsString($request);
         $this->assertGreaterThan(0, \mb_strlen($request));
     }
+
+    /** @test */
+    public function shouldReturnServerUrlAndServicePort()
+    {
+        /** @var \PagOnline\BaseIgfsCg $obj */
+        $obj = $this->makeIgfsCg();
+        $servicePortMethod = $this->getClassMethod('getServicePort');
+        $serverUrlMethod = $this->getClassMethod('getServerUrl');
+
+        $serverUrlT1 = $serverUrlMethod->invoke($obj, 'http://my-server.it/');
+        $this->assertEquals('http://my-server.it/'.$servicePortMethod->invoke($obj), $serverUrlT1);
+
+        $serverUrlT2 = $serverUrlMethod->invoke($obj, 'http://my-server.it');
+        $this->assertEquals('http://my-server.it/'.$servicePortMethod->invoke($obj), $serverUrlT2);
+    }
+
+    /** @test */
+    public function shouldReturnArrayForAdditionalSignatureFields()
+    {
+        /** @var \PagOnline\Init\IgfsCgInit $obj */
+        $obj = $this->makeIgfsCg();
+        $foo = $this->getClassMethod('getAdditionalRequestSignatureFields');
+        $additionalFieldsArray = $foo->invoke($obj);
+        $this->assertIsArray($additionalFieldsArray);
+    }
+
+    /** @test */
+    public function shouldReturnArray()
+    {
+        /** @var \PagOnline\Init\IgfsCgInit $obj */
+        $obj = $this->makeIgfsCg();
+        $array = $obj->toArray();
+        $this->assertIsArray($array);
+    }
 }

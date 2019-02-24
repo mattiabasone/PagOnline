@@ -103,57 +103,16 @@ class IgfsCgCredit extends BaseIgfsCgTran
     protected function buildRequest()
     {
         $request = parent::buildRequest();
-        if (null != $this->shopUserRef) {
-            $request = $this->replaceRequest($request, '{shopUserRef}', '<shopUserRef><![CDATA['.$this->shopUserRef.']]></shopUserRef>');
-        } else {
-            $request = $this->replaceRequest($request, '{shopUserRef}', '');
-        }
-        $request = $this->replaceRequest($request, '{amount}', $this->amount);
-        if (null != $this->currencyCode) {
-            $request = $this->replaceRequest($request, '{currencyCode}', '<currencyCode><![CDATA['.$this->currencyCode.']]></currencyCode>');
-        } else {
-            $request = $this->replaceRequest($request, '{currencyCode}', '');
-        }
-
-        if (null != $this->refTranID) {
-            $request = $this->replaceRequest($request, '{refTranID}', '<refTranID><![CDATA['.$this->refTranID.']]></refTranID>');
-        } else {
-            $request = $this->replaceRequest($request, '{refTranID}', '');
-        }
-
-        if (null != $this->pan) {
-            $request = $this->replaceRequest($request, '{pan}', '<pan><![CDATA['.$this->pan.']]></pan>');
-        } else {
-            $request = $this->replaceRequest($request, '{pan}', '');
-        }
-
-        if (null != $this->payInstrToken) {
-            $request = $this->replaceRequest($request, '{payInstrToken}', '<payInstrToken><![CDATA['.$this->payInstrToken.']]></payInstrToken>');
-        } else {
-            $request = $this->replaceRequest($request, '{payInstrToken}', '');
-        }
-        if (null != $this->billingID) {
-            $request = $this->replaceRequest($request, '{billingID}', '<billingID><![CDATA['.$this->billingID.']]></billingID>');
-        } else {
-            $request = $this->replaceRequest($request, '{billingID}', '');
-        }
-
-        if (null != $this->expireMonth) {
-            $request = $this->replaceRequest($request, '{expireMonth}', '<expireMonth><![CDATA['.$this->expireMonth.']]></expireMonth>');
-        } else {
-            $request = $this->replaceRequest($request, '{expireMonth}', '');
-        }
-        if (null != $this->expireYear) {
-            $request = $this->replaceRequest($request, '{expireYear}', '<expireYear><![CDATA['.$this->expireYear.']]></expireYear>');
-        } else {
-            $request = $this->replaceRequest($request, '{expireYear}', '');
-        }
-
-        if (null != $this->description) {
-            $request = $this->replaceRequest($request, '{description}', '<description><![CDATA['.$this->description.']]></description>');
-        } else {
-            $request = $this->replaceRequest($request, '{description}', '');
-        }
+        $this->replaceRequestParameter($request, 'shopUserRef', $this->shopUserRef);
+        $this->replaceRequestParameter($request, 'amount', $this->amount);
+        $this->replaceRequestParameter($request, 'currencyCode', $this->currencyCode);
+        $this->replaceRequestParameter($request, 'refTranID', $this->refTranID);
+        $this->replaceRequestParameter($request, 'pan', $this->pan);
+        $this->replaceRequestParameter($request, 'payInstrToken', $this->payInstrToken);
+        $this->replaceRequestParameter($request, 'billingID', $this->billingID);
+        $this->replaceRequestParameter($request, 'expireMonth', $this->expireMonth);
+        $this->replaceRequestParameter($request, 'expireYear', $this->expireYear);
+        $this->replaceRequestParameter($request, 'description', $this->description);
 
         return $request;
     }

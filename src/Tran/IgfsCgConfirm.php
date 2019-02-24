@@ -61,28 +61,16 @@ class IgfsCgConfirm extends BaseIgfsCgTran
         }
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function buildRequest()
     {
         $request = parent::buildRequest();
-        $request = $this->replaceRequest($request, '{amount}', $this->amount);
-
-        if (null != $this->refTranID) {
-            $request = $this->replaceRequest($request, '{refTranID}', '<refTranID><![CDATA['.$this->refTranID.']]></refTranID>');
-        } else {
-            $request = $this->replaceRequest($request, '{refTranID}', '');
-        }
-
-        if (null != $this->paymentReason) {
-            $request = $this->replaceRequest($request, '{paymentReason}', '<paymentReason><![CDATA['.$this->paymentReason.']]></paymentReason>');
-        } else {
-            $request = $this->replaceRequest($request, '{paymentReason}', '');
-        }
-
-        if (null != $this->topUpID) {
-            $request = $this->replaceRequest($request, '{topUpID}', '<topUpID><![CDATA['.$this->topUpID.']]></topUpID>');
-        } else {
-            $request = $this->replaceRequest($request, '{topUpID}', '');
-        }
+        $this->replaceRequestParameter($request, 'amount', $this->amount);
+        $this->replaceRequestParameter($request, 'refTranID', $this->refTranID);
+        $this->replaceRequestParameter($request, 'paymentReason', $this->paymentReason);
+        $this->replaceRequestParameter($request, 'topUpID', $this->topUpID);
 
         return $request;
     }

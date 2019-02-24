@@ -54,16 +54,20 @@ class IgfsCgPayByMailVerify extends BaseIgfsCgPayByMail
     protected function checkFields()
     {
         parent::checkFields();
-        if (null == $this->mailID || '' == $this->mailID) {
+        if (empty($this->mailID)) {
             throw new IgfsMissingParException('Missing mailID');
         }
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function buildRequest()
     {
         $request = parent::buildRequest();
+        $this->replaceRequestParameter($request, 'mailID', $this->mailID);
 
-        return $this->replaceRequest($request, '{mailID}', $this->mailID);
+        return $request;
     }
 
     protected function parseResponseMap($response)
@@ -71,7 +75,6 @@ class IgfsCgPayByMailVerify extends BaseIgfsCgPayByMail
         parent::parseResponseMap($response);
         // Opzionale
         $this->tranID = IgfsUtils::getValue($response, 'tranID');
-
         // Opzionale
         $this->status = IgfsUtils::getValue($response, 'status');
         // Opzionale

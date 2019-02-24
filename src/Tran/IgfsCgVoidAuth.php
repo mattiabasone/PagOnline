@@ -55,8 +55,8 @@ class IgfsCgVoidAuth extends BaseIgfsCgTran
     protected function buildRequest()
     {
         $request = parent::buildRequest();
-        $request = $this->replaceRequest($request, '{amount}', $this->amount);
-        $request = $this->replaceRequest($request, '{refTranID}', $this->refTranID);
+        $this->replaceRequestParameter($request, 'amount', $this->amount);
+        $this->replaceRequestParameter($request, 'refTranID', $this->refTranID);
 
         return $request;
     }

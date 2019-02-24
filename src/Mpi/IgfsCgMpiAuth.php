@@ -56,12 +56,16 @@ class IgfsCgMpiAuth extends BaseIgfsCgMpi
         }
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function buildRequest()
     {
         $request = parent::buildRequest();
-        $request = $this->replaceRequest($request, '{paRes}', $this->paRes);
+        $this->replaceRequestParameter($request, 'paRes', $this->paRes);
+        $this->replaceRequestParameter($request, 'md', $this->md);
 
-        return $this->replaceRequest($request, '{md}', $this->md);
+        return $request;
     }
 
     /**
