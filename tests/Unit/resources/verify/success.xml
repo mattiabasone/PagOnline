@@ -14,6 +14,14 @@
                 <authCode>55914405</authCode>
                 <addInfo1>myFirstAddintionalInfo</addInfo1>
                 <status>C</status>
+                <payAddData>
+                    <key>myKey1</key>
+                    <value>myValue1</value>
+                </payAddData>
+                <payAddData>
+                    <key>myKe2</key>
+                    <value>myValue2</value>
+                </payAddData>
             </response>
         </ns1:VerifyResponse>
     </soap:Body>

@@ -23,11 +23,32 @@ class IgfsCgMpiEnrollTest extends IgfsCgBaseTest
     }
 
     /** @test */
-    public function shouldChecksFieldsAndRaiseException()
+    public function shouldChecksFieldsAndRaiseExceptionMissingAmount()
     {
         $this->expectException(IgfsMissingParException::class);
         $foo = $this->getClassMethod('checkFields');
-        $obj = new $this->igfsCgClass();
+        $obj = $this->makeIgfsCg();
+        $foo->invoke($obj);
+    }
+
+    /** @test */
+    public function shouldChecksFieldsAndRaiseExceptionMissingCurrencyCode()
+    {
+        $this->expectException(IgfsMissingParException::class);
+        $foo = $this->getClassMethod('checkFields');
+        $obj = $this->makeIgfsCg();
+        $obj->amount = 100;
+        $foo->invoke($obj);
+    }
+
+    /** @test */
+    public function shouldChecksFieldsAndRaiseExceptionMissingPan()
+    {
+        $this->expectException(IgfsMissingParException::class);
+        $foo = $this->getClassMethod('checkFields');
+        $obj = $this->makeIgfsCg();
+        $obj->amount = 100;
+        $obj->currencyCode = 'EUR';
         $foo->invoke($obj);
     }
 

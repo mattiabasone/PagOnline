@@ -84,7 +84,7 @@ class IgfsCgVerifyTest extends IgfsCgBaseTest
 
         $handler = HandlerStack::create($mock);
 
-        /** @var \PagOnline\Init\IgfsCgInit $obj */
+        /** @var \PagOnline\Init\IgfsCgVerify $obj */
         $obj = $this->makeIgfsCg();
         $obj->shopID = '5c71649051ef5';
         $obj->paymentID = '00054481661101578102';
@@ -92,6 +92,8 @@ class IgfsCgVerifyTest extends IgfsCgBaseTest
 
         // First test
         $this->assertTrue($obj->execute());
+        $this->assertIsArray($obj->payAddData);
+        $this->assertEquals($obj->payAddData[0]->key, 'myKey1');
 
         // Second test
         $obj->resetFields();

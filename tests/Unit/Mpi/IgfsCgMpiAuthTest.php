@@ -15,11 +15,36 @@ class IgfsCgMpiAuthTest extends IgfsCgBaseTest
     protected $igfsCgRequest = IgfsCgMpiAuthRequest::CONTENT;
 
     /** @test */
-    public function shouldChecksFieldsAndRaiseException()
+    public function shouldRaiseExceptionForMissingShopId()
     {
         $this->expectException(IgfsMissingParException::class);
+        /** @var \PagOnline\Init\IgfsCgInit $obj */
+        $obj = $this->makeIgfsCg();
+        $obj->shopID = null;
         $foo = $this->getClassMethod('checkFields');
-        $obj = new $this->igfsCgClass();
+        $foo->invoke($obj);
+    }
+
+    /** @test */
+    public function shouldChecksFieldsAndRaiseExceptionMissingPaRes()
+    {
+        $this->expectException(IgfsMissingParException::class);
+        $this->expectExceptionMessage('Missing paRes');
+        $foo = $this->getClassMethod('checkFields');
+        $obj = $this->makeIgfsCg();
+        $obj->shopID = '1231';
+        $foo->invoke($obj);
+    }
+
+    /** @test */
+    public function shouldChecksFieldsAndRaiseExceptionMissingMd()
+    {
+        $this->expectException(IgfsMissingParException::class);
+        $this->expectExceptionMessage('Missing md');
+        $foo = $this->getClassMethod('checkFields');
+        $obj = $this->makeIgfsCg();
+        $obj->paRes = 'paRes';
+        $obj->shopID = '1231';
         $foo->invoke($obj);
     }
 
@@ -38,16 +63,5 @@ class IgfsCgMpiAuthTest extends IgfsCgBaseTest
         }
 
         $this->assertNull($exception);
-    }
-
-    /** @test */
-    public function shouldRaiseExceptionForMissingShopId()
-    {
-        $this->expectException(IgfsMissingParException::class);
-        /** @var \PagOnline\Init\IgfsCgInit $obj */
-        $obj = $this->makeIgfsCg();
-        $obj->shopID = null;
-        $foo = $this->getClassMethod('checkFields');
-        $foo->invoke($obj);
     }
 }

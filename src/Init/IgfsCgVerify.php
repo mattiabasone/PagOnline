@@ -167,21 +167,18 @@ class IgfsCgVerify extends BaseIgfsCgInit
         if (\is_bool($this->receiptPdf)) {
             $this->receiptPdf = null;
         }
-        try {
-            $responseNode = $this->responseXmlToObject($response[static::$soapResponseTag]);
-            if (null === $responseNode) {
-                return;
-            }
 
-            $xml_response = IgfsUtils::parseResponseFields($responseNode);
-            if (isset($xml_response['payAddData'])) {
-                $this->payAddData = [];
-                foreach ($responseNode->xpath('//payAddData') as $item) {
-                    \array_push($this->payAddData, Entry::fromXml($item->asXML()));
-                }
+        $responseNode = $this->responseXmlToObject($response[static::$soapResponseTag]);
+        if (null === $responseNode) {
+            return;
+        }
+
+        $xml_response = IgfsUtils::parseResponseFields($responseNode);
+        if (isset($xml_response['payAddData'])) {
+            $this->payAddData = [];
+            foreach ($responseNode->xpath('//payAddData') as $item) {
+                \array_push($this->payAddData, Entry::fromXml($item->asXML()));
             }
-        } catch (\Exception $e) {
-            $this->payAddData = null;
         }
     }
 

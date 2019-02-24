@@ -195,21 +195,34 @@ class IgfsCgInitTest extends IgfsCgBaseTest
     {
         // Create a mock and queue two responses.
         $mock = new MockHandler([
+            // First
             new Response(
                 200,
                 ['Content-Type' => 'text/xml; charset="utf-8"'],
                 \file_get_contents(__DIR__.'/../resources/init/success.xml')
             ),
+            // Second
             new Response(500),
+            // Third
             new Response(
                 200,
                 ['Content-Type' => 'text/xml; charset="utf-8"'],
                 '<html><head></head><body></body></html>'
             ),
+            // Fourth
             new Response(
                 200,
                 ['Content-Type' => 'text/xml; charset="utf-8"'],
                 ''
+            ),
+            // Fifth
+            new Response(401),
+            new Response(401),
+            // Sixth
+            new Response(
+                200,
+                ['Content-Type' => 'text/xml; charset="utf-8"'],
+                \file_get_contents(__DIR__.'/../resources/init/success.xml')
             ),
         ]);
 
@@ -234,21 +247,37 @@ class IgfsCgInitTest extends IgfsCgBaseTest
         $obj->termInfo = [new InitTerminalInfo()];
         $obj->termInfo[0]->tid = '12345';
         $this->setIgfsRequiredParamenters($obj);
-
         $this->assertFalse($obj->execute());
 
         // Third: Invalid body
         $obj->resetFields();
         $this->setIgfsBaseValues($obj);
         $this->setIgfsRequiredParamenters($obj);
-
         $this->assertFalse($obj->execute());
 
         // Fourth: 200 + empty body
         $obj->resetFields();
         $this->setIgfsBaseValues($obj);
         $this->setIgfsRequiredParamenters($obj);
+        $this->assertFalse($obj->execute());
 
+        // Fifth: trying multiple server urls and fails
+        $obj->resetFields();
+        $obj->setHttpAuthUser('admin');
+        $obj->setHttpAuthPass('admin');
+        $obj->setHttpProxy('tcp://127.0.0.1');
+        $obj->setHttpVerifySsl(false);
+        $this->setIgfsBaseValues($obj);
+        $obj->serverURL = null;
+        $obj->serverURLs = ['https://google.com', 'https://amazon.com'];
+        $this->setIgfsRequiredParamenters($obj);
+        $this->assertFalse($obj->execute());
+
+        $obj->resetFields();
+        $this->setIgfsBaseValues($obj);
+        $obj->serverURL = null;
+        $obj->serverURLs = ['https://google.com'];
+        $this->setIgfsRequiredParamenters($obj);
         $this->assertFalse($obj->execute());
     }
 }

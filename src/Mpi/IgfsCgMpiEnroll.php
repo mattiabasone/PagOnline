@@ -99,10 +99,8 @@ class IgfsCgMpiEnroll extends BaseIgfsCgMpi
         if (null == $this->currencyCode) {
             throw new IgfsMissingParException('Missing currencyCode');
         }
-        if (null == $this->pan) {
-            if (null == $this->payInstrToken) {
-                throw new IgfsMissingParException('Missing pan');
-            }
+        if (null === $this->pan && null === $this->payInstrToken) {
+            throw new IgfsMissingParException('Missing pan');
         }
         if (null !== $this->pan && '' === $this->pan) {
             throw new IgfsMissingParException('Missing pan');

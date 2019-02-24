@@ -5,6 +5,7 @@ namespace Tests\Unit\Init;
 use ReflectionClass;
 use PagOnline\IgfsCgInterface;
 use PHPUnit\Framework\TestCase;
+use PagOnline\Exceptions\IgfsException;
 use PagOnline\Exceptions\IgfsMissingParException;
 
 /**
@@ -123,6 +124,15 @@ abstract class IgfsCgBaseTest extends TestCase
         $this->expectException(IgfsMissingParException::class);
         $this->expectExceptionMessage('Missing tid');
         $foo->invoke($obj);
+    }
+
+    /** @test */
+    public function shouldFailGeneratingSignature()
+    {
+        $this->expectException(IgfsException::class);
+        $getSignatureMethod = $this->getClassMethod('getSignature');
+        $obj = new $this->igfsCgClass();
+        $getSignatureMethod->invoke($obj, ['123', ['123', '456']]);
     }
 
     /** @test */
