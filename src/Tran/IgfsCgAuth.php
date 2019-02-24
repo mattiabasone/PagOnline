@@ -113,7 +113,7 @@ class IgfsCgAuth extends BaseIgfsCgTran
         $this->trType = 'AUTH';
         $this->amount = null;
         $this->currencyCode = null;
-        $this->langID = null;
+        $this->langID = 'EN';
         $this->callbackURL = null;
         $this->pan = null;
         $this->payInstrToken = null;

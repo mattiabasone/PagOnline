@@ -64,6 +64,7 @@ class IgfsUtilsTest extends TestCase
         );
 
         $this->assertNull(IgfsUtils::formatXMLGregorianCalendar(''));
+        $this->assertNull(IgfsUtils::formatXMLGregorianCalendar(null));
     }
 
     /** @test */

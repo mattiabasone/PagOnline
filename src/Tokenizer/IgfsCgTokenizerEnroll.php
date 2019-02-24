@@ -83,13 +83,13 @@ class IgfsCgTokenizerEnroll extends BaseIgfsCgTokenizer
     protected function checkFields()
     {
         parent::checkFields();
-        if (null == $this->pan || '' == $this->pan) {
+        if (empty($this->pan)) {
             throw new IgfsMissingParException('Missing pan');
         }
-        if (null == $this->expireMonth) {
+        if (empty($this->expireMonth)) {
             throw new IgfsMissingParException('Missing expireMonth');
         }
-        if (null == $this->expireYear) {
+        if (empty($this->expireYear)) {
             throw new IgfsMissingParException('Missing expireYear');
         }
         if (empty($this->payInstrToken)) {
