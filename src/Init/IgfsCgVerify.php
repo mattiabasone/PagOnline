@@ -2,7 +2,6 @@
 
 namespace PagOnline\Init;
 
-use SimpleXMLElement;
 use PagOnline\IgfsUtils;
 use PagOnline\XmlEntities\Entry;
 use PagOnline\XmlEntities\Level3Info;
@@ -164,37 +163,22 @@ class IgfsCgVerify extends BaseIgfsCgInit
         // Opzionale
         $this->shopUserMobilePhone = IgfsUtils::getValue($response, 'shopUserMobilePhone');
         // Opzionale
-        try {
-            $this->receiptPdf = \base64_decode(IgfsUtils::getValue($response, 'receiptPdf'), true);
-        } catch (\Exception $e) {
+        $this->receiptPdf = \base64_decode(IgfsUtils::getValue($response, 'receiptPdf'), true);
+        if (\is_bool($this->receiptPdf)) {
             $this->receiptPdf = null;
         }
         try {
-            $xml = $response[static::$soapResponseTag];
-
-            $xml = \str_replace('<soap:', '<', $xml);
-            $xml = \str_replace('</soap:', '</', $xml);
-            $dom = new SimpleXMLElement($xml, LIBXML_NOERROR, false);
-            if (0 == \count($dom)) {
+            $responseNode = $this->responseXmlToObject($response[static::$soapResponseTag]);
+            if (null === $responseNode) {
                 return;
             }
 
-            $tmp = \str_replace('<Body>', '', $dom->Body->asXML());
-            $tmp = \str_replace('</Body>', '', $tmp);
-            $dom = new SimpleXMLElement($tmp, LIBXML_NOERROR, false);
-            if (0 == \count($dom)) {
-                return;
-            }
-
-            $xml_response = IgfsUtils::parseResponseFields($dom->response);
+            $xml_response = IgfsUtils::parseResponseFields($responseNode);
             if (isset($xml_response['payAddData'])) {
-                $payAddData = [];
-                foreach ($dom->response->children() as $item) {
-                    if ('payAddData' == $item->getName()) {
-                        \array_push($payAddData, Entry::fromXml($item->asXML()));
-                    }
+                $this->payAddData = [];
+                foreach ($responseNode->xpath('//payAddData') as $item) {
+                    \array_push($this->payAddData, Entry::fromXml($item->asXML()));
                 }
-                $this->payAddData = $payAddData;
             }
         } catch (\Exception $e) {
             $this->payAddData = null;

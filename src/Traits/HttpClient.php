@@ -145,7 +145,7 @@ trait HttpClient
             ],
         ];
 
-        if (!empty($this->proxy)) {
+        if (!empty($this->httpProxy)) {
             $configuration[\GuzzleHttp\RequestOptions::PROXY] = $this->httpProxy;
         }
 

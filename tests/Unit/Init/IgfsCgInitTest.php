@@ -8,8 +8,10 @@ use GuzzleHttp\Psr7\Response;
 use PagOnline\Init\IgfsCgInit;
 use GuzzleHttp\Handler\MockHandler;
 use PagOnline\XmlEntities\Level3Info;
+use PagOnline\XmlEntities\MandateInfo;
 use PagOnline\XmlEntities\Level3InfoProduct;
 use PagOnline\Init\Requests\IgfsCgInitRequest;
+use PagOnline\XmlEntities\Init\InitTerminalInfo;
 use PagOnline\Exceptions\IgfsMissingParException;
 
 /**
@@ -27,38 +29,83 @@ class IgfsCgInitTest extends IgfsCgBaseTest
     }
 
     /** @test */
-    public function shouldChecksFieldsAndRaiseException()
+    public function shouldChecksFieldsAndRaiseExceptionMissingTrType()
     {
         $foo = $this->getClassMethod('checkFields');
         /** @var IgfsCgInit $obj */
         $obj = $this->makeIgfsCg();
         $obj->trType = null;
-        $obj->langID = null;
         $this->expectException(IgfsMissingParException::class);
         $this->expectExceptionMessage('Missing trType');
         $foo->invoke($obj);
+    }
 
+    /** @test */
+    public function shouldChecksFieldsAndRaiseExceptionMissingLangID()
+    {
+        $foo = $this->getClassMethod('checkFields');
+        /** @var IgfsCgInit $obj */
+        $obj = $this->makeIgfsCg();
         $obj->trType = 'AUTH';
+        $obj->langID = null;
         $this->expectException(IgfsMissingParException::class);
         $this->expectExceptionMessage('Missing langID');
         $foo->invoke($obj);
+    }
 
+    /** @test */
+    public function shouldChecksFieldsAndRaiseExceptionMissingNotifyURL()
+    {
+        $foo = $this->getClassMethod('checkFields');
+        /** @var IgfsCgInit $obj */
+        $obj = $this->makeIgfsCg();
+        $obj->trType = 'AUTH';
         $obj->langID = 'EN';
         $this->expectException(IgfsMissingParException::class);
         $this->expectExceptionMessage('Missing notifyURL');
         $foo->invoke($obj);
+    }
 
+    /** @test */
+    public function shouldChecksFieldsAndRaiseExceptionMissingErrorURL()
+    {
+        $foo = $this->getClassMethod('checkFields');
+        /** @var IgfsCgInit $obj */
+        $obj = $this->makeIgfsCg();
+        $obj->trType = 'AUTH';
+        $obj->langID = 'EN';
         $obj->notifyURL = 'http://example.org/notify';
         $this->expectException(IgfsMissingParException::class);
         $this->expectExceptionMessage('Missing errorURL');
         $foo->invoke($obj);
+    }
 
+    /** @test */
+    public function shouldChecksFieldsAndRaiseExceptionMissingPayInstrToken()
+    {
+        $foo = $this->getClassMethod('checkFields');
+        /** @var IgfsCgInit $obj */
+        $obj = $this->makeIgfsCg();
+        $obj->trType = 'AUTH';
+        $obj->langID = 'EN';
+        $obj->notifyURL = 'http://example.org/notify';
         $obj->errorURL = 'http://example.org/error';
         $obj->payInstrToken = '';
         $this->expectException(IgfsMissingParException::class);
         $this->expectExceptionMessage('Missing payInstrToken');
         $foo->invoke($obj);
+    }
 
+    /** @test */
+    public function shouldChecksFieldsAndRaiseExceptionMissingLevel3ProductCode()
+    {
+        $foo = $this->getClassMethod('checkFields');
+        /** @var IgfsCgInit $obj */
+        $obj = $this->makeIgfsCg();
+        $obj->trType = 'AUTH';
+        $obj->langID = 'EN';
+        $obj->notifyURL = 'http://example.org/notify';
+        $obj->errorURL = 'http://example.org/error';
         $obj->payInstrToken = 'Pippo';
         $obj->level3Info = new Level3Info();
         $obj->level3Info->product = [
@@ -67,10 +114,49 @@ class IgfsCgInitTest extends IgfsCgBaseTest
         $this->expectException(IgfsMissingParException::class);
         $this->expectExceptionMessage('Missing productCode[0]');
         $foo->invoke($obj);
+    }
 
+    /** @test */
+    public function shouldChecksFieldsAndRaiseExceptionMissingLevel3ProductDescription()
+    {
+        $foo = $this->getClassMethod('checkFields');
+        /** @var IgfsCgInit $obj */
+        $obj = $this->makeIgfsCg();
+        $obj->trType = 'AUTH';
+        $obj->langID = 'EN';
+        $obj->notifyURL = 'http://example.org/notify';
+        $obj->errorURL = 'http://example.org/error';
+        $obj->payInstrToken = 'Pippo';
+        $obj->level3Info = new Level3Info();
+        $obj->level3Info->product = [
+            0 => (new Level3InfoProduct()),
+        ];
         $obj->level3Info->product[0]->productCode = 'productCode';
         $this->expectException(IgfsMissingParException::class);
         $this->expectExceptionMessage('Missing productDescription[0]');
+        $foo->invoke($obj);
+    }
+
+    /** @test */
+    public function shouldChecksFieldsAndRaiseExceptionMissingMandateInfo()
+    {
+        $foo = $this->getClassMethod('checkFields');
+        /** @var IgfsCgInit $obj */
+        $obj = $this->makeIgfsCg();
+        $obj->trType = 'AUTH';
+        $obj->langID = 'EN';
+        $obj->notifyURL = 'http://example.org/notify';
+        $obj->errorURL = 'http://example.org/error';
+        $obj->payInstrToken = 'Pippo';
+        $obj->level3Info = new Level3Info();
+        $obj->level3Info->product = [
+            0 => (new Level3InfoProduct()),
+        ];
+        $obj->level3Info->product[0]->productCode = 'productCode';
+        $obj->level3Info->product[0]->productDescription = 'productCode';
+        $obj->mandateInfo = 'Pippo';
+        $this->expectException(IgfsMissingParException::class);
+        $this->expectExceptionMessage('Missing mandateID');
         $foo->invoke($obj);
     }
 
@@ -141,6 +227,12 @@ class IgfsCgInitTest extends IgfsCgBaseTest
         // Second: Gateway error 500
         $obj->resetFields();
         $this->setIgfsBaseValues($obj);
+        $obj->level3Info = new Level3Info();
+        $obj->level3Info->vat = '12345';
+        $obj->mandateInfo = new MandateInfo();
+        $obj->mandateInfo->contractID = '12345';
+        $obj->termInfo = [new InitTerminalInfo()];
+        $obj->termInfo[0]->tid = '12345';
         $this->setIgfsRequiredParamenters($obj);
 
         $this->assertFalse($obj->execute());

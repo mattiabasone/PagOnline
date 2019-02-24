@@ -23,8 +23,9 @@ class IgfsCgVerifyTest extends IgfsCgBaseTest
     public function shouldChecksFieldsAndRaiseException()
     {
         $this->expectException(IgfsMissingParException::class);
+        $this->expectExceptionMessage('Missing paymentID');
         $foo = $this->getClassMethod('checkFields');
-        $obj = new $this->igfsCgClass();
+        $obj = $this->makeIgfsCg();
         $foo->invoke($obj);
     }
 
@@ -74,6 +75,11 @@ class IgfsCgVerifyTest extends IgfsCgBaseTest
                 ['Content-Type' => 'text/xml; charset="utf-8"'],
                 \file_get_contents(__DIR__.'/../resources/verify/invalid_signature.xml')
             ),
+            new Response(
+                200,
+                ['Content-Type' => 'text/xml; charset="utf-8"'],
+                \file_get_contents(__DIR__.'/../resources/verify/invalid_receipt_pdf.xml')
+            ),
         ]);
 
         $handler = HandlerStack::create($mock);
@@ -103,5 +109,14 @@ class IgfsCgVerifyTest extends IgfsCgBaseTest
 
         $this->assertFalse($obj->execute());
         $this->assertEquals(Errors::IGFS_909, $obj->rc);
+
+        // Fourth
+        /* @var \PagOnline\Init\IgfsCgVerify $obj */
+        $obj->resetFields();
+        $this->setIgfsBaseValues($obj);
+        $obj->shopID = '5c71649051ef5';
+        $obj->paymentID = '00054481661101578102';
+        $this->assertTrue($obj->execute());
+        $this->assertNull($obj->receiptPdf);
     }
 }

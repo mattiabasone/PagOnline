@@ -1,0 +1,21 @@
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+    <soap:Body>
+        <ns1:VerifyResponse xmlns:ns1="http://services.api.web.cg.igfs.apps.netsw.it/">
+            <response>
+                <tid>UNI_MYBK</tid>
+                <payInstr>MYBK</payInstr>
+                <rc>IGFS_000</rc>
+                <error>false</error>
+                <errorDesc>TRANSAZIONE OK</errorDesc>
+                <signature>jUFgA9WbpPnghtd0MICJ6mvOO7a7vCRuiZgr4YWa/A4=</signature>
+                <receiptPdf>______Wa/A4=</receiptPdf>
+                <shopID>5c71649051ef5</shopID>
+                <paymentID>00054481661101578102</paymentID>
+                <tranID>3055308080726666</tranID>
+                <authCode>55914405</authCode>
+                <addInfo1>myFirstAddintionalInfo</addInfo1>
+                <status>C</status>
+            </response>
+        </ns1:VerifyResponse>
+    </soap:Body>
+</soap:Envelope>

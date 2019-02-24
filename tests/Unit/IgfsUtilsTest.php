@@ -25,18 +25,28 @@ class IgfsUtilsTest extends TestCase
         $this->assertRegExp('([a-z0-9]{13})', $uniqueId);
     }
 
-    /**
-     * @test
-     */
+    /** @test */
+    public function shouldParseDateFormat()
+    {
+        $dateTimeObject = IgfsUtils::parseDateFormat('2018-10-10', 'Y-m-d');
+        $this->assertInstanceOf(\DateTimeImmutable::class, $dateTimeObject);
+    }
+
+    /** @test */
+    public function shouldNotParseDateFormat()
+    {
+        $dateTimeObject = IgfsUtils::parseDateFormat('2018-10-10', 'd-m-Y');
+        $this->assertNull($dateTimeObject);
+    }
+
+    /** @test */
     public function shouldReturnDateTimeClass()
     {
         $dateTime = new \DateTimeImmutable('2019-02-19 00:00:00');
         $this->assertEquals($dateTime, IgfsUtils::parseXMLGregorianCalendar('19-Feb-2019 00:00:00'));
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function shouldNotReturnDateTimeClass()
     {
         $this->assertNull(IgfsUtils::parseXMLGregorianCalendar('2019-02-19 00:00:00'));

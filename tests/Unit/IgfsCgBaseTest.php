@@ -90,7 +90,7 @@ abstract class IgfsCgBaseTest extends TestCase
     }
 
     /** @test */
-    public function shouldChecksBaseFieldsAndRaiseException()
+    public function shouldChecksFieldsAndRaiseExceptionMissingServerUrl()
     {
         $foo = $this->getClassMethod('checkFields');
         $obj = new $this->igfsCgClass();
@@ -98,13 +98,28 @@ abstract class IgfsCgBaseTest extends TestCase
         $this->expectException(IgfsMissingParException::class);
         $this->expectExceptionMessage('Missing serverURL');
         $foo->invoke($obj);
+    }
+
+    /** @test */
+    public function shouldChecksFieldsAndRaiseExceptionMissingKSig()
+    {
+        $foo = $this->getClassMethod('checkFields');
+        $obj = new $this->igfsCgClass();
         $obj->serverURL = 'http://example.org';
 
         $this->expectException(IgfsMissingParException::class);
         $this->expectExceptionMessage('Missing kSig');
         $foo->invoke($obj);
+    }
 
+    /** @test */
+    public function shouldChecksFieldsAndRaiseExceptionMissingTid()
+    {
+        $foo = $this->getClassMethod('checkFields');
+        $obj = new $this->igfsCgClass();
+        $obj->serverURL = 'http://example.org';
         $obj->kSig = 'kSig';
+
         $this->expectException(IgfsMissingParException::class);
         $this->expectExceptionMessage('Missing tid');
         $foo->invoke($obj);
