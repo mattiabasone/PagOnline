@@ -23,14 +23,13 @@ class IgfsCgAuthTest extends IgfsCgBaseTest
     }
 
     /** @test */
-    public function shouldChecksFieldsAndRaiseException()
+    public function shouldChecksFieldsAndRaiseExceptionMissingTrType()
     {
+        $this->expectException(IgfsMissingParException::class);
+        $this->expectExceptionMessage('Missing trType');
         $checkFieldsMethod = $this->getClassMethod('checkFields');
         $obj = $this->makeIgfsCg();
-        $obj->shopID = null;
-        $this->setIgfsRequiredParamenters($obj);
-        $this->expectException(IgfsMissingParException::class);
-        $this->expectExceptionMessage('Missing shopID');
+        $obj->trType = null;
         $checkFieldsMethod->invoke($obj);
     }
 
