@@ -200,4 +200,15 @@ abstract class IgfsCgBaseTest extends TestCase
         $array = $obj->toArray();
         $this->assertIsArray($array);
     }
+
+    /** @test */
+    public function shouldReturnArrayUniqueBoundaryValue()
+    {
+        /** @var \PagOnline\Init\IgfsCgInit $obj */
+        $obj = $this->makeIgfsCg();
+        $getUniqueBoundaryValueMethod = $this->getClassMethod('getUniqueBoundaryValue');
+        $uniqueId = $getUniqueBoundaryValueMethod->invoke($obj);
+        $this->assertIsString($uniqueId);
+        $this->assertRegExp('([a-z0-9]{13})', $uniqueId);
+    }
 }

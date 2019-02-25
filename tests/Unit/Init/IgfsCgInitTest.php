@@ -167,11 +167,28 @@ class IgfsCgInitTest extends IgfsCgBaseTest
         /** @var \PagOnline\Init\IgfsCgInit $obj */
         $obj = $this->makeIgfsCg();
         $this->setIgfsRequiredParamenters($obj);
-        $foo = $this->getClassMethod('checkFields');
+        $checkFieldsMethod = $this->getClassMethod('checkFields');
 
         $exception = null;
         try {
-            $foo->invoke($obj);
+            $checkFieldsMethod->invoke($obj);
+        } catch (\Exception $exception) {
+        }
+
+        $this->assertNull($exception);
+
+        $obj->level3Info = new Level3Info();
+        $obj->level3Info->vat = '12345678909';
+
+        $obj->mandateInfo = new MandateInfo();
+        $obj->mandateInfo->contractID = '12343454353';
+        $obj->mandateInfo->mandateID = '12343454353';
+
+        $obj->termInfo = [new InitTerminalInfo()];
+        $obj->termInfo[0]->tid = 'tid';
+        $exception = null;
+        try {
+            $checkFieldsMethod->invoke($obj);
         } catch (\Exception $exception) {
         }
 
@@ -222,6 +239,15 @@ class IgfsCgInitTest extends IgfsCgBaseTest
         $obj = $this->makeIgfsCg();
         $obj->setHttpClient(new Client(['handler' => $handler]));
         $this->setIgfsRequiredParamenters($obj);
+        $obj->level3Info = new Level3Info();
+        $obj->level3Info->vat = '12345678909';
+
+        $obj->mandateInfo = new MandateInfo();
+        $obj->mandateInfo->contractID = '12343454353';
+        $obj->mandateInfo->mandateID = '12343454353';
+
+        $obj->termInfo = [new InitTerminalInfo()];
+        $obj->termInfo[0]->tid = 'tid';
         $this->assertTrue($obj->execute());
         $this->assertNotNull($obj->redirectURL);
 
@@ -354,7 +380,12 @@ class IgfsCgInitTest extends IgfsCgBaseTest
             new Response(
                 200,
                 ['Content-Type' => 'text/xml; charset="utf-8"'],
-                \file_get_contents(__DIR__.'/../resources/init/no_error_and_signature_tags.xml')
+                \file_get_contents(__DIR__.'/../resources/init/no_error_tag.xml')
+            ),
+            new Response(
+                200,
+                ['Content-Type' => 'text/xml; charset="utf-8"'],
+                \file_get_contents(__DIR__.'/../resources/init/no_signature_tag.xml')
             ),
         ]);
         $handler = HandlerStack::create($mock);
@@ -362,6 +393,12 @@ class IgfsCgInitTest extends IgfsCgBaseTest
         /** @var \PagOnline\Init\IgfsCgInit $obj */
         $obj = $this->makeIgfsCg();
         $obj->setHttpClient(new Client(['handler' => $handler]));
+        $this->setIgfsBaseValues($obj);
+        $this->setIgfsRequiredParamenters($obj);
+        $this->assertFalse($obj->execute());
+        $this->assertTrue($obj->error);
+
+        $obj->resetFields();
         $this->setIgfsBaseValues($obj);
         $this->setIgfsRequiredParamenters($obj);
         $this->assertFalse($obj->execute());

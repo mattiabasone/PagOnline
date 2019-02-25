@@ -1,0 +1,14 @@
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+    <soap:Body>
+        <ns1:InitResponse xmlns:ns1="http://services.api.web.cg.igfs.apps.netsw.it/">
+            <response>
+                <tid>UNI_MYBK</tid>
+                <rc>IGFS_000</rc>
+                <signature>TXeKgbwUvzkhWR4mdH3RBFHWwbXVf4utFviKKWEqK/k=</signature>
+                <shopID>LULZ</shopID>
+                <paymentID>00053569646101577621</paymentID>
+                <redirectURL>https://testeps.netswgroup.it/UNI_CG_WEB/app/mybk/main/show?referenceData=4928F6488A2C9F9A831ECAD4230B36D8</redirectURL>
+            </response>
+        </ns1:InitResponse>
+    </soap:Body>
+</soap:Envelope>

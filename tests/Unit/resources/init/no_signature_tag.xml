@@ -4,7 +4,8 @@
             <response>
                 <tid>UNI_MYBK</tid>
                 <rc>IGFS_000</rc>
-                <shopID>LULZ</shopID>
+                <error>false</error>
+                <shopID>5c6fdf5d20485</shopID>
                 <paymentID>00053569646101577621</paymentID>
                 <redirectURL>https://testeps.netswgroup.it/UNI_CG_WEB/app/mybk/main/show?referenceData=4928F6488A2C9F9A831ECAD4230B36D8</redirectURL>
             </response>
