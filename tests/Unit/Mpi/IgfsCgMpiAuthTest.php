@@ -1,8 +1,9 @@
 <?php
 
-namespace Tests\Unit\Init;
+namespace PagOnline\Tests\Unit\Mpi;
 
 use PagOnline\Mpi\IgfsCgMpiAuth;
+use PagOnline\Tests\Unit\IgfsCgBaseTest;
 use PagOnline\Mpi\Requests\IgfsCgMpiAuthRequest;
 use PagOnline\Exceptions\IgfsMissingParException;
 

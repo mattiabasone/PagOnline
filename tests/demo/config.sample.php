@@ -2,7 +2,7 @@
 
 include __DIR__.'/../../vendor/autoload.php';
 
-$config['base_url'] = 'http://playground.test/pagonline/tests/demo/';
+$config['base_url'] = 'http://my-local-domain.test/demo/';
 
 $config['enabled_server'] = 'UC';
 $config['servers'] = [

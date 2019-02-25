@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Init;
+namespace PagOnline\Tests\Unit\Init;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\HandlerStack;
@@ -9,6 +9,7 @@ use PagOnline\Init\IgfsCgInit;
 use GuzzleHttp\Handler\MockHandler;
 use PagOnline\XmlEntities\Level3Info;
 use PagOnline\XmlEntities\MandateInfo;
+use PagOnline\Tests\Unit\IgfsCgBaseTest;
 use PagOnline\XmlEntities\Level3InfoProduct;
 use PagOnline\Init\Requests\IgfsCgInitRequest;
 use PagOnline\XmlEntities\Init\InitTerminalInfo;
@@ -224,6 +225,11 @@ class IgfsCgInitTest extends IgfsCgBaseTest
                 ['Content-Type' => 'text/xml; charset="utf-8"'],
                 \file_get_contents(__DIR__.'/../resources/init/success.xml')
             ),
+            new Response(
+                200,
+                ['Content-Type' => 'text/xml; charset="utf-8"'],
+                \file_get_contents(__DIR__.'/../resources/init/error.xml')
+            ),
         ]);
 
         $handler = HandlerStack::create($mock);
@@ -267,6 +273,9 @@ class IgfsCgInitTest extends IgfsCgBaseTest
         $obj->setHttpAuthPass('admin');
         $obj->setHttpProxy('tcp://127.0.0.1');
         $obj->setHttpVerifySsl(false);
+        $obj->setCustomHttpRequestConfig([
+            \GuzzleHttp\RequestOptions::ALLOW_REDIRECTS => false,
+        ]);
         $this->setIgfsBaseValues($obj);
         $obj->serverURL = null;
         $obj->serverURLs = ['https://google.com', 'https://amazon.com'];
@@ -277,6 +286,12 @@ class IgfsCgInitTest extends IgfsCgBaseTest
         $this->setIgfsBaseValues($obj);
         $obj->serverURL = null;
         $obj->serverURLs = ['https://google.com'];
+        $this->setIgfsRequiredParamenters($obj);
+        $this->assertFalse($obj->execute());
+
+        // Seventh: Error response
+        $obj->resetFields();
+        $this->setIgfsBaseValues($obj);
         $this->setIgfsRequiredParamenters($obj);
         $this->assertFalse($obj->execute());
     }

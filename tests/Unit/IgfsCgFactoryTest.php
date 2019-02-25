@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit;
+namespace PagOnline\Tests\Unit;
 
 use PagOnline\Actions;
 use PagOnline\IgfsCgFactory;

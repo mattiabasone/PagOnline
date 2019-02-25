@@ -1,7 +1,8 @@
 <?php
 
-namespace Tests\Unit\Init;
+namespace PagOnline\Tests\Unit\PayByMail;
 
+use PagOnline\Tests\Unit\IgfsCgBaseTest;
 use PagOnline\PayByMail\IgfsCgPayByMailVerify;
 use PagOnline\Exceptions\IgfsMissingParException;
 use PagOnline\PayByMail\Requests\IgfsCgPayByMailVerifyRequest;

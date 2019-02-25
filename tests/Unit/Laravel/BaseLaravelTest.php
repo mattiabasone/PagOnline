@@ -1,6 +1,6 @@
 <?php
 
-namespace Test\Unit;
+namespace PagOnline\Tests\Unit;
 
 use PagOnline;
 use Illuminate\Support\Str;

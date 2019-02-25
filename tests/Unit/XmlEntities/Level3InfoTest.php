@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\XmlEntities;
+namespace PagOnline\Tests\Unit\XmlEntities;
 
 use PHPUnit\Framework\TestCase;
 use PagOnline\XmlEntities\Level3Info;

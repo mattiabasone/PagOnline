@@ -1,8 +1,9 @@
 <?php
 
-namespace Tests\Unit\Init;
+namespace PagOnline\Tests\Unit\Tran;
 
 use PagOnline\Tran\IgfsCgAuth;
+use PagOnline\Tests\Unit\IgfsCgBaseTest;
 use PagOnline\Tran\Requests\IgfsCgAuthRequest;
 use PagOnline\Exceptions\IgfsMissingParException;
 

@@ -72,22 +72,21 @@ class IgfsUtils
      *
      * @return string|null
      */
-    public static function formatXMLGregorianCalendar($timestamp)
+    public static function formatXMLGregorianCalendar($timestamp): ?string
     {
         if (null === $timestamp || !\is_int($timestamp)) {
             return null;
         }
 
-        try {
-            $dateTimeObject = (new DateTimeImmutable())->setTimestamp($timestamp);
-
-            return $dateTimeObject->format('Y-m-d').
-                'T'.
-                $dateTimeObject->format('H:i:s').
-                $dateTimeObject->format('P');
-        } catch (\Exception $e) {
+        $dateTimeObject = (new DateTimeImmutable())->setTimestamp((int) $timestamp);
+        if (!$dateTimeObject) {
             return null;
         }
+
+        return $dateTimeObject->format('Y-m-d').
+            'T'.
+            $dateTimeObject->format('H:i:s').
+            $dateTimeObject->format('P');
     }
 
     /**
@@ -121,12 +120,8 @@ class IgfsUtils
      */
     public static function parseDateFormat($text, string $format): ?DateTimeImmutable
     {
-        try {
-            $date = DateTimeImmutable::createFromFormat($format, $text);
+        $date = DateTimeImmutable::createFromFormat($format, $text);
 
-            return $date ? $date : null;
-        } catch (\Exception $e) {
-            return null;
-        }
+        return $date ? $date : null;
     }
 }

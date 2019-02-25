@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Init;
+namespace PagOnline\Tests\Unit;
 
 use ReflectionClass;
 use PagOnline\IgfsCgInterface;

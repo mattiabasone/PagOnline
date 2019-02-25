@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit;
+namespace PagOnline\Tests\Unit;
 
 use PagOnline\Errors;
 use PHPUnit\Framework\TestCase;

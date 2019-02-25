@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Init;
+namespace PagOnline\Tests\Unit\Init;
 
 use PagOnline\Errors;
 use GuzzleHttp\Client;
@@ -8,6 +8,7 @@ use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
 use PagOnline\Init\IgfsCgVerify;
 use GuzzleHttp\Handler\MockHandler;
+use PagOnline\Tests\Unit\IgfsCgBaseTest;
 use PagOnline\Init\Requests\IgfsCgVerifyRequest;
 use PagOnline\Exceptions\IgfsMissingParException;
 

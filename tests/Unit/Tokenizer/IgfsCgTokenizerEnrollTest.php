@@ -1,7 +1,8 @@
 <?php
 
-namespace Tests\Unit\Init;
+namespace PagOnline\Tests\Unit\Tokenizer;
 
+use PagOnline\Tests\Unit\IgfsCgBaseTest;
 use PagOnline\Tokenizer\IgfsCgTokenizerEnroll;
 use PagOnline\Exceptions\IgfsMissingParException;
 use PagOnline\Tokenizer\Requests\IgfsCgTokenizerEnrollRequest;

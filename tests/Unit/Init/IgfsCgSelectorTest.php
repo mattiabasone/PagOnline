@@ -1,8 +1,9 @@
 <?php
 
-namespace Tests\Unit\Init;
+namespace PagOnline\Tests\Unit\Init;
 
 use PagOnline\Init\IgfsCgSelector;
+use PagOnline\Tests\Unit\IgfsCgBaseTest;
 use PagOnline\Exceptions\IgfsMissingParException;
 use PagOnline\Init\Requests\IgfsCgSelectorRequest;
 

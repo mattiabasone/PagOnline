@@ -1,8 +1,9 @@
 <?php
 
-namespace Tests\Unit\Init;
+namespace PagOnline\Tests\Unit\Tran;
 
 use PagOnline\Tran\IgfsCgCredit;
+use PagOnline\Tests\Unit\IgfsCgBaseTest;
 use PagOnline\Tran\Requests\IgfsCgCreditRequest;
 use PagOnline\Exceptions\IgfsMissingParException;
 
