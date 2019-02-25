@@ -202,29 +202,49 @@ class IgfsCgInitTest extends IgfsCgBaseTest
                 ['Content-Type' => 'text/xml; charset="utf-8"'],
                 \file_get_contents(__DIR__.'/../resources/init/success.xml')
             ),
-            // Second
-            new Response(500),
-            // Third
-            new Response(
-                200,
-                ['Content-Type' => 'text/xml; charset="utf-8"'],
-                '<html><head></head><body></body></html>'
-            ),
-            // Fourth
-            new Response(
-                200,
-                ['Content-Type' => 'text/xml; charset="utf-8"'],
-                ''
-            ),
-            // Fifth
-            new Response(401),
-            new Response(401),
             // Sixth
             new Response(
                 200,
                 ['Content-Type' => 'text/xml; charset="utf-8"'],
                 \file_get_contents(__DIR__.'/../resources/init/success.xml')
             ),
+            // Sixth
+            new Response(
+                200,
+                ['Content-Type' => 'text/xml; charset="utf-8"'],
+                \file_get_contents(__DIR__.'/../resources/init/success.xml')
+            ),
+        ]);
+
+        $handler = HandlerStack::create($mock);
+
+        /** @var \PagOnline\Init\IgfsCgInit $obj */
+        $obj = $this->makeIgfsCg();
+        $obj->setHttpClient(new Client(['handler' => $handler]));
+        $this->setIgfsRequiredParamenters($obj);
+        $this->assertTrue($obj->execute());
+        $this->assertNotNull($obj->redirectURL);
+
+        $obj->resetFields();
+        $this->setIgfsBaseValues($obj);
+        $this->setIgfsRequiredParamenters($obj);
+        $obj->serverURL = null;
+        $obj->serverURLs = ['https://google.com'];
+        $this->assertTrue($obj->execute());
+
+        $obj->resetFields();
+        $this->setIgfsBaseValues($obj);
+        $this->setIgfsRequiredParamenters($obj);
+        $obj->serverURL = null;
+        $obj->serverURLs = ['https://google.com', 'https://amazon.com'];
+        $this->assertTrue($obj->execute());
+    }
+
+    /** @test */
+    public function shouldFailProcessingErrorBodyResponse()
+    {
+        // Create a mock and queue two responses.
+        $mock = new MockHandler([
             new Response(
                 200,
                 ['Content-Type' => 'text/xml; charset="utf-8"'],
@@ -238,37 +258,83 @@ class IgfsCgInitTest extends IgfsCgBaseTest
         $obj = $this->makeIgfsCg();
         $obj->setHttpClient(new Client(['handler' => $handler]));
         $this->setIgfsRequiredParamenters($obj);
+        $this->assertFalse($obj->execute());
+    }
 
-        // First: successful test
-        $this->assertTrue($obj->execute());
-        $this->assertNotNull($obj->redirectURL);
+    /** @test */
+    public function shouldFailProcessingInvalidBodyResponse()
+    {
+        $mock = new MockHandler([
+            new Response(
+                200,
+                ['Content-Type' => 'text/html; charset="utf-8"'],
+                '<html><head></head><body></body></html>'
+            ),
+        ]);
+        $handler = HandlerStack::create($mock);
 
-        // Second: Gateway error 500
-        $obj->resetFields();
-        $this->setIgfsBaseValues($obj);
+        /** @var \PagOnline\Init\IgfsCgInit $obj */
+        $obj = $this->makeIgfsCg();
+        $obj->setHttpClient(new Client(['handler' => $handler]));
+        $this->setIgfsRequiredParamenters($obj);
+        $this->assertFalse($obj->execute());
+    }
+
+    /** @test */
+    public function shouldFailProcessingEmptyBodyResponse()
+    {
+        $mock = new MockHandler([
+            new Response(
+                200,
+                ['Content-Type' => 'text/xml; charset="utf-8"'],
+                ''
+            ),
+        ]);
+        $handler = HandlerStack::create($mock);
+
+        /** @var \PagOnline\Init\IgfsCgInit $obj */
+        $obj = $this->makeIgfsCg();
+        $obj->setHttpClient(new Client(['handler' => $handler]));
+        $this->setIgfsRequiredParamenters($obj);
+        $this->assertFalse($obj->execute());
+    }
+
+    /** @test */
+    public function shouldFailProcessingUrlWithError500()
+    {
+        $mock = new MockHandler([
+            new Response(500),
+        ]);
+
+        $handler = HandlerStack::create($mock);
+
+        /** @var \PagOnline\Init\IgfsCgInit $obj */
+        $obj = $this->makeIgfsCg();
+        $this->setIgfsRequiredParamenters($obj);
+        $obj->setHttpClient(new Client(['handler' => $handler]));
         $obj->level3Info = new Level3Info();
         $obj->level3Info->vat = '12345';
         $obj->mandateInfo = new MandateInfo();
         $obj->mandateInfo->contractID = '12345';
         $obj->termInfo = [new InitTerminalInfo()];
         $obj->termInfo[0]->tid = '12345';
-        $this->setIgfsRequiredParamenters($obj);
         $this->assertFalse($obj->execute());
+    }
 
-        // Third: Invalid body
-        $obj->resetFields();
-        $this->setIgfsBaseValues($obj);
+    /** @test */
+    public function shouldFailCheckingMultipleUrls()
+    {
+        $mock = new MockHandler([
+            new Response(401),
+            new Response(403),
+        ]);
+
+        $handler = HandlerStack::create($mock);
+
+        /** @var \PagOnline\Init\IgfsCgInit $obj */
+        $obj = $this->makeIgfsCg();
         $this->setIgfsRequiredParamenters($obj);
-        $this->assertFalse($obj->execute());
-
-        // Fourth: 200 + empty body
-        $obj->resetFields();
-        $this->setIgfsBaseValues($obj);
-        $this->setIgfsRequiredParamenters($obj);
-        $this->assertFalse($obj->execute());
-
-        // Fifth: trying multiple server urls and fails
-        $obj->resetFields();
+        $obj->setHttpClient(new Client(['handler' => $handler]));
         $obj->setHttpAuthUser('admin');
         $obj->setHttpAuthPass('admin');
         $obj->setHttpProxy('tcp://127.0.0.1');
@@ -276,23 +342,29 @@ class IgfsCgInitTest extends IgfsCgBaseTest
         $obj->setCustomHttpRequestConfig([
             \GuzzleHttp\RequestOptions::ALLOW_REDIRECTS => false,
         ]);
-        $this->setIgfsBaseValues($obj);
         $obj->serverURL = null;
         $obj->serverURLs = ['https://google.com', 'https://amazon.com'];
-        $this->setIgfsRequiredParamenters($obj);
         $this->assertFalse($obj->execute());
+    }
 
-        $obj->resetFields();
-        $this->setIgfsBaseValues($obj);
-        $obj->serverURL = null;
-        $obj->serverURLs = ['https://google.com'];
-        $this->setIgfsRequiredParamenters($obj);
-        $this->assertFalse($obj->execute());
+    /** @test */
+    public function shouldFailProcessForMissingErrorAndSignatureTagsInResponse()
+    {
+        $mock = new MockHandler([
+            new Response(
+                200,
+                ['Content-Type' => 'text/xml; charset="utf-8"'],
+                \file_get_contents(__DIR__.'/../resources/init/no_error_and_signature_tags.xml')
+            ),
+        ]);
+        $handler = HandlerStack::create($mock);
 
-        // Seventh: Error response
-        $obj->resetFields();
+        /** @var \PagOnline\Init\IgfsCgInit $obj */
+        $obj = $this->makeIgfsCg();
+        $obj->setHttpClient(new Client(['handler' => $handler]));
         $this->setIgfsBaseValues($obj);
         $this->setIgfsRequiredParamenters($obj);
         $this->assertFalse($obj->execute());
+        $this->assertTrue($obj->error);
     }
 }

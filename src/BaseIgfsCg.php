@@ -371,17 +371,16 @@ abstract class BaseIgfsCg implements IgfsCgInterface
             if (!empty($this->serverURL)) {
                 $mapResponse = $this->executeHttp($this->serverURL);
             } else {
-                $i = 0;
-                $sURL = $this->serverURLs[$i];
+                $sURLs = $this->serverURLs;
+                $sURL = \array_shift($sURLs);
                 $finished = false;
                 while (!$finished) {
                     try {
                         $mapResponse = $this->executeHttp($sURL);
                         $finished = true;
                     } catch (ConnectionException $e) {
-                        ++$i;
-                        if ($i < \count($this->serverURLs) && null != $this->serverURLs[$i]) {
-                            $sURL = $this->serverURLs[$i];
+                        if (!empty($sURLs)) {
+                            $sURL = \array_shift($sURLs);
                         } else {
                             throw $e;
                         }
