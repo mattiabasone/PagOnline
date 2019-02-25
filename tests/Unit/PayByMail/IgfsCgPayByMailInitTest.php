@@ -2,8 +2,10 @@
 
 namespace PagOnline\Tests\Unit\PayByMail;
 
+use PagOnline\XmlEntities\Level3Info;
 use PagOnline\Tests\Unit\IgfsCgBaseTest;
 use PagOnline\PayByMail\IgfsCgPayByMailInit;
+use PagOnline\XmlEntities\Level3InfoProduct;
 use PagOnline\Exceptions\IgfsMissingParException;
 use PagOnline\PayByMail\Requests\IgfsCgPayByMailInitRequest;
 
@@ -22,13 +24,69 @@ class IgfsCgPayByMailInitTest extends IgfsCgBaseTest
     }
 
     /** @test */
-    public function shouldChecksFieldsAndRaiseException()
+    public function shouldChecksFieldsAndRaiseExceptionMissingTrType()
     {
-        $foo = $this->getClassMethod('checkFields');
-        $obj = new $this->igfsCgClass();
-
+        /* @var \PagOnline\PayByMail\IgfsCgPayByMailInit $obj */
         $this->expectException(IgfsMissingParException::class);
+        $this->expectExceptionMessage('Missing trType');
+        $foo = $this->getClassMethod('checkFields');
+        $obj = $this->makeIgfsCg();
+        $obj->trType = null;
+        $foo->invoke($obj);
+    }
+
+    /** @test */
+    public function shouldChecksFieldsAndRaiseExceptionMissingLangId()
+    {
+        /* @var \PagOnline\PayByMail\IgfsCgPayByMailInit $obj */
+        $this->expectException(IgfsMissingParException::class);
+        $this->expectExceptionMessage('Missing langID');
+        $foo = $this->getClassMethod('checkFields');
+        $obj = $this->makeIgfsCg();
         $obj->langID = null;
+        $foo->invoke($obj);
+    }
+
+    /** @test */
+    public function shouldChecksFieldsAndRaiseExceptionMissingShopUserRef()
+    {
+        /* @var \PagOnline\PayByMail\IgfsCgPayByMailInit $obj */
+        $this->expectException(IgfsMissingParException::class);
+        $this->expectExceptionMessage('Missing shopUserRef');
+        $foo = $this->getClassMethod('checkFields');
+        $obj = $this->makeIgfsCg();
+        $obj->langID = 'EN';
+        $foo->invoke($obj);
+    }
+
+    /** @test */
+    public function shouldChecksFieldsAndRaiseExceptionMissingLevel3InfoProductCode()
+    {
+        /* @var \PagOnline\PayByMail\IgfsCgPayByMailInit $obj */
+        $this->expectException(IgfsMissingParException::class);
+        $this->expectExceptionMessage('Missing productCode[0]');
+        $foo = $this->getClassMethod('checkFields');
+        $obj = $this->makeIgfsCg();
+        $obj->langID = 'EN';
+        $obj->shopUserRef = 'shopUserRef';
+        $obj->level3Info = new Level3Info();
+        $obj->level3Info->product = [new Level3InfoProduct()];
+        $foo->invoke($obj);
+    }
+
+    /** @test */
+    public function shouldChecksFieldsAndRaiseExceptionMissingLevel3InfoProductDescription()
+    {
+        /* @var \PagOnline\PayByMail\IgfsCgPayByMailInit $obj */
+        $this->expectException(IgfsMissingParException::class);
+        $this->expectExceptionMessage('Missing productDescription[0]');
+        $foo = $this->getClassMethod('checkFields');
+        $obj = $this->makeIgfsCg();
+        $obj->langID = 'EN';
+        $obj->shopUserRef = 'shopUserRef';
+        $obj->level3Info = new Level3Info();
+        $obj->level3Info->product = [new Level3InfoProduct()];
+        $obj->level3Info->product[0]->productCode = 'productCode';
         $foo->invoke($obj);
     }
 

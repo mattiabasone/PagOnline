@@ -16,12 +16,68 @@ class IgfsCgSelectorTest extends IgfsCgBaseTest
     protected $igfsCgRequest = IgfsCgSelectorRequest::CONTENT;
 
     /** @test */
-    public function shouldChecksFieldsAndRaiseException()
+    public function shouldChecksFieldsAndRaiseExceptionMissingTrType()
     {
+        /* @var \PagOnline\Init\IgfsCgSelector $obj */
         $this->expectException(IgfsMissingParException::class);
-        $foo = $this->getClassMethod('checkFields');
-        $obj = new $this->igfsCgClass();
-        $foo->invoke($obj);
+        $this->expectExceptionMessage('Missing trType');
+        $checkFieldsMethod = $this->getClassMethod('checkFields');
+        $obj = $this->makeIgfsCg();
+        $obj->trType = null;
+        $checkFieldsMethod->invoke($obj);
+    }
+
+    /** @test */
+    public function shouldChecksFieldsAndRaiseExceptionMissingAmount()
+    {
+        /* @var \PagOnline\Init\IgfsCgSelector $obj */
+        $this->expectException(IgfsMissingParException::class);
+        $this->expectExceptionMessage('Missing amount');
+        $checkFieldsMethod = $this->getClassMethod('checkFields');
+        $obj = $this->makeIgfsCg();
+        $obj->trType = 'AUTH';
+        $checkFieldsMethod->invoke($obj);
+    }
+
+    /** @test */
+    public function shouldChecksFieldsAndRaiseExceptionMissingCurrencyCode()
+    {
+        /* @var \PagOnline\Init\IgfsCgSelector $obj */
+        $this->expectException(IgfsMissingParException::class);
+        $this->expectExceptionMessage('Missing currencyCode');
+        $checkFieldsMethod = $this->getClassMethod('checkFields');
+        $obj = $this->makeIgfsCg();
+        $obj->trType = 'AUTH';
+        $obj->amount = 1000;
+        $checkFieldsMethod->invoke($obj);
+    }
+
+    /** @test */
+    public function shouldChecksFieldsAndRaiseExceptionMissingLangID()
+    {
+        /* @var \PagOnline\Init\IgfsCgSelector $obj */
+        $this->expectException(IgfsMissingParException::class);
+        $this->expectExceptionMessage('Missing langID');
+        $checkFieldsMethod = $this->getClassMethod('checkFields');
+        $obj = $this->makeIgfsCg();
+        $obj->trType = 'AUTH';
+        $obj->amount = 1000;
+        $obj->currencyCode = 'EUR';
+        $obj->langID = null;
+        $checkFieldsMethod->invoke($obj);
+    }
+
+    /** @test */
+    public function shouldChecksFieldsAndRaiseExceptionMissingPayInstrToken()
+    {
+        /* @var \PagOnline\Init\IgfsCgSelector $obj */
+        $this->expectException(IgfsMissingParException::class);
+        $this->expectExceptionMessage('Missing payInstrToken');
+        $checkFieldsMethod = $this->getClassMethod('checkFields');
+        $obj = $this->makeIgfsCg();
+        $obj->trType = 'TOKENIZE';
+        $obj->langID = 'EN';
+        $checkFieldsMethod->invoke($obj);
     }
 
     /** @test */

@@ -24,13 +24,48 @@ class IgfsCgTokenizerEnrollTest extends IgfsCgBaseTest
     }
 
     /** @test */
-    public function shouldChecksFieldsAndRaiseException()
+    public function shouldChecksFieldsAndRaiseExceptionMissingPan()
     {
-        $foo = $this->getClassMethod('checkFields');
-        $obj = new $this->igfsCgClass();
-
         $this->expectException(IgfsMissingParException::class);
-        $obj->langID = null;
+        $this->expectExceptionMessage('Missing pan');
+        $foo = $this->getClassMethod('checkFields');
+        $obj = $this->makeIgfsCg();
+        $foo->invoke($obj);
+    }
+
+    /** @test */
+    public function shouldChecksFieldsAndRaiseExceptionMissingExpireMonth()
+    {
+        $this->expectException(IgfsMissingParException::class);
+        $this->expectExceptionMessage('Missing expireMonth');
+        $foo = $this->getClassMethod('checkFields');
+        $obj = $this->makeIgfsCg();
+        $obj->pan = 'pan';
+        $foo->invoke($obj);
+    }
+
+    /** @test */
+    public function shouldChecksFieldsAndRaiseExceptionMissingExpireYear()
+    {
+        $this->expectException(IgfsMissingParException::class);
+        $this->expectExceptionMessage('Missing expireYear');
+        $foo = $this->getClassMethod('checkFields');
+        $obj = $this->makeIgfsCg();
+        $obj->pan = 'pan';
+        $obj->expireMonth = '2025';
+        $foo->invoke($obj);
+    }
+
+    /** @test */
+    public function shouldChecksFieldsAndRaiseExceptionMissingPayInstrToken()
+    {
+        $this->expectException(IgfsMissingParException::class);
+        $this->expectExceptionMessage('Missing payInstrToken');
+        $foo = $this->getClassMethod('checkFields');
+        $obj = $this->makeIgfsCg();
+        $obj->pan = 'pan';
+        $obj->expireYear = '2025';
+        $obj->expireMonth = '12';
         $foo->invoke($obj);
     }
 

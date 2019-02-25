@@ -79,9 +79,6 @@ class IgfsUtils
         }
 
         $dateTimeObject = (new DateTimeImmutable())->setTimestamp((int) $timestamp);
-        if (!$dateTimeObject) {
-            return null;
-        }
 
         return $dateTimeObject->format('Y-m-d').
             'T'.

@@ -21,13 +21,13 @@ class IgfsCgPayByMailVerifyTest extends IgfsCgBaseTest
     }
 
     /** @test */
-    public function shouldChecksFieldsAndRaiseException()
+    public function shouldChecksFieldsAndRaiseExceptionMissingMailId()
     {
-        $foo = $this->getClassMethod('checkFields');
-        $obj = new $this->igfsCgClass();
-
+        /* @var \PagOnline\PayByMail\IgfsCgPayByMailVerify */
         $this->expectException(IgfsMissingParException::class);
-        $obj->langID = null;
+        $this->expectExceptionMessage('Missing mailID');
+        $foo = $this->getClassMethod('checkFields');
+        $obj = $this->makeIgfsCg();
         $foo->invoke($obj);
     }
 

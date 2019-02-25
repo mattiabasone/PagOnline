@@ -21,13 +21,12 @@ class IgfsCgTokenizerCheckTest extends IgfsCgBaseTest
     }
 
     /** @test */
-    public function shouldChecksFieldsAndRaiseException()
+    public function shouldChecksFieldsAndRaiseExceptionMissingPayInstrToken()
     {
-        $foo = $this->getClassMethod('checkFields');
-        $obj = new $this->igfsCgClass();
-
         $this->expectException(IgfsMissingParException::class);
-        $obj->langID = null;
+        $this->expectExceptionMessage('Missing payInstrToken');
+        $foo = $this->getClassMethod('checkFields');
+        $obj = $this->makeIgfsCg();
         $foo->invoke($obj);
     }
 
