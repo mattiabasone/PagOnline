@@ -10,7 +10,7 @@ use PagOnline\IgfsUtils;
 trait CastProperties
 {
     /** @var array */
-    protected $dates = [];
+    protected $casts = [];
 
     /**
      * Check if is date attribute.
@@ -21,7 +21,19 @@ trait CastProperties
      */
     public function isDateAttribute($attribute): bool
     {
-        return \in_array($attribute, $this->dates, true);
+        return \array_key_exists($attribute, $this->casts) && 'date' === $this->casts[$attribute];
+    }
+
+    /**
+     * Get attribute cast type for simple properties.
+     *
+     * @param string $attribute
+     *
+     * @return string
+     */
+    protected function getAttributeCastType(string $attribute): string
+    {
+        return \array_key_exists($attribute, $this->casts) ? $this->casts[$attribute] : 'string';
     }
 
     /**
@@ -33,10 +45,16 @@ trait CastProperties
      */
     public function castAttribute($attribute)
     {
-        if ($this->isDateAttribute($attribute)) {
-            $value = (string) IgfsUtils::formatXMLGregorianCalendar($this->{$attribute});
-        } else {
-            $value = (string) $this->{$attribute};
+        switch ($this->getAttributeCastType($attribute)) {
+            case 'date':
+                $value = (string) IgfsUtils::formatXMLGregorianCalendar($this->{$attribute});
+                break;
+            case 'array':
+                $value = (array) $this->{$attribute};
+                break;
+            default:
+                $value = (string) $this->{$attribute};
+                break;
         }
 
         return $value;

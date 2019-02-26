@@ -239,7 +239,7 @@ class IgfsCgInit extends BaseIgfsCgInit
     }
 
     /**
-     * @param $response
+     * @param array $response
      */
     protected function parseResponseMap($response)
     {
@@ -251,7 +251,7 @@ class IgfsCgInit extends BaseIgfsCgInit
     }
 
     /**
-     * @param $response
+     * @param array $response
      *
      * @throws \PagOnline\Exceptions\IgfsException
      *

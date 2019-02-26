@@ -39,8 +39,8 @@ class Level3Info extends BaseXmlEntity
     public $note;
     public $product;
 
-    protected $dates = [
-        'destinationDate',
+    protected $casts = [
+        'destinationDate' => 'date',
     ];
 
     /**

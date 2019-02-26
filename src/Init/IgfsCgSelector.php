@@ -4,6 +4,7 @@ namespace PagOnline\Init;
 
 use PagOnline\IgfsUtils;
 use PagOnline\Exceptions\IgfsMissingParException;
+use PagOnline\XmlEntities\Init\SelectorTerminalInfo;
 
 /**
  * Class IgfsCgSelector.

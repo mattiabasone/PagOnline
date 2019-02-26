@@ -51,6 +51,17 @@ abstract class BaseXmlEntity implements XmlEntityInterface
     }
 
     /**
+     * @param string $attribute
+     * @param string $value
+     *
+     * @return string
+     */
+    protected function attributeValueToTagString(string $attribute, string $value)
+    {
+        return "<{$attribute}><![CDATA[{$value}]]></{$attribute}>";
+    }
+
+    /**
      * Format entity to Xml.
      *
      * @param string $rootNodeName
@@ -64,7 +75,13 @@ abstract class BaseXmlEntity implements XmlEntityInterface
             if (!empty($this->{$attribute})) {
                 if (!$this->isEntityAttribute($attribute)) {
                     $value = $this->castAttribute($attribute);
-                    $body .= "<{$attribute}><![CDATA[{$value}]]></{$attribute}>";
+                    if (\is_array($value)) {
+                        foreach ($value as $valueEntry) {
+                            $body .= $this->attributeValueToTagString($attribute, $valueEntry);
+                        }
+                    } else {
+                        $body .= $this->attributeValueToTagString($attribute, $value);
+                    }
                 } else {
                     $body .= $this->getCustomAttributeXml($attribute);
                 }
@@ -128,7 +145,7 @@ abstract class BaseXmlEntity implements XmlEntityInterface
         }
 
         $dom = new SimpleXMLElement($xml, LIBXML_NOERROR, false);
-        if (0 == \count($dom)) {
+        if (0 === $dom->children()->count()) {
             return null;
         }
 
@@ -138,7 +155,13 @@ abstract class BaseXmlEntity implements XmlEntityInterface
             $object = new static();
             foreach ($object->getAttributes() as $attribute) {
                 if (!$object->isEntityAttribute($attribute)) {
-                    $object->setAttributeFromResponse($xmlArray, $attribute);
+                    if ('array' !== $object->getAttributeCastType($attribute)) {
+                        $object->setAttributeFromResponse($xmlArray, $attribute);
+                    } else {
+                        foreach ($dom->xpath($attribute) as $entry) {
+                            \array_push($object->{$attribute}, $entry->__toString());
+                        }
+                    }
                 } else {
                     $object->setCustomAttributeFromDom($dom, $attribute);
                 }

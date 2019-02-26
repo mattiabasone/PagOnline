@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<SelectorTerminalinfo>
+    <tid>123456</tid>
+    <description>Lorem Ipsum description</description>
+    <payInstr>Lorem Ipsum payInstr</payInstr>
+    <payInstrDescription>Lorem Ipsum payInstrDescription</payInstrDescription>
+    <imgURL>https://via.placeholder.com/350x150</imgURL>
+    <imgURL>https://via.placeholder.com/350x150</imgURL>
+    <imgURL>https://via.placeholder.com/350x150</imgURL>
+</SelectorTerminalinfo>
