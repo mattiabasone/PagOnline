@@ -289,7 +289,7 @@ abstract class BaseIgfsCg implements IgfsCgInterface
     {
         $this->tid = IgfsUtils::getValue($response, 'tid');
         $this->rc = IgfsUtils::getValue($response, 'rc');
-        if (is_null(IgfsUtils::getValue($response, 'error'))) {
+        if (null === IgfsUtils::getValue($response, 'error')) {
             $this->error = true;
         } else {
             $this->error = ('true' === (string) IgfsUtils::getValue($response, 'error'));

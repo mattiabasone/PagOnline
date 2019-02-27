@@ -35,11 +35,11 @@ class IgfsCgFactory
                 $igfsCgClass->kSig = Config::get('pagonline.signature_key');
 
                 // Checking if the class have these two properties
-                if (property_exists($igfsCgClass, 'currencyCode')) {
+                if (\property_exists($igfsCgClass, 'currencyCode')) {
                     $igfsCgClass->currencyCode = Config::get('pagonline.currency_code');
                 }
 
-                if (property_exists($igfsCgClass, 'langID')) {
+                if (\property_exists($igfsCgClass, 'langID')) {
                     $igfsCgClass->langID = Config::get('pagonline.language_id');
                 }
 
