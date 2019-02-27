@@ -119,13 +119,13 @@ abstract class BaseXmlEntity implements XmlEntityInterface
         if ('array' === $this->entityAttributes[$attribute]['type']) {
             $value = [];
             foreach ($dom->xpath($attribute) as $item) {
-                $value[] = $this->entityAttributes[$attribute]['namespace']::fromXml($item->asXML(), 'product');
+                $value[] = $this->entityAttributes[$attribute]['namespace']::fromXml($item->asXML());
             }
         } else {
             $element = $dom->xpath($attribute);
             $value = null;
-            if (\is_array($element)) {
-                $value = $this->entityAttributes[$attribute]['namespace']::fromXml($element[0]->asXML(), 'product');
+            if (\count($element) > 0) {
+                $value = $this->entityAttributes[$attribute]['namespace']::fromXml($element[0]->asXML());
             }
         }
         $this->{$attribute} = $value;

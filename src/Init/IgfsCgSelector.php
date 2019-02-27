@@ -133,7 +133,7 @@ class IgfsCgSelector extends BaseIgfsCgInit
             if (\count($termInfos) > 0) {
                 $this->termInfo = [];
                 foreach ($termInfos as $item) {
-                    \array_push($this->termInfo, SelectorTerminalInfo::fromXml($item->asXML(), 'termInfo'));
+                    \array_push($this->termInfo, SelectorTerminalInfo::fromXml($item->asXML()));
                 }
             }
         } catch (\Exception $e) {

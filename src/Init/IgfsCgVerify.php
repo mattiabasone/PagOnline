@@ -163,8 +163,8 @@ class IgfsCgVerify extends BaseIgfsCgInit
         // Opzionale
         $this->shopUserMobilePhone = IgfsUtils::getValue($response, 'shopUserMobilePhone');
         // Opzionale
-        $this->receiptPdf = \base64_decode(IgfsUtils::getValue($response, 'receiptPdf'), true);
-        if (\is_bool($this->receiptPdf)) {
+        $this->receiptPdf = (string) \base64_decode(IgfsUtils::getValue($response, 'receiptPdf'), true);
+        if (empty($this->receiptPdf)) {
             $this->receiptPdf = null;
         }
 
