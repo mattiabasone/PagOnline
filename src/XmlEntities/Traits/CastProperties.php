@@ -41,7 +41,7 @@ trait CastProperties
      *
      * @param string $attribute
      *
-     * @return string
+     * @return string|array
      */
     public function castAttribute($attribute)
     {

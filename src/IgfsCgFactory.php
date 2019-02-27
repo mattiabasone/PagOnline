@@ -33,8 +33,15 @@ class IgfsCgFactory
                 $igfsCgClass->serverURL = Config::get('pagonline.server_url');
                 $igfsCgClass->tid = Config::get('pagonline.terminal_id');
                 $igfsCgClass->kSig = Config::get('pagonline.signature_key');
-                $igfsCgClass->currencyCode = Config::get('pagonline.currency_code');
-                $igfsCgClass->langID = Config::get('pagonline.language_id');
+
+                // Checking if the class have these two properties
+                if (property_exists($igfsCgClass, 'currencyCode')) {
+                    $igfsCgClass->currencyCode = Config::get('pagonline.currency_code');
+                }
+
+                if (property_exists($igfsCgClass, 'langID')) {
+                    $igfsCgClass->langID = Config::get('pagonline.language_id');
+                }
 
                 // HTTP configuration
                 $igfsCgClass->setRequestTimeout((int) Config::get('pagonline.request_timeout'));

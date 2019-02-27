@@ -6,6 +6,7 @@ With this package I'm trying to improve the crappy IGFS CG PHP Library provided 
 
 [![Build Status](https://travis-ci.org/mattiabasone/PagOnline.svg?branch=master)](https://travis-ci.org/mattiabasone/PagOnline)
 [![Coverage Status](https://coveralls.io/repos/github/mattiabasone/PagOnline/badge.svg)](https://coveralls.io/github/mattiabasone/PagOnline)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/mattiabasone/PagOnline/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/mattiabasone/PagOnline/?branch=master)
 
 ### Basic Usage
 
