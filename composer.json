@@ -1,6 +1,11 @@
 {
     "name": "mattiabasone/pagonline",
-    "description": "PagOnline API Library",
+    "description": "PagOnline API Library with Laravel integration",
+    "keywords": [
+        "payment",
+        "pagonline",
+        "laravel"
+    ],
     "type": "library",
     "authors": [
         {
@@ -8,6 +13,11 @@
             "email": "mattia.basone@gmail.com"
         }
     ],
+    "support": {
+        "issues": "https://github.com/mattiabasone/PagOnline/issues",
+        "source": "https://github.com/mattiabasone/PagOnline"
+    },
+    "license": "BSD-3-Clause",
     "require": {
         "php": ">=7.2",
         "ext-curl": "*",

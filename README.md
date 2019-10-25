@@ -4,6 +4,8 @@ This library can be used with PagOnline Payment Gateway and it can be easily int
 
 With this package I'm trying to improve the crappy IGFS CG PHP Library provided by PagOnline Payment gateway.
 
+[![Latest Stable Version](https://poser.pugx.org/mattiabasone/pagonline/v/stable)](https://packagist.org/packages/mattiabasone/pagonline)
+[![Total Downloads](https://poser.pugx.org/mattiabasone/pagonline/downloads)](https://packagist.org/packages/mattiabasone/pagonline)
 [![Build Status](https://travis-ci.org/mattiabasone/PagOnline.svg?branch=master)](https://travis-ci.org/mattiabasone/PagOnline)
 [![Coverage Status](https://coveralls.io/repos/github/mattiabasone/PagOnline/badge.svg)](https://coveralls.io/github/mattiabasone/PagOnline)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/mattiabasone/PagOnline/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/mattiabasone/PagOnline/?branch=master)
