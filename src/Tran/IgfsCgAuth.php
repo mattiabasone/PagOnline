@@ -160,15 +160,15 @@ class IgfsCgAuth extends BaseIgfsCgTran
     protected function checkFields()
     {
         parent::checkFields();
-        if (null === $this->trType) {
+        if ($this->trType === null) {
             throw new IgfsMissingParException('Missing trType');
         }
 
-        if ('VERIFY' != $this->trType) {
-            if (null == $this->amount) {
+        if ($this->trType != 'VERIFY') {
+            if ($this->amount == null) {
                 throw new IgfsMissingParException('Missing amount');
             }
-            if (null == $this->currencyCode) {
+            if ($this->currencyCode == null) {
                 throw new IgfsMissingParException('Missing currencyCode');
             }
         }
@@ -177,26 +177,26 @@ class IgfsCgAuth extends BaseIgfsCgTran
         //	if ($this->payInstrToken == NULL)
         //		throw new IgfsMissingParException("Missing pan");
         // }
-        if (null != $this->pan) {
+        if ($this->pan != null) {
             // Se è stato impostato il pan verifico...
-            if ('' == $this->pan) {
+            if ($this->pan == '') {
                 throw new IgfsMissingParException('Missing pan');
             }
         }
-        if (null != $this->payInstrToken) {
+        if ($this->payInstrToken != null) {
             // Se è stato impostato il payInstrToken verifico...
-            if ('' == $this->payInstrToken) {
+            if ($this->payInstrToken == '') {
                 throw new IgfsMissingParException('Missing payInstrToken');
             }
         }
-        if (null != $this->level3Info) {
+        if ($this->level3Info != null) {
             $i = 0;
-            if (null != $this->level3Info->product) {
+            if ($this->level3Info->product != null) {
                 foreach ($this->level3Info->product as $product) {
-                    if (null == $product->productCode) {
+                    if ($product->productCode == null) {
                         throw new IgfsMissingParException('Missing productCode['.$i.']');
                     }
-                    if (null == $product->productDescription) {
+                    if ($product->productDescription == null) {
                         throw new IgfsMissingParException('Missing productDescription['.$i.']');
                     }
                     ++$i;
@@ -247,7 +247,7 @@ class IgfsCgAuth extends BaseIgfsCgTran
         $this->replaceRequestParameter($request, 'fingerPrint', $this->fingerPrint);
         $this->replaceRequestParameter($request, 'validityExpire', IgfsUtils::formatXMLGregorianCalendar($this->validityExpire));
 
-        if (null != $this->level3Info) {
+        if ($this->level3Info != null) {
             $this->replaceRequestParameter($request, 'level3Info', $this->level3Info->toXml('level3Info'), false);
         } else {
             $this->replaceRequestParameter($request, 'level3Info', '');
@@ -295,14 +295,14 @@ class IgfsCgAuth extends BaseIgfsCgTran
             $xml = \str_replace('<soap:', '<', $xml);
             $xml = \str_replace('</soap:', '</', $xml);
             $dom = new SimpleXMLElement($xml, LIBXML_NOERROR, false);
-            if (0 == \count($dom)) {
+            if (\count($dom) == 0) {
                 return;
             }
 
             $tmp = \str_replace('<Body>', '', $dom->Body->asXML());
             $tmp = \str_replace('</Body>', '', $tmp);
             $dom = new SimpleXMLElement($tmp, LIBXML_NOERROR, false);
-            if (0 == \count($dom)) {
+            if (\count($dom) == 0) {
                 return;
             }
 
@@ -310,7 +310,7 @@ class IgfsCgAuth extends BaseIgfsCgTran
             if (isset($xml_response['payAddData'])) {
                 $payAddData = [];
                 foreach ($dom->response->children() as $item) {
-                    if ('payAddData' == $item->getName()) {
+                    if ($item->getName() == 'payAddData') {
                         $payAddData[] = Entry::fromXml($item->asXML());
                     }
                 }

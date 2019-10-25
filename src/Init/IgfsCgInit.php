@@ -134,28 +134,28 @@ class IgfsCgInit extends BaseIgfsCgInit
     {
         parent::checkFields();
 
-        if (null === $this->trType) {
+        if ($this->trType === null) {
             throw new IgfsMissingParException('Missing trType');
         }
 
-        if (null === $this->langID) {
+        if ($this->langID === null) {
             throw new IgfsMissingParException('Missing langID');
         }
 
-        if (null === $this->notifyURL) {
+        if ($this->notifyURL === null) {
             throw new IgfsMissingParException('Missing notifyURL');
         }
 
-        if (null === $this->errorURL) {
+        if ($this->errorURL === null) {
             throw new IgfsMissingParException('Missing errorURL');
         }
 
-        if (null !== $this->payInstrToken && '' === $this->payInstrToken) {
+        if ($this->payInstrToken !== null && $this->payInstrToken === '') {
             // Se è stato impostato il payInstrToken verifico...
             throw new IgfsMissingParException('Missing payInstrToken');
         }
 
-        if (null !== $this->level3Info) {
+        if ($this->level3Info !== null) {
             if (!empty($this->level3Info->product) && \is_array($this->level3Info->product)) {
                 foreach ($this->level3Info->product as $i => $product) {
                     if (empty($product->productCode)) {
@@ -213,19 +213,19 @@ class IgfsCgInit extends BaseIgfsCgInit
         $this->replaceRequestParameter($request, 'minExpireMonth', $this->minExpireMonth);
         $this->replaceRequestParameter($request, 'minExpireYear', $this->minExpireYear);
 
-        if (null != $this->level3Info) {
+        if ($this->level3Info != null) {
             $this->replaceRequestParameter($request, 'level3Info', $this->level3Info->toXml('level3Info'), false);
         } else {
             $this->replaceRequestParameter($request, 'level3Info', '');
         }
 
-        if (null != $this->mandateInfo) {
+        if ($this->mandateInfo != null) {
             $this->replaceRequestParameter($request, 'mandateInfo', $this->level3Info->toXml('mandateInfo'), false);
         } else {
             $this->replaceRequestParameter($request, 'mandateInfo', '');
         }
 
-        if (null != $this->termInfo) {
+        if ($this->termInfo != null) {
             $sb = '';
             foreach ($this->termInfo as $item) {
                 $sb .= $item->toXml('termInfo');

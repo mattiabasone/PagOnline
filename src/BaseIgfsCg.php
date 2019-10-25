@@ -215,7 +215,7 @@ abstract class BaseIgfsCg implements IgfsCgInterface
         bool $wrap_cdata = true
     ) {
         $value = (string) $value;
-        if ('' === $value) {
+        if ($value === '') {
             $xmlTag = '';
         } else {
             $xmlTag = "<{$parameter}>";
@@ -271,7 +271,7 @@ abstract class BaseIgfsCg implements IgfsCgInterface
     protected function parseResponse($response): array
     {
         $responseNode = $this->responseXmlToObject($response);
-        if (null === $responseNode || 0 === $responseNode->children()->count()) {
+        if ($responseNode === null || $responseNode->children()->count() === 0) {
             return [];
         }
         $fields = IgfsUtils::parseResponseFields($responseNode);
@@ -289,10 +289,10 @@ abstract class BaseIgfsCg implements IgfsCgInterface
     {
         $this->tid = IgfsUtils::getValue($response, 'tid');
         $this->rc = IgfsUtils::getValue($response, 'rc');
-        if (null === IgfsUtils::getValue($response, 'error')) {
+        if (IgfsUtils::getValue($response, 'error') === null) {
             $this->error = true;
         } else {
-            $this->error = ('true' === (string) IgfsUtils::getValue($response, 'error'));
+            $this->error = ((string) IgfsUtils::getValue($response, 'error') === 'true');
         }
         $this->errorDesc = IgfsUtils::getValue($response, 'errorDesc');
     }
@@ -305,7 +305,7 @@ abstract class BaseIgfsCg implements IgfsCgInterface
     protected function checkResponseSignature($response)
     {
         $signature = IgfsUtils::getValue($response, 'signature');
-        if (null === $signature) {
+        if ($signature === null) {
             return false;
         }
 
@@ -414,7 +414,7 @@ abstract class BaseIgfsCg implements IgfsCgInterface
                 $this->rc = Errors::IGFS_007; // Communication error
                 $this->errorDesc = $e->getMessage();
             }
-            if (null === $this->rc) {
+            if ($this->rc === null) {
                 $this->rc = Errors::IGFS_909; // System error
             }
 

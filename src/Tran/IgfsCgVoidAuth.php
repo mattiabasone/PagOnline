@@ -44,10 +44,10 @@ class IgfsCgVoidAuth extends BaseIgfsCgTran
     protected function checkFields()
     {
         parent::checkFields();
-        if (null == $this->amount) {
+        if ($this->amount == null) {
             throw new IgfsMissingParException('Missing amount');
         }
-        if (null == $this->refTranID) {
+        if ($this->refTranID == null) {
             throw new IgfsMissingParException('Missing refTranID');
         }
     }

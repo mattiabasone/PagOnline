@@ -53,10 +53,10 @@ class IgfsCgConfirm extends BaseIgfsCgTran
     protected function checkFields()
     {
         parent::checkFields();
-        if (null == $this->amount) {
+        if ($this->amount == null) {
             throw new IgfsMissingParException('Missing amount');
         }
-        if (null == $this->refTranID && null == $this->topUpID) {
+        if ($this->refTranID == null && $this->topUpID == null) {
             throw new IgfsMissingParException('Missing refTranID');
         }
     }

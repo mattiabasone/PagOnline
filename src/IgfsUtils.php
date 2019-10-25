@@ -55,7 +55,7 @@ class IgfsUtils
     {
         $fields = [];
         foreach ($nodes->children() as $item) {
-            if (0 == \count($item)) {
+            if (\count($item) == 0) {
                 $fields[$item->getName()] = \trim((string) $item);
             } else {
                 $fields[$item->getName()] = (string) $item->asXML();
@@ -74,7 +74,7 @@ class IgfsUtils
      */
     public static function formatXMLGregorianCalendar($timestamp): ?string
     {
-        if (null === $timestamp || !\is_int($timestamp)) {
+        if ($timestamp === null || !\is_int($timestamp)) {
             return null;
         }
 
@@ -101,7 +101,7 @@ class IgfsUtils
         $text = \str_replace('T', ' ', $text);
         foreach (self::DATE_FORMATS as $dateFormat) {
             $date = self::parseDateFormat($text, $dateFormat);
-            if (null !== $date) {
+            if ($date !== null) {
                 break;
             }
         }

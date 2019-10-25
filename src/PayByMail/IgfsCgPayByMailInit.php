@@ -94,23 +94,23 @@ class IgfsCgPayByMailInit extends BaseIgfsCgPayByMail
     protected function checkFields()
     {
         parent::checkFields();
-        if (null == $this->trType) {
+        if ($this->trType == null) {
             throw new IgfsMissingParException('Missing trType');
         }
-        if (null == $this->langID) {
+        if ($this->langID == null) {
             throw new IgfsMissingParException('Missing langID');
         }
-        if (null == $this->shopUserRef) {
+        if ($this->shopUserRef == null) {
             throw new IgfsMissingParException('Missing shopUserRef');
         }
-        if (null != $this->level3Info) {
+        if ($this->level3Info != null) {
             $i = 0;
-            if (null != $this->level3Info->product) {
+            if ($this->level3Info->product != null) {
                 foreach ($this->level3Info->product as $product) {
-                    if (null == $product->productCode) {
+                    if ($product->productCode == null) {
                         throw new IgfsMissingParException("Missing productCode[{$i}]");
                     }
-                    if (null == $product->productDescription) {
+                    if ($product->productDescription == null) {
                         throw new IgfsMissingParException("Missing productDescription[{$i}]");
                     }
                     ++$i;
@@ -142,7 +142,7 @@ class IgfsCgPayByMailInit extends BaseIgfsCgPayByMail
         $this->replaceRequestParameter($request, 'description', $this->description);
         $this->replaceRequestParameter($request, 'paymentReason', $this->paymentReason);
 
-        if (null != $this->level3Info) {
+        if ($this->level3Info != null) {
             $this->replaceRequestParameter($request, 'level3Info', $this->level3Info->toXml('level3Info'), false);
         } else {
             $this->replaceRequestParameter($request, 'level3Info', '');

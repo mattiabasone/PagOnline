@@ -16,7 +16,7 @@ abstract class BaseIgfsCgTokenizer extends BaseIgfsCg
     protected function checkFields()
     {
         parent::checkFields();
-        if (null == $this->shopID || '' == $this->shopID) {
+        if ($this->shopID == null || $this->shopID == '') {
             throw new IgfsMissingParException('Missing shopID');
         }
     }

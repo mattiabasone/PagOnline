@@ -21,7 +21,7 @@ trait CastProperties
      */
     public function isDateAttribute($attribute): bool
     {
-        return \array_key_exists($attribute, $this->casts) && 'date' === $this->casts[$attribute];
+        return \array_key_exists($attribute, $this->casts) && $this->casts[$attribute] === 'date';
     }
 
     /**

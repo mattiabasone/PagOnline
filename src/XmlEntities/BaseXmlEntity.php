@@ -101,7 +101,7 @@ abstract class BaseXmlEntity implements XmlEntityInterface
         $value = (string) IgfsUtils::getValue($response, $attribute);
         if ($this->isDateAttribute($attribute)) {
             $tmpValue = IgfsUtils::parseXMLGregorianCalendar($value);
-            if (null !== $tmpValue) {
+            if ($tmpValue !== null) {
                 $value = $tmpValue->getTimestamp();
             } else {
                 $value = null;
@@ -116,7 +116,7 @@ abstract class BaseXmlEntity implements XmlEntityInterface
      */
     protected function setCustomAttributeFromDom(SimpleXMLElement $dom, $attribute)
     {
-        if ('array' === $this->entityAttributes[$attribute]['type']) {
+        if ($this->entityAttributes[$attribute]['type'] === 'array') {
             $value = [];
             foreach ($dom->xpath($attribute) as $item) {
                 $value[] = $this->entityAttributes[$attribute]['namespace']::fromXml($item->asXML());
@@ -145,7 +145,7 @@ abstract class BaseXmlEntity implements XmlEntityInterface
         }
 
         $dom = new SimpleXMLElement($xml, LIBXML_NOERROR, false);
-        if (0 === $dom->children()->count()) {
+        if ($dom->children()->count() === 0) {
             return null;
         }
 
@@ -155,7 +155,7 @@ abstract class BaseXmlEntity implements XmlEntityInterface
             $object = new static();
             foreach ($object->getAttributes() as $attribute) {
                 if (!$object->isEntityAttribute($attribute)) {
-                    if ('array' !== $object->getAttributeCastType($attribute)) {
+                    if ($object->getAttributeCastType($attribute) !== 'array') {
                         $object->setAttributeFromResponse($xmlArray, $attribute);
                     } else {
                         foreach ($dom->xpath($attribute) as $entry) {

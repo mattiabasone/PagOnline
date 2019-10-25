@@ -149,7 +149,7 @@ trait HttpClient
             $configuration[\GuzzleHttp\RequestOptions::PROXY] = $this->httpProxy;
         }
 
-        if (null !== $this->httpAuthUser && null !== $this->httpAuthPass) {
+        if ($this->httpAuthUser !== null && $this->httpAuthPass !== null) {
             $configuration[\GuzzleHttp\RequestOptions::AUTH] = [
                 $this->httpAuthUser,
                 $this->httpAuthPass,

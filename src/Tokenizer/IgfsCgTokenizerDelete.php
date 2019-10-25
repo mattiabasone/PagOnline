@@ -38,7 +38,7 @@ class IgfsCgTokenizerDelete extends BaseIgfsCgTokenizer
     protected function checkFields()
     {
         parent::checkFields();
-        if (null == $this->payInstrToken) {
+        if ($this->payInstrToken == null) {
             throw new IgfsMissingParException('Missing payInstrToken');
         }
     }

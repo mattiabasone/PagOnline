@@ -70,23 +70,23 @@ class IgfsCgCredit extends BaseIgfsCgTran
     protected function checkFields()
     {
         parent::checkFields();
-        if (null == $this->amount) {
+        if ($this->amount == null) {
             throw new IgfsMissingParException('Missing amount');
         }
-        if (null === $this->refTranID && null === $this->pan && null === $this->payInstrToken) {
+        if ($this->refTranID === null && $this->pan === null && $this->payInstrToken === null) {
             throw new IgfsMissingParException('Missing refTranID');
         }
 
-        if (null !== $this->pan && '' === $this->pan) {
+        if ($this->pan !== null && $this->pan === '') {
             // Se è stato impostato il pan verifico...
             throw new IgfsMissingParException('Missing pan');
         }
 
-        if (null !== $this->payInstrToken && '' === $this->payInstrToken) {
+        if ($this->payInstrToken !== null && $this->payInstrToken === '') {
             throw new IgfsMissingParException('Missing payInstrToken');
         }
 
-        if ((null !== $this->pan || null !== $this->payInstrToken) && null === $this->currencyCode) {
+        if (($this->pan !== null || $this->payInstrToken !== null) && $this->currencyCode === null) {
             throw new IgfsMissingParException('Missing currencyCode');
         }
     }

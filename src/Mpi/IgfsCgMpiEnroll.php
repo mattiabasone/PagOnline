@@ -93,25 +93,25 @@ class IgfsCgMpiEnroll extends BaseIgfsCgMpi
     protected function checkFields()
     {
         parent::checkFields();
-        if (null == $this->amount) {
+        if ($this->amount == null) {
             throw new IgfsMissingParException('Missing amount');
         }
-        if (null == $this->currencyCode) {
+        if ($this->currencyCode == null) {
             throw new IgfsMissingParException('Missing currencyCode');
         }
-        if (null === $this->pan && null === $this->payInstrToken) {
+        if ($this->pan === null && $this->payInstrToken === null) {
             throw new IgfsMissingParException('Missing pan');
         }
-        if (null !== $this->pan && '' === $this->pan) {
+        if ($this->pan !== null && $this->pan === '') {
             throw new IgfsMissingParException('Missing pan');
         }
 
-        if (null !== $this->payInstrToken && '' === (string) $this->payInstrToken) {
+        if ($this->payInstrToken !== null && (string) $this->payInstrToken === '') {
             // Se è stato impostato il payInstrToken verifico...
             throw new IgfsMissingParException('Missing payInstrToken');
         }
 
-        if (null == $this->termURL) {
+        if ($this->termURL == null) {
             throw new IgfsMissingParException('Missing termURL');
         }
     }

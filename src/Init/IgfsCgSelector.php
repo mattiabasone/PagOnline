@@ -79,18 +79,18 @@ class IgfsCgSelector extends BaseIgfsCgInit
     protected function checkFields()
     {
         parent::checkFields();
-        if (null == $this->trType) {
+        if ($this->trType == null) {
             throw new IgfsMissingParException('Missing trType');
         }
-        if ('TOKENIZE' != $this->trType) {
-            if (null == $this->amount) {
+        if ($this->trType != 'TOKENIZE') {
+            if ($this->amount == null) {
                 throw new IgfsMissingParException('Missing amount');
             }
-            if (null == $this->currencyCode) {
+            if ($this->currencyCode == null) {
                 throw new IgfsMissingParException('Missing currencyCode');
             }
         }
-        if (null == $this->langID) {
+        if ($this->langID == null) {
             throw new IgfsMissingParException('Missing langID');
         }
 
@@ -126,7 +126,7 @@ class IgfsCgSelector extends BaseIgfsCgInit
         parent::parseResponseMap($response);
         try {
             $responseNode = $this->responseXmlToObject($response[static::$soapResponseTag]);
-            if (null === $responseNode || 0 === $responseNode->children()->count()) {
+            if ($responseNode === null || $responseNode->children()->count() === 0) {
                 return;
             }
             $termInfos = $responseNode->xpath('//termInfo');

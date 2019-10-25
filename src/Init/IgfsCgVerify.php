@@ -169,7 +169,7 @@ class IgfsCgVerify extends BaseIgfsCgInit
         }
 
         $responseNode = $this->responseXmlToObject($response[static::$soapResponseTag]);
-        if (null === $responseNode) {
+        if ($responseNode === null) {
             return;
         }
 
