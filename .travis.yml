@@ -1,9 +1,9 @@
 language: php
 
 php:
-  - 7.1
   - 7.2
   - 7.3
+  - 7.4snapshot
   - nightly
 
 sudo: false
@@ -21,10 +21,11 @@ env:
 matrix:
   allow_failures:
     - php: nightly
+    - php: 7.4snapshot
   fast_finish: true
 
 before_script:
-  - travis_retry composer update ${COMPOSER_FLAGS} --no-interaction --prefer-source
+  - travis_retry composer update ${COMPOSER_FLAGS} --no-interaction --no-progress --prefer-source
 
 script:
   - vendor/bin/php-cs-fixer fix --dry-run --diff  --config=.php_cs.dist
