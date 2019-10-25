@@ -9,19 +9,19 @@
         }
     ],
     "require": {
-        "php": ">=7.1",
+        "php": ">=7.2",
         "ext-curl": "*",
         "ext-libxml": "*",
         "ext-mbstring": "*",
         "ext-simplexml": "*",
-        "illuminate/support": "^5.7",
+        "illuminate/support": "^5.8|^6.0",
         "guzzlehttp/guzzle": "~6.0"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^2.14",
-        "phpunit/phpunit": "^7.5",
+        "phpunit/phpunit": "^7.5|^8.0",
         "phpstan/phpstan": "^0.11.0@dev",
-        "illuminate/config": "^5.1,<5.8",
+        "illuminate/config": "^5.8|^6.0",
         "php-coveralls/php-coveralls": "^2.1",
         "orchestra/testbench": "^3.7"
     },
