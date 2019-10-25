@@ -15,21 +15,21 @@ class IgfsCgVoidAuthTest extends IgfsCgBaseTest
     protected $igfsCgClass = IgfsCgVoidAuth::class;
     protected $igfsCgRequest = IgfsCgVoidAuthRequest::CONTENT;
 
-    protected function setIgfsRequiredParamenters(&$class)
+    protected function setIgfsRequiredParamenters(&$class): void
     {
         $class->amount = 'AUTH';
         $class->refTranID = '12345678';
     }
 
     /** @test */
-    public function shouldReturnRequestString()
+    public function shouldReturnRequestString(): void
     {
         $obj = new $this->igfsCgClass();
         $this->assertEquals($obj->getRequest(), $this->igfsCgRequest);
     }
 
     /** @test */
-    public function shouldChecksFieldsAndRaiseException()
+    public function shouldChecksFieldsAndRaiseException(): void
     {
         $foo = $this->getClassMethod('checkFields');
         $obj = new $this->igfsCgClass();
@@ -40,7 +40,7 @@ class IgfsCgVoidAuthTest extends IgfsCgBaseTest
     }
 
     /** @test */
-    public function shouldCheckFieldsAndPass()
+    public function shouldCheckFieldsAndPass(): void
     {
         /** @var \PagOnline\Mpi\IgfsCgMpiAuth $obj */
         $obj = $this->makeIgfsCg();
@@ -56,7 +56,7 @@ class IgfsCgVoidAuthTest extends IgfsCgBaseTest
     }
 
     /** @test */
-    public function shouldRaiseExceptionForMissingShopId()
+    public function shouldRaiseExceptionForMissingShopId(): void
     {
         $this->expectException(IgfsMissingParException::class);
         /** @var \PagOnline\Init\IgfsCgInit $obj */

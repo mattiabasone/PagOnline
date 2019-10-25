@@ -23,14 +23,14 @@ class IgfsCgInitTest extends IgfsCgBaseTest
     protected $igfsCgClass = IgfsCgInit::class;
     protected $igfsCgRequest = IgfsCgInitRequest::CONTENT;
 
-    protected function setIgfsRequiredParamenters(&$class)
+    protected function setIgfsRequiredParamenters(&$class): void
     {
         $class->notifyURL = 'https://example.com/verify/';
         $class->errorURL = 'https://example.com/error/';
     }
 
     /** @test */
-    public function shouldChecksFieldsAndRaiseExceptionMissingTrType()
+    public function shouldChecksFieldsAndRaiseExceptionMissingTrType(): void
     {
         $foo = $this->getClassMethod('checkFields');
         /** @var IgfsCgInit $obj */
@@ -42,7 +42,7 @@ class IgfsCgInitTest extends IgfsCgBaseTest
     }
 
     /** @test */
-    public function shouldChecksFieldsAndRaiseExceptionMissingLangID()
+    public function shouldChecksFieldsAndRaiseExceptionMissingLangID(): void
     {
         $foo = $this->getClassMethod('checkFields');
         /** @var IgfsCgInit $obj */
@@ -55,7 +55,7 @@ class IgfsCgInitTest extends IgfsCgBaseTest
     }
 
     /** @test */
-    public function shouldChecksFieldsAndRaiseExceptionMissingNotifyURL()
+    public function shouldChecksFieldsAndRaiseExceptionMissingNotifyURL(): void
     {
         $foo = $this->getClassMethod('checkFields');
         /** @var IgfsCgInit $obj */
@@ -68,7 +68,7 @@ class IgfsCgInitTest extends IgfsCgBaseTest
     }
 
     /** @test */
-    public function shouldChecksFieldsAndRaiseExceptionMissingErrorURL()
+    public function shouldChecksFieldsAndRaiseExceptionMissingErrorURL(): void
     {
         $foo = $this->getClassMethod('checkFields');
         /** @var IgfsCgInit $obj */
@@ -82,7 +82,7 @@ class IgfsCgInitTest extends IgfsCgBaseTest
     }
 
     /** @test */
-    public function shouldChecksFieldsAndRaiseExceptionMissingPayInstrToken()
+    public function shouldChecksFieldsAndRaiseExceptionMissingPayInstrToken(): void
     {
         $foo = $this->getClassMethod('checkFields');
         /** @var IgfsCgInit $obj */
@@ -98,7 +98,7 @@ class IgfsCgInitTest extends IgfsCgBaseTest
     }
 
     /** @test */
-    public function shouldChecksFieldsAndRaiseExceptionMissingLevel3ProductCode()
+    public function shouldChecksFieldsAndRaiseExceptionMissingLevel3ProductCode(): void
     {
         $foo = $this->getClassMethod('checkFields');
         /** @var IgfsCgInit $obj */
@@ -118,7 +118,7 @@ class IgfsCgInitTest extends IgfsCgBaseTest
     }
 
     /** @test */
-    public function shouldChecksFieldsAndRaiseExceptionMissingLevel3ProductDescription()
+    public function shouldChecksFieldsAndRaiseExceptionMissingLevel3ProductDescription(): void
     {
         $foo = $this->getClassMethod('checkFields');
         /** @var IgfsCgInit $obj */
@@ -139,7 +139,7 @@ class IgfsCgInitTest extends IgfsCgBaseTest
     }
 
     /** @test */
-    public function shouldChecksFieldsAndRaiseExceptionMissingMandateInfo()
+    public function shouldChecksFieldsAndRaiseExceptionMissingMandateInfo(): void
     {
         $foo = $this->getClassMethod('checkFields');
         /** @var IgfsCgInit $obj */
@@ -162,7 +162,7 @@ class IgfsCgInitTest extends IgfsCgBaseTest
     }
 
     /** @test */
-    public function shouldCheckFieldsAndPass()
+    public function shouldCheckFieldsAndPass(): void
     {
         /** @var \PagOnline\Init\IgfsCgInit $obj */
         $obj = $this->makeIgfsCg();
@@ -196,7 +196,7 @@ class IgfsCgInitTest extends IgfsCgBaseTest
     }
 
     /** @test */
-    public function shouldRaiseExceptionForMissingShopId()
+    public function shouldRaiseExceptionForMissingShopId(): void
     {
         /** @var \PagOnline\Init\IgfsCgInit $obj */
         $obj = $this->makeIgfsCg();
@@ -209,7 +209,7 @@ class IgfsCgInitTest extends IgfsCgBaseTest
     }
 
     /** @test */
-    public function shouldExecuteInitRequests()
+    public function shouldExecuteInitRequests(): void
     {
         // Create a mock and queue two responses.
         $mock = new MockHandler([
@@ -267,7 +267,7 @@ class IgfsCgInitTest extends IgfsCgBaseTest
     }
 
     /** @test */
-    public function shouldFailProcessingErrorBodyResponse()
+    public function shouldFailProcessingErrorBodyResponse(): void
     {
         // Create a mock and queue two responses.
         $mock = new MockHandler([
@@ -288,7 +288,7 @@ class IgfsCgInitTest extends IgfsCgBaseTest
     }
 
     /** @test */
-    public function shouldFailProcessingInvalidBodyResponse()
+    public function shouldFailProcessingInvalidBodyResponse(): void
     {
         $mock = new MockHandler([
             new Response(
@@ -307,7 +307,7 @@ class IgfsCgInitTest extends IgfsCgBaseTest
     }
 
     /** @test */
-    public function shouldFailProcessingEmptyBodyResponse()
+    public function shouldFailProcessingEmptyBodyResponse(): void
     {
         $mock = new MockHandler([
             new Response(
@@ -326,7 +326,7 @@ class IgfsCgInitTest extends IgfsCgBaseTest
     }
 
     /** @test */
-    public function shouldFailProcessingUrlWithError500()
+    public function shouldFailProcessingUrlWithError500(): void
     {
         $mock = new MockHandler([
             new Response(500),
@@ -348,7 +348,7 @@ class IgfsCgInitTest extends IgfsCgBaseTest
     }
 
     /** @test */
-    public function shouldFailCheckingMultipleUrls()
+    public function shouldFailCheckingMultipleUrls(): void
     {
         $mock = new MockHandler([
             new Response(401),
@@ -374,7 +374,7 @@ class IgfsCgInitTest extends IgfsCgBaseTest
     }
 
     /** @test */
-    public function shouldFailProcessForMissingErrorAndSignatureTagsInResponse()
+    public function shouldFailProcessForMissingErrorAndSignatureTagsInResponse(): void
     {
         $mock = new MockHandler([
             new Response(

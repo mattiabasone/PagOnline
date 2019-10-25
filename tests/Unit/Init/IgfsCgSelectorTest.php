@@ -16,7 +16,7 @@ class IgfsCgSelectorTest extends IgfsCgBaseTest
     protected $igfsCgRequest = IgfsCgSelectorRequest::CONTENT;
 
     /** @test */
-    public function shouldChecksFieldsAndRaiseExceptionMissingTrType()
+    public function shouldChecksFieldsAndRaiseExceptionMissingTrType(): void
     {
         /* @var \PagOnline\Init\IgfsCgSelector $obj */
         $this->expectException(IgfsMissingParException::class);
@@ -28,7 +28,7 @@ class IgfsCgSelectorTest extends IgfsCgBaseTest
     }
 
     /** @test */
-    public function shouldChecksFieldsAndRaiseExceptionMissingAmount()
+    public function shouldChecksFieldsAndRaiseExceptionMissingAmount(): void
     {
         /* @var \PagOnline\Init\IgfsCgSelector $obj */
         $this->expectException(IgfsMissingParException::class);
@@ -40,7 +40,7 @@ class IgfsCgSelectorTest extends IgfsCgBaseTest
     }
 
     /** @test */
-    public function shouldChecksFieldsAndRaiseExceptionMissingCurrencyCode()
+    public function shouldChecksFieldsAndRaiseExceptionMissingCurrencyCode(): void
     {
         /* @var \PagOnline\Init\IgfsCgSelector $obj */
         $this->expectException(IgfsMissingParException::class);
@@ -53,7 +53,7 @@ class IgfsCgSelectorTest extends IgfsCgBaseTest
     }
 
     /** @test */
-    public function shouldChecksFieldsAndRaiseExceptionMissingLangID()
+    public function shouldChecksFieldsAndRaiseExceptionMissingLangID(): void
     {
         /* @var \PagOnline\Init\IgfsCgSelector $obj */
         $this->expectException(IgfsMissingParException::class);
@@ -68,7 +68,7 @@ class IgfsCgSelectorTest extends IgfsCgBaseTest
     }
 
     /** @test */
-    public function shouldChecksFieldsAndRaiseExceptionMissingPayInstrToken()
+    public function shouldChecksFieldsAndRaiseExceptionMissingPayInstrToken(): void
     {
         /* @var \PagOnline\Init\IgfsCgSelector $obj */
         $this->expectException(IgfsMissingParException::class);
@@ -81,7 +81,7 @@ class IgfsCgSelectorTest extends IgfsCgBaseTest
     }
 
     /** @test */
-    public function shouldCheckFieldsAndPass()
+    public function shouldCheckFieldsAndPass(): void
     {
         /** @var \PagOnline\Init\IgfsCgSelector $obj */
         $obj = $this->makeIgfsCg();
@@ -100,7 +100,7 @@ class IgfsCgSelectorTest extends IgfsCgBaseTest
     }
 
     /** @test */
-    public function shouldRaiseExceptionForMissingTrType()
+    public function shouldRaiseExceptionForMissingTrType(): void
     {
         $this->expectException(IgfsMissingParException::class);
         /** @var \PagOnline\Init\IgfsCgInit $obj */

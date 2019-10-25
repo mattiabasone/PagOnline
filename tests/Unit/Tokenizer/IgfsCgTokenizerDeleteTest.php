@@ -15,13 +15,13 @@ class IgfsCgTokenizerDeleteTest extends IgfsCgBaseTest
     protected $igfsCgClass = IgfsCgTokenizerDelete::class;
     protected $igfsCgRequest = IgfsCgTokenizerDeleteRequest::CONTENT;
 
-    protected function setIgfsRequiredParamenters(&$class)
+    protected function setIgfsRequiredParamenters(&$class): void
     {
         $class->payInstrToken = 'payInstrToken';
     }
 
     /** @test */
-    public function shouldChecksFieldsAndRaiseExceptionMissingPayInstrToken()
+    public function shouldChecksFieldsAndRaiseExceptionMissingPayInstrToken(): void
     {
         $this->expectException(IgfsMissingParException::class);
         $this->expectExceptionMessage('Missing payInstrToken');
@@ -31,7 +31,7 @@ class IgfsCgTokenizerDeleteTest extends IgfsCgBaseTest
     }
 
     /** @test */
-    public function shouldCheckFieldsAndPass()
+    public function shouldCheckFieldsAndPass(): void
     {
         /** @var \PagOnline\Mpi\IgfsCgMpiAuth $obj */
         $obj = $this->makeIgfsCg();
@@ -47,7 +47,7 @@ class IgfsCgTokenizerDeleteTest extends IgfsCgBaseTest
     }
 
     /** @test */
-    public function shouldRaiseExceptionForMissingShopId()
+    public function shouldRaiseExceptionForMissingShopId(): void
     {
         $this->expectException(IgfsMissingParException::class);
         /** @var \PagOnline\Init\IgfsCgInit $obj */

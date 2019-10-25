@@ -11,7 +11,7 @@ use PagOnline\XmlEntities\MandateInfo;
 class MandateInfoTest extends TestCase
 {
     /** @test */
-    public function shouldReturnXmlString()
+    public function shouldReturnXmlString(): void
     {
         $mandate = new MandateInfo();
         $mandate->contractID = '1234567';
@@ -27,7 +27,7 @@ class MandateInfoTest extends TestCase
     }
 
     /** @test */
-    public function shouldHaveXmlNodes()
+    public function shouldHaveXmlNodes(): void
     {
         $mandate = new MandateInfo();
         $mandate->contractID = '1234567';

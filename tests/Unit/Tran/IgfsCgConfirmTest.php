@@ -15,14 +15,14 @@ class IgfsCgConfirmTest extends IgfsCgBaseTest
     protected $igfsCgClass = IgfsCgConfirm::class;
     protected $igfsCgRequest = IgfsCgConfirmRequest::CONTENT;
 
-    protected function setIgfsRequiredParamenters(&$class)
+    protected function setIgfsRequiredParamenters(&$class): void
     {
         $class->amount = 500;
         $class->refTranID = '123456789';
     }
 
     /** @test */
-    public function shouldChecksFieldsAndRaiseException()
+    public function shouldChecksFieldsAndRaiseException(): void
     {
         $foo = $this->getClassMethod('checkFields');
         $obj = new $this->igfsCgClass();
@@ -33,7 +33,7 @@ class IgfsCgConfirmTest extends IgfsCgBaseTest
     }
 
     /** @test */
-    public function shouldCheckFieldsAndPass()
+    public function shouldCheckFieldsAndPass(): void
     {
         /** @var \PagOnline\Mpi\IgfsCgMpiAuth $obj */
         $obj = $this->makeIgfsCg();
@@ -49,7 +49,7 @@ class IgfsCgConfirmTest extends IgfsCgBaseTest
     }
 
     /** @test */
-    public function shouldRaiseExceptionForMissingShopId()
+    public function shouldRaiseExceptionForMissingShopId(): void
     {
         $this->expectException(IgfsMissingParException::class);
         /** @var \PagOnline\Init\IgfsCgInit $obj */

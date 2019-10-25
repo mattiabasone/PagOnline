@@ -11,13 +11,13 @@ use PHPUnit\Framework\TestCase;
 class ErrorsTest extends TestCase
 {
     /** @test */
-    public function shouldReturnErrorMessage()
+    public function shouldReturnErrorMessage(): void
     {
         $this->assertIsString(Errors::getMessage(Errors::IGFS_000));
     }
 
     /** @test */
-    public function shouldNotReturnErrorMessage()
+    public function shouldNotReturnErrorMessage(): void
     {
         $this->assertNull(Errors::getMessage('NONE'));
     }

@@ -15,7 +15,7 @@ class IgfsCgCreditTest extends IgfsCgBaseTest
     protected $igfsCgClass = IgfsCgCredit::class;
     protected $igfsCgRequest = IgfsCgCreditRequest::CONTENT;
 
-    protected function setIgfsRequiredParamenters(&$class)
+    protected function setIgfsRequiredParamenters(&$class): void
     {
         $class->amount = 500;
         $class->currencyCode = 'EUR';
@@ -24,7 +24,7 @@ class IgfsCgCreditTest extends IgfsCgBaseTest
     }
 
     /** @test */
-    public function shouldChecksFieldsAndRaiseException()
+    public function shouldChecksFieldsAndRaiseException(): void
     {
         $foo = $this->getClassMethod('checkFields');
         $obj = new $this->igfsCgClass();
@@ -37,7 +37,7 @@ class IgfsCgCreditTest extends IgfsCgBaseTest
     }
 
     /** @test */
-    public function shouldCheckFieldsAndPass()
+    public function shouldCheckFieldsAndPass(): void
     {
         /** @var \PagOnline\Mpi\IgfsCgMpiAuth $obj */
         $obj = $this->makeIgfsCg();
@@ -53,7 +53,7 @@ class IgfsCgCreditTest extends IgfsCgBaseTest
     }
 
     /** @test */
-    public function shouldRaiseExceptionForMissingShopId()
+    public function shouldRaiseExceptionForMissingShopId(): void
     {
         $this->expectException(IgfsMissingParException::class);
         /** @var \PagOnline\Init\IgfsCgInit $obj */

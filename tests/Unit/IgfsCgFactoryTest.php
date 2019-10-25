@@ -14,14 +14,14 @@ use PagOnline\Exceptions\ClassNotFoundException;
 class IgfsCgFactoryTest extends TestCase
 {
     /** @test */
-    public function shouldCreateIgfsCgClass()
+    public function shouldCreateIgfsCgClass(): void
     {
         $igfsCgInit = new IgfsCgInit();
         $this->assertEquals($igfsCgInit, IgfsCgFactory::make(Actions::IGFS_CG_INIT));
     }
 
     /** @test */
-    public function shouldRaiseClassNotFoundException()
+    public function shouldRaiseClassNotFoundException(): void
     {
         $this->expectException(ClassNotFoundException::class);
         IgfsCgFactory::make('Not\Existent\Class\NameSpace');

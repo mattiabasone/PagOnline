@@ -15,7 +15,7 @@ class IgfsCgAuthTest extends IgfsCgBaseTest
     protected $igfsCgClass = IgfsCgAuth::class;
     protected $igfsCgRequest = IgfsCgAuthRequest::CONTENT;
 
-    protected function setIgfsRequiredParamenters(&$class)
+    protected function setIgfsRequiredParamenters(&$class): void
     {
         $class->trType = 'AUTH';
         $class->amount = 500;
@@ -23,7 +23,7 @@ class IgfsCgAuthTest extends IgfsCgBaseTest
     }
 
     /** @test */
-    public function shouldChecksFieldsAndRaiseExceptionMissingTrType()
+    public function shouldChecksFieldsAndRaiseExceptionMissingTrType(): void
     {
         $this->expectException(IgfsMissingParException::class);
         $this->expectExceptionMessage('Missing trType');
@@ -34,7 +34,7 @@ class IgfsCgAuthTest extends IgfsCgBaseTest
     }
 
     /** @test */
-    public function shouldCheckFieldsAndPass()
+    public function shouldCheckFieldsAndPass(): void
     {
         /** @var \PagOnline\Mpi\IgfsCgMpiAuth $obj */
         $obj = $this->makeIgfsCg();
@@ -50,7 +50,7 @@ class IgfsCgAuthTest extends IgfsCgBaseTest
     }
 
     /** @test */
-    public function shouldRaiseExceptionForMissingShopId()
+    public function shouldRaiseExceptionForMissingShopId(): void
     {
         $this->expectException(IgfsMissingParException::class);
         /** @var \PagOnline\Init\IgfsCgInit $obj */

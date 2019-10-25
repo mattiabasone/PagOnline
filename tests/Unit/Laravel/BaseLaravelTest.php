@@ -17,7 +17,7 @@ class BaseLaravelTest extends OrchestraTestCase
     protected $poCurrencyCode = 'EU';
     protected $poLanguageId = 'IT';
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->poTerminalId = Str::random(24);
@@ -27,7 +27,7 @@ class BaseLaravelTest extends OrchestraTestCase
     /**
      * @param \Illuminate\Foundation\Application $app
      */
-    protected function getEnvironmentSetUp($app)
+    protected function getEnvironmentSetUp($app): void
     {
         $app['config']->set('pagonline.server_url', $this->poServerUrl);
         $app['config']->set('pagonline.timeout', $this->poTimeout);
@@ -44,7 +44,7 @@ class BaseLaravelTest extends OrchestraTestCase
      *
      * @return array
      */
-    protected function getPackageProviders($app)
+    protected function getPackageProviders($app): array
     {
         return [
             PagOnlineServiceProvider::class,
@@ -58,7 +58,7 @@ class BaseLaravelTest extends OrchestraTestCase
      *
      * @return array
      */
-    protected function getPackageAliases($app)
+    protected function getPackageAliases($app): array
     {
         return [
             'IgfsCg' => \PagOnline\Laravel\Facades\IgfsCgFacade::class,
@@ -67,7 +67,7 @@ class BaseLaravelTest extends OrchestraTestCase
     }
 
     /** @test */
-    public function shouldCreateFacade()
+    public function shouldCreateFacade(): void
     {
         $this->app->singleton('igfscg', function () {
             return new IgfsCgFactory();

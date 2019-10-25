@@ -11,7 +11,7 @@ use PagOnline\XmlEntities\Level3InfoProduct;
  */
 class Level3InfoTest extends TestCase
 {
-    public function getBaseElement()
+    public function getBaseElement(): Level3Info
     {
         $level3InfoProduct = new Level3InfoProduct();
         $level3InfoProduct->amount = 10;
@@ -29,7 +29,7 @@ class Level3InfoTest extends TestCase
     }
 
     /** @test */
-    public function shouldLoadProperties()
+    public function shouldLoadProperties(): void
     {
         $level3Info = $this->getBaseElement();
         $this->assertIsArray($level3Info->getAttributes());
@@ -37,7 +37,7 @@ class Level3InfoTest extends TestCase
     }
 
     /** @test */
-    public function shouldReturnXmlString()
+    public function shouldReturnXmlString(): void
     {
         $level3Info = $this->getBaseElement();
         $object = \simplexml_load_string($level3Info->toXml('Level3Info'));
@@ -46,7 +46,7 @@ class Level3InfoTest extends TestCase
     }
 
     /** @test */
-    public function shouldHaveXmlNodes()
+    public function shouldHaveXmlNodes(): void
     {
         $level3Info = $this->getBaseElement();
 
@@ -59,7 +59,7 @@ class Level3InfoTest extends TestCase
     }
 
     /** @test */
-    public function shouldFormatToXml()
+    public function shouldFormatToXml(): void
     {
         /** @var \PagOnline\XmlEntities\Level3Info $level3Info */
         $level3Info = Level3Info::fromXml(
@@ -71,7 +71,7 @@ class Level3InfoTest extends TestCase
     }
 
     /** @test */
-    public function shouldReturnXmlStringWhenGeneratedFromXml()
+    public function shouldReturnXmlStringWhenGeneratedFromXml(): void
     {
         $baseXmlResource = \file_get_contents(__DIR__.'/../resources/level3info.xml');
         /** @var \PagOnline\XmlEntities\Level3Info $level3Info */

@@ -15,7 +15,7 @@ class IgfsCgMpiEnrollTest extends IgfsCgBaseTest
     protected $igfsCgClass = IgfsCgMpiEnroll::class;
     protected $igfsCgRequest = IgfsCgMpiEnrollRequest::CONTENT;
 
-    protected function setIgfsRequiredParamenters(&$class)
+    protected function setIgfsRequiredParamenters(&$class): void
     {
         $class->amount = 100;
         $class->currencyCode = 'EUR';
@@ -24,7 +24,7 @@ class IgfsCgMpiEnrollTest extends IgfsCgBaseTest
     }
 
     /** @test */
-    public function shouldChecksFieldsAndRaiseExceptionMissingAmount()
+    public function shouldChecksFieldsAndRaiseExceptionMissingAmount(): void
     {
         $this->expectException(IgfsMissingParException::class);
         $foo = $this->getClassMethod('checkFields');
@@ -33,7 +33,7 @@ class IgfsCgMpiEnrollTest extends IgfsCgBaseTest
     }
 
     /** @test */
-    public function shouldChecksFieldsAndRaiseExceptionMissingCurrencyCode()
+    public function shouldChecksFieldsAndRaiseExceptionMissingCurrencyCode(): void
     {
         $this->expectException(IgfsMissingParException::class);
         $foo = $this->getClassMethod('checkFields');
@@ -43,7 +43,7 @@ class IgfsCgMpiEnrollTest extends IgfsCgBaseTest
     }
 
     /** @test */
-    public function shouldChecksFieldsAndRaiseExceptionMissingPan()
+    public function shouldChecksFieldsAndRaiseExceptionMissingPan(): void
     {
         $this->expectException(IgfsMissingParException::class);
         $foo = $this->getClassMethod('checkFields');
@@ -54,7 +54,7 @@ class IgfsCgMpiEnrollTest extends IgfsCgBaseTest
     }
 
     /** @test */
-    public function shouldCheckFieldsAndPass()
+    public function shouldCheckFieldsAndPass(): void
     {
         /** @var \PagOnline\Mpi\IgfsCgMpiAuth $obj */
         $obj = $this->makeIgfsCg();
@@ -70,7 +70,7 @@ class IgfsCgMpiEnrollTest extends IgfsCgBaseTest
     }
 
     /** @test */
-    public function shouldRaiseExceptionForMissingShopId()
+    public function shouldRaiseExceptionForMissingShopId(): void
     {
         $this->expectException(IgfsMissingParException::class);
         /** @var \PagOnline\Init\IgfsCgInit $obj */

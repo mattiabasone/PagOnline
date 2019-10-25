@@ -21,7 +21,7 @@ class IgfsCgVerifyTest extends IgfsCgBaseTest
     protected $igfsCgRequest = IgfsCgVerifyRequest::CONTENT;
 
     /** @test */
-    public function shouldChecksFieldsAndRaiseException()
+    public function shouldChecksFieldsAndRaiseException(): void
     {
         $this->expectException(IgfsMissingParException::class);
         $this->expectExceptionMessage('Missing paymentID');
@@ -31,7 +31,7 @@ class IgfsCgVerifyTest extends IgfsCgBaseTest
     }
 
     /** @test */
-    public function shouldCheckFieldsAndPass()
+    public function shouldCheckFieldsAndPass(): void
     {
         /** @var \PagOnline\Init\IgfsCgVerify $obj */
         $obj = $this->makeIgfsCg();
@@ -48,7 +48,7 @@ class IgfsCgVerifyTest extends IgfsCgBaseTest
     }
 
     /** @test */
-    public function shouldRaiseExceptionForMissingShopId()
+    public function shouldRaiseExceptionForMissingShopId(): void
     {
         $this->expectException(IgfsMissingParException::class);
         /** @var \PagOnline\Init\IgfsCgInit $obj */
@@ -61,7 +61,7 @@ class IgfsCgVerifyTest extends IgfsCgBaseTest
     }
 
     /** @test */
-    public function shouldExecuteVerifyRequests()
+    public function shouldExecuteVerifyRequests(): void
     {
         // Create a mock and queue two responses.
         $mock = new MockHandler([

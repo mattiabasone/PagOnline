@@ -16,7 +16,7 @@ class IgfsCgMpiAuthTest extends IgfsCgBaseTest
     protected $igfsCgRequest = IgfsCgMpiAuthRequest::CONTENT;
 
     /** @test */
-    public function shouldRaiseExceptionForMissingShopId()
+    public function shouldRaiseExceptionForMissingShopId(): void
     {
         $this->expectException(IgfsMissingParException::class);
         /** @var \PagOnline\Init\IgfsCgInit $obj */
@@ -27,7 +27,7 @@ class IgfsCgMpiAuthTest extends IgfsCgBaseTest
     }
 
     /** @test */
-    public function shouldChecksFieldsAndRaiseExceptionMissingPaRes()
+    public function shouldChecksFieldsAndRaiseExceptionMissingPaRes(): void
     {
         $this->expectException(IgfsMissingParException::class);
         $this->expectExceptionMessage('Missing paRes');
@@ -38,7 +38,7 @@ class IgfsCgMpiAuthTest extends IgfsCgBaseTest
     }
 
     /** @test */
-    public function shouldChecksFieldsAndRaiseExceptionMissingMd()
+    public function shouldChecksFieldsAndRaiseExceptionMissingMd(): void
     {
         $this->expectException(IgfsMissingParException::class);
         $this->expectExceptionMessage('Missing md');
@@ -50,7 +50,7 @@ class IgfsCgMpiAuthTest extends IgfsCgBaseTest
     }
 
     /** @test */
-    public function shouldCheckFieldsAndPass()
+    public function shouldCheckFieldsAndPass(): void
     {
         /** @var \PagOnline\Mpi\IgfsCgMpiAuth $obj */
         $obj = $this->makeIgfsCg();

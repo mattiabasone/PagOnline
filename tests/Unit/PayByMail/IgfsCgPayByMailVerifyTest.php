@@ -15,13 +15,13 @@ class IgfsCgPayByMailVerifyTest extends IgfsCgBaseTest
     protected $igfsCgClass = IgfsCgPayByMailVerify::class;
     protected $igfsCgRequest = IgfsCgPayByMailVerifyRequest::CONTENT;
 
-    protected function setIgfsRequiredParamenters(&$class)
+    protected function setIgfsRequiredParamenters(&$class): void
     {
         $class->mailID = 'mail@example.org';
     }
 
     /** @test */
-    public function shouldChecksFieldsAndRaiseExceptionMissingMailId()
+    public function shouldChecksFieldsAndRaiseExceptionMissingMailId(): void
     {
         /* @var \PagOnline\PayByMail\IgfsCgPayByMailVerify */
         $this->expectException(IgfsMissingParException::class);
@@ -32,7 +32,7 @@ class IgfsCgPayByMailVerifyTest extends IgfsCgBaseTest
     }
 
     /** @test */
-    public function shouldCheckFieldsAndPass()
+    public function shouldCheckFieldsAndPass(): void
     {
         /** @var \PagOnline\Mpi\IgfsCgMpiAuth $obj */
         $obj = $this->makeIgfsCg();
@@ -48,7 +48,7 @@ class IgfsCgPayByMailVerifyTest extends IgfsCgBaseTest
     }
 
     /** @test */
-    public function shouldRaiseExceptionForMissingShopId()
+    public function shouldRaiseExceptionForMissingShopId(): void
     {
         $this->expectException(IgfsMissingParException::class);
         /** @var \PagOnline\Init\IgfsCgInit $obj */

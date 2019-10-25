@@ -17,14 +17,14 @@ class IgfsCgPayByMailInitTest extends IgfsCgBaseTest
     protected $igfsCgClass = IgfsCgPayByMailInit::class;
     protected $igfsCgRequest = IgfsCgPayByMailInitRequest::CONTENT;
 
-    protected function setIgfsRequiredParamenters(&$class)
+    protected function setIgfsRequiredParamenters(&$class): void
     {
         $class->mailID = 'mail@example.org';
         $class->shopUserRef = 'shopUserRef';
     }
 
     /** @test */
-    public function shouldChecksFieldsAndRaiseExceptionMissingTrType()
+    public function shouldChecksFieldsAndRaiseExceptionMissingTrType(): void
     {
         /* @var \PagOnline\PayByMail\IgfsCgPayByMailInit $obj */
         $this->expectException(IgfsMissingParException::class);
@@ -36,7 +36,7 @@ class IgfsCgPayByMailInitTest extends IgfsCgBaseTest
     }
 
     /** @test */
-    public function shouldChecksFieldsAndRaiseExceptionMissingLangId()
+    public function shouldChecksFieldsAndRaiseExceptionMissingLangId(): void
     {
         /* @var \PagOnline\PayByMail\IgfsCgPayByMailInit $obj */
         $this->expectException(IgfsMissingParException::class);
@@ -48,7 +48,7 @@ class IgfsCgPayByMailInitTest extends IgfsCgBaseTest
     }
 
     /** @test */
-    public function shouldChecksFieldsAndRaiseExceptionMissingShopUserRef()
+    public function shouldChecksFieldsAndRaiseExceptionMissingShopUserRef(): void
     {
         /* @var \PagOnline\PayByMail\IgfsCgPayByMailInit $obj */
         $this->expectException(IgfsMissingParException::class);
@@ -60,7 +60,7 @@ class IgfsCgPayByMailInitTest extends IgfsCgBaseTest
     }
 
     /** @test */
-    public function shouldChecksFieldsAndRaiseExceptionMissingLevel3InfoProductCode()
+    public function shouldChecksFieldsAndRaiseExceptionMissingLevel3InfoProductCode(): void
     {
         /* @var \PagOnline\PayByMail\IgfsCgPayByMailInit $obj */
         $this->expectException(IgfsMissingParException::class);
@@ -75,7 +75,7 @@ class IgfsCgPayByMailInitTest extends IgfsCgBaseTest
     }
 
     /** @test */
-    public function shouldChecksFieldsAndRaiseExceptionMissingLevel3InfoProductDescription()
+    public function shouldChecksFieldsAndRaiseExceptionMissingLevel3InfoProductDescription(): void
     {
         /* @var \PagOnline\PayByMail\IgfsCgPayByMailInit $obj */
         $this->expectException(IgfsMissingParException::class);
@@ -91,7 +91,7 @@ class IgfsCgPayByMailInitTest extends IgfsCgBaseTest
     }
 
     /** @test */
-    public function shouldCheckFieldsAndPass()
+    public function shouldCheckFieldsAndPass(): void
     {
         /** @var \PagOnline\Mpi\IgfsCgMpiAuth $obj */
         $obj = $this->makeIgfsCg();
@@ -107,7 +107,7 @@ class IgfsCgPayByMailInitTest extends IgfsCgBaseTest
     }
 
     /** @test */
-    public function shouldRaiseExceptionForMissingShopId()
+    public function shouldRaiseExceptionForMissingShopId(): void
     {
         $this->expectException(IgfsMissingParException::class);
         /** @var \PagOnline\Init\IgfsCgInit $obj */

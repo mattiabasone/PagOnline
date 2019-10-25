@@ -15,7 +15,10 @@ class IgfsCgTokenizerEnrollTest extends IgfsCgBaseTest
     protected $igfsCgClass = IgfsCgTokenizerEnroll::class;
     protected $igfsCgRequest = IgfsCgTokenizerEnrollRequest::CONTENT;
 
-    protected function setIgfsRequiredParamenters(&$class)
+    /**
+     * @param $class
+     */
+    protected function setIgfsRequiredParamenters(&$class): void
     {
         $class->pan = '123456';
         $class->expireMonth = '01';
@@ -24,7 +27,7 @@ class IgfsCgTokenizerEnrollTest extends IgfsCgBaseTest
     }
 
     /** @test */
-    public function shouldChecksFieldsAndRaiseExceptionMissingPan()
+    public function shouldChecksFieldsAndRaiseExceptionMissingPan(): void
     {
         $this->expectException(IgfsMissingParException::class);
         $this->expectExceptionMessage('Missing pan');
@@ -34,7 +37,7 @@ class IgfsCgTokenizerEnrollTest extends IgfsCgBaseTest
     }
 
     /** @test */
-    public function shouldChecksFieldsAndRaiseExceptionMissingExpireMonth()
+    public function shouldChecksFieldsAndRaiseExceptionMissingExpireMonth(): void
     {
         $this->expectException(IgfsMissingParException::class);
         $this->expectExceptionMessage('Missing expireMonth');
@@ -45,7 +48,7 @@ class IgfsCgTokenizerEnrollTest extends IgfsCgBaseTest
     }
 
     /** @test */
-    public function shouldChecksFieldsAndRaiseExceptionMissingExpireYear()
+    public function shouldChecksFieldsAndRaiseExceptionMissingExpireYear(): void
     {
         $this->expectException(IgfsMissingParException::class);
         $this->expectExceptionMessage('Missing expireYear');
@@ -57,7 +60,7 @@ class IgfsCgTokenizerEnrollTest extends IgfsCgBaseTest
     }
 
     /** @test */
-    public function shouldChecksFieldsAndRaiseExceptionMissingPayInstrToken()
+    public function shouldChecksFieldsAndRaiseExceptionMissingPayInstrToken(): void
     {
         $this->expectException(IgfsMissingParException::class);
         $this->expectExceptionMessage('Missing payInstrToken');
@@ -70,7 +73,7 @@ class IgfsCgTokenizerEnrollTest extends IgfsCgBaseTest
     }
 
     /** @test */
-    public function shouldCheckFieldsAndPass()
+    public function shouldCheckFieldsAndPass(): void
     {
         /** @var \PagOnline\Mpi\IgfsCgMpiAuth $obj */
         $obj = $this->makeIgfsCg();
@@ -86,7 +89,7 @@ class IgfsCgTokenizerEnrollTest extends IgfsCgBaseTest
     }
 
     /** @test */
-    public function shouldRaiseExceptionForMissingShopId()
+    public function shouldRaiseExceptionForMissingShopId(): void
     {
         $this->expectException(IgfsMissingParException::class);
         /** @var \PagOnline\Init\IgfsCgInit $obj */

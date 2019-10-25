@@ -10,7 +10,7 @@ use PagOnline\XmlEntities\Init\SelectorTerminalInfo;
  */
 class SelectorTerminalInfoTest extends TestCase
 {
-    public function getBaseElement()
+    public function getBaseElement(): SelectorTerminalInfo
     {
         $object = new SelectorTerminalInfo();
         $object->tid = '123456';
@@ -27,7 +27,7 @@ class SelectorTerminalInfoTest extends TestCase
     }
 
     /** @test */
-    public function shouldLoadProperties()
+    public function shouldLoadProperties(): void
     {
         $object = $this->getBaseElement();
         $this->assertIsArray($object->getAttributes());
@@ -35,7 +35,7 @@ class SelectorTerminalInfoTest extends TestCase
     }
 
     /** @test */
-    public function shouldFormatToXml()
+    public function shouldFormatToXml(): void
     {
         /** @var \PagOnline\XmlEntities\Init\SelectorTerminalInfo $object */
         $object = SelectorTerminalInfo::fromXml(
@@ -47,7 +47,7 @@ class SelectorTerminalInfoTest extends TestCase
     }
 
     /** @test */
-    public function shouldReturnXmlStringWhenGeneratedFromXml()
+    public function shouldReturnXmlStringWhenGeneratedFromXml(): void
     {
         /** @var \PagOnline\XmlEntities\Init\SelectorTerminalInfo $object */
         $baseXmlResource = \file_get_contents(__DIR__.'/../../resources/selector_terminal_info.xml');
