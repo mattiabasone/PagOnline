@@ -3,6 +3,8 @@ vendor/*
 composer.lock
 clover.xml
 .php_cs.cache
+.phpunit.result.cache
+.phpunit.xml.dist
 /tests/demo/config.php
 /tests/demo/paymentID.txt
 /tests/demo/shopID.txt
