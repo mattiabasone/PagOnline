@@ -9,7 +9,7 @@ use DateTimeImmutable;
  */
 class IgfsUtils
 {
-    const DATE_FORMATS = [
+    public const DATE_FORMATS = [
         'j-M-Y H:i:s.000P',
         'j-M-Y H:i:s.00P',
         'j-M-Y H:i:s.0P',
@@ -27,11 +27,11 @@ class IgfsUtils
      * @param $map
      * @param $key
      *
-     * @return string|null
+     * @return mixed
      */
     public static function getValue($map, $key)
     {
-        return isset($map[$key]) ? $map[$key] : null;
+        return $map[$key] ?? null;
     }
 
     /**
@@ -39,7 +39,7 @@ class IgfsUtils
      *
      * @return string
      */
-    public static function getUniqueBoundaryValue()
+    public static function getUniqueBoundaryValue(): string
     {
         return \uniqid();
     }
@@ -55,7 +55,7 @@ class IgfsUtils
     {
         $fields = [];
         foreach ($nodes->children() as $item) {
-            if (\count($item) == 0) {
+            if (\count($item) === 0) {
                 $fields[$item->getName()] = \trim((string) $item);
             } else {
                 $fields[$item->getName()] = (string) $item->asXML();
@@ -119,6 +119,6 @@ class IgfsUtils
     {
         $date = DateTimeImmutable::createFromFormat($format, $text);
 
-        return $date ? $date : null;
+        return $date ?: null;
     }
 }

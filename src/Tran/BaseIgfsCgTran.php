@@ -19,7 +19,7 @@ abstract class BaseIgfsCgTran extends BaseIgfsCg
 
     public $tranID;
 
-    public function resetFields()
+    public function resetFields(): void
     {
         parent::resetFields();
         $this->addInfo1 = null;
@@ -30,7 +30,7 @@ abstract class BaseIgfsCgTran extends BaseIgfsCg
         $this->tranID = null;
     }
 
-    protected function checkFields()
+    protected function checkFields(): void
     {
         parent::checkFields();
         if (empty($this->shopID)) {
@@ -50,12 +50,12 @@ abstract class BaseIgfsCgTran extends BaseIgfsCg
         return $request;
     }
 
-    protected function getServicePort()
+    protected function getServicePort(): string
     {
         return 'PaymentTranGatewayPort';
     }
 
-    protected function parseResponseMap($response)
+    protected function parseResponseMap($response): void
     {
         parent::parseResponseMap($response);
         // Opzionale

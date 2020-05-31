@@ -50,7 +50,7 @@ class IgfsCgCredit extends BaseIgfsCgTran
         ];
     }
 
-    public function resetFields()
+    public function resetFields(): void
     {
         parent::resetFields();
         $this->shopUserRef = null;
@@ -67,7 +67,7 @@ class IgfsCgCredit extends BaseIgfsCgTran
         $this->pendingAmount = null;
     }
 
-    protected function checkFields()
+    protected function checkFields(): void
     {
         parent::checkFields();
         if ($this->amount == null) {
@@ -108,14 +108,14 @@ class IgfsCgCredit extends BaseIgfsCgTran
         return $request;
     }
 
-    protected function parseResponseMap($response)
+    protected function parseResponseMap($response): void
     {
         parent::parseResponseMap($response);
         // Opzionale
         $this->pendingAmount = IgfsUtils::getValue($response, 'pendingAmount');
     }
 
-    protected function getResponseSignature($response)
+    protected function getResponseSignature($response): string
     {
         $fields = [
             IgfsUtils::getValue($response, 'tid'), // TID

@@ -34,14 +34,14 @@ class IgfsCgVoidAuth extends BaseIgfsCgTran
         ];
     }
 
-    public function resetFields()
+    public function resetFields(): void
     {
         parent::resetFields();
         $this->amount = null;
         $this->refTranID = null;
     }
 
-    protected function checkFields()
+    protected function checkFields(): void
     {
         parent::checkFields();
         if ($this->amount == null) {
@@ -68,7 +68,7 @@ class IgfsCgVoidAuth extends BaseIgfsCgTran
      *
      * @return string
      */
-    protected function getResponseSignature($response)
+    protected function getResponseSignature($response): string
     {
         $fields = [
             IgfsUtils::getValue($response, 'tid'), // TID

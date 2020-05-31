@@ -101,7 +101,7 @@ class IgfsCgAuth extends BaseIgfsCgTran
         ];
     }
 
-    public function resetFields()
+    public function resetFields(): void
     {
         parent::resetFields();
         $this->shopUserRef = null;
@@ -157,7 +157,7 @@ class IgfsCgAuth extends BaseIgfsCgTran
         $this->payUserRef = null;
     }
 
-    protected function checkFields()
+    protected function checkFields(): void
     {
         parent::checkFields();
         if ($this->trType === null) {
@@ -256,7 +256,7 @@ class IgfsCgAuth extends BaseIgfsCgTran
         return $request;
     }
 
-    protected function parseResponseMap($response)
+    protected function parseResponseMap($response): void
     {
         parent::parseResponseMap($response);
         // Opzionale

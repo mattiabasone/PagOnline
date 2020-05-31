@@ -39,7 +39,7 @@ class IgfsCgConfirm extends BaseIgfsCgTran
         ];
     }
 
-    public function resetFields()
+    public function resetFields(): void
     {
         parent::resetFields();
         $this->amount = null;
@@ -50,7 +50,7 @@ class IgfsCgConfirm extends BaseIgfsCgTran
         $this->pendingAmount = null;
     }
 
-    protected function checkFields()
+    protected function checkFields(): void
     {
         parent::checkFields();
         if ($this->amount == null) {
@@ -78,7 +78,7 @@ class IgfsCgConfirm extends BaseIgfsCgTran
     /**
      * @param $response
      */
-    protected function parseResponseMap($response)
+    protected function parseResponseMap($response): void
     {
         parent::parseResponseMap($response);
         // Opzionale
@@ -92,7 +92,7 @@ class IgfsCgConfirm extends BaseIgfsCgTran
      *
      * @return string
      */
-    protected function getResponseSignature($response)
+    protected function getResponseSignature($response): string
     {
         $fields = [
             IgfsUtils::getValue($response, 'tid'), // TID
