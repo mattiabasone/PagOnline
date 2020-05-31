@@ -9,7 +9,7 @@ on:
 jobs:
   test:
 
-    name: Test ${{ matrix.php-versions }}
+    name: Test PHP ${{ matrix.php-versions }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -43,9 +43,9 @@ jobs:
 #          restore-keys: |
 #              composer-7.2
       - name: Install dependencies
-        run: (test -d vendor && echo vendor exists) || composer install --prefer-dist --no-progress --no-suggest
+        run: (test -d vendor && echo vendor directory exists) || composer install --prefer-dist --no-progress --no-suggest
       - name: Run PHPUnit
-        run: ls -la vendor/bin && vendor/bin/phpunint --coverage-text --coverage-clover clover.xml
+        run: vendor/bin/phpunit --coverage-text --coverage-clover clover.xml
       - name: "[Coveralls] Extract branch name"
         shell: bash
         run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
