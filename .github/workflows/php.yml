@@ -28,10 +28,10 @@ jobs:
       - name: Validate composer.json and composer.lock
         run: composer validate
       - name: Get composer cache directory
-        id: composer-cache
+        id: composer-cache-dirs
         run: echo "::set-output name=dir::$(composer config cache-files-dir)"
       - name: Cache Composer packages
-        id: composer-cache
+        id: composer-cache-restore
         uses: actions/cache@v2
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
