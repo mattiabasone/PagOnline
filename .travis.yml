@@ -3,7 +3,7 @@ language: php
 php:
   - 7.2
   - 7.3
-  - 7.4snapshot
+  - 7.4
   - nightly
 
 sudo: false
@@ -21,7 +21,6 @@ env:
 matrix:
   allow_failures:
     - php: nightly
-    - php: 7.4snapshot
   fast_finish: true
 
 before_script:
