@@ -2,10 +2,10 @@
 
 namespace PagOnline\Tests\Unit\Mpi;
 
-use PagOnline\Mpi\IgfsCgMpiEnroll;
-use PagOnline\Tests\Unit\IgfsCgBaseTest;
 use PagOnline\Exceptions\IgfsMissingParException;
+use PagOnline\Mpi\IgfsCgMpiEnroll;
 use PagOnline\Mpi\Requests\IgfsCgMpiEnrollRequest;
+use PagOnline\Tests\Unit\IgfsCgBaseTest;
 
 /**
  * Class IgfsCgInitTest.
@@ -14,14 +14,6 @@ class IgfsCgMpiEnrollTest extends IgfsCgBaseTest
 {
     protected $igfsCgClass = IgfsCgMpiEnroll::class;
     protected $igfsCgRequest = IgfsCgMpiEnrollRequest::CONTENT;
-
-    protected function setIgfsRequiredParamenters(&$class): void
-    {
-        $class->amount = 100;
-        $class->currencyCode = 'EUR';
-        $class->pan = 'pan';
-        $class->termURL = 'termURL';
-    }
 
     /** @test */
     public function shouldChecksFieldsAndRaiseExceptionMissingAmount(): void
@@ -61,6 +53,7 @@ class IgfsCgMpiEnrollTest extends IgfsCgBaseTest
         $foo = $this->getClassMethod('checkFields');
         $this->setIgfsRequiredParamenters($obj);
         $exception = null;
+
         try {
             $foo->invoke($obj);
         } catch (\Exception $exception) {
@@ -78,5 +71,13 @@ class IgfsCgMpiEnrollTest extends IgfsCgBaseTest
         $obj->shopID = null;
         $foo = $this->getClassMethod('checkFields');
         $foo->invoke($obj);
+    }
+
+    protected function setIgfsRequiredParamenters(&$class): void
+    {
+        $class->amount = 100;
+        $class->currencyCode = 'EUR';
+        $class->pan = 'pan';
+        $class->termURL = 'termURL';
     }
 }

@@ -2,19 +2,14 @@
 
 namespace PagOnline\Tokenizer;
 
-use PagOnline\IgfsUtils;
 use PagOnline\Exceptions\IgfsMissingParException;
+use PagOnline\IgfsUtils;
 
 /**
  * Class IgfsCgTokenizerEnroll.
  */
 class IgfsCgTokenizerEnroll extends BaseIgfsCgTokenizer
 {
-    /**
-     * @var string
-     */
-    protected $requestNamespace = Requests\IgfsCgTokenizerEnrollRequest::class;
-
     public $shopUserRef;
     public $pan;
     public $expireMonth;
@@ -32,25 +27,10 @@ class IgfsCgTokenizerEnroll extends BaseIgfsCgTokenizer
     public $addInfo3;
     public $addInfo4;
     public $addInfo5;
-
     /**
-     * {@inheritdoc}
+     * @var string
      */
-    protected function getAdditionalRequestSignatureFields(): array
-    {
-        return [
-            $this->shopUserRef, // SHOPUSERREF
-            $this->pan, // PAN
-            $this->expireMonth, // EXPIREMONTH
-            $this->expireYear, // EXPIREYEAR
-            $this->payInstrToken, // PAYINSTRTOKEN
-            $this->addInfo1, // UDF1
-            $this->addInfo2, // UDF2
-            $this->addInfo3, // UDF3
-            $this->addInfo4, // UDF4
-            $this->addInfo5,
-        ];
-    }
+    protected $requestNamespace = Requests\IgfsCgTokenizerEnrollRequest::class;
 
     /**
      * {@inheritdoc}
@@ -75,6 +55,25 @@ class IgfsCgTokenizerEnroll extends BaseIgfsCgTokenizer
         $this->addInfo3 = null;
         $this->addInfo4 = null;
         $this->addInfo5 = null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getAdditionalRequestSignatureFields(): array
+    {
+        return [
+            $this->shopUserRef, // SHOPUSERREF
+            $this->pan, // PAN
+            $this->expireMonth, // EXPIREMONTH
+            $this->expireYear, // EXPIREYEAR
+            $this->payInstrToken, // PAYINSTRTOKEN
+            $this->addInfo1, // UDF1
+            $this->addInfo2, // UDF2
+            $this->addInfo3, // UDF3
+            $this->addInfo4, // UDF4
+            $this->addInfo5,
+        ];
     }
 
     /**

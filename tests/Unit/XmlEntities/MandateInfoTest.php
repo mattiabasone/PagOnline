@@ -2,8 +2,8 @@
 
 namespace PagOnline\Tests\Unit\XmlEntities;
 
-use PHPUnit\Framework\TestCase;
 use PagOnline\XmlEntities\MandateInfo;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Class IgfsCgFactoryTest.

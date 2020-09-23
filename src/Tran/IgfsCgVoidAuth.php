@@ -2,21 +2,27 @@
 
 namespace PagOnline\Tran;
 
-use PagOnline\IgfsUtils;
 use PagOnline\Exceptions\IgfsMissingParException;
+use PagOnline\IgfsUtils;
 
 /**
  * Class IgfsCgVoidAuth.
  */
 class IgfsCgVoidAuth extends BaseIgfsCgTran
 {
+    public $amount;
+    public $refTranID;
     /**
      * @var string
      */
     protected $requestNamespace = Requests\IgfsCgVoidAuthRequest::class;
 
-    public $amount;
-    public $refTranID;
+    public function resetFields(): void
+    {
+        parent::resetFields();
+        $this->amount = null;
+        $this->refTranID = null;
+    }
 
     /**
      * {@inheritdoc}
@@ -32,13 +38,6 @@ class IgfsCgVoidAuth extends BaseIgfsCgTran
             $this->addInfo4, // UDF4
             $this->addInfo5, // UDF5
         ];
-    }
-
-    public function resetFields(): void
-    {
-        parent::resetFields();
-        $this->amount = null;
-        $this->refTranID = null;
     }
 
     protected function checkFields(): void

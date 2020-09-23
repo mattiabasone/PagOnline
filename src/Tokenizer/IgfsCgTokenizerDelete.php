@@ -2,21 +2,27 @@
 
 namespace PagOnline\Tokenizer;
 
-use PagOnline\IgfsUtils;
 use PagOnline\Exceptions\IgfsMissingParException;
+use PagOnline\IgfsUtils;
 
 /**
  * Class IgfsCgTokenizerDelete.
  */
 class IgfsCgTokenizerDelete extends BaseIgfsCgTokenizer
 {
+    public $payInstrToken;
+    public $billingID;
     /**
      * @var string
      */
     protected $requestNamespace = Requests\IgfsCgTokenizerDeleteRequest::class;
 
-    public $payInstrToken;
-    public $billingID;
+    public function resetFields()
+    {
+        parent::resetFields();
+        $this->payInstrToken = null;
+        $this->billingID = null;
+    }
 
     /**
      * {@inheritdoc}
@@ -26,13 +32,6 @@ class IgfsCgTokenizerDelete extends BaseIgfsCgTokenizer
         return [
             $this->payInstrToken,
         ];
-    }
-
-    public function resetFields()
-    {
-        parent::resetFields();
-        $this->payInstrToken = null;
-        $this->billingID = null;
     }
 
     protected function checkFields()

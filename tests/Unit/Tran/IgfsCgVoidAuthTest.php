@@ -2,9 +2,9 @@
 
 namespace PagOnline\Tests\Unit\Tran;
 
-use PagOnline\Tran\IgfsCgVoidAuth;
-use PagOnline\Tests\Unit\IgfsCgBaseTest;
 use PagOnline\Exceptions\IgfsMissingParException;
+use PagOnline\Tests\Unit\IgfsCgBaseTest;
+use PagOnline\Tran\IgfsCgVoidAuth;
 use PagOnline\Tran\Requests\IgfsCgVoidAuthRequest;
 
 /**
@@ -14,12 +14,6 @@ class IgfsCgVoidAuthTest extends IgfsCgBaseTest
 {
     protected $igfsCgClass = IgfsCgVoidAuth::class;
     protected $igfsCgRequest = IgfsCgVoidAuthRequest::CONTENT;
-
-    protected function setIgfsRequiredParamenters(&$class): void
-    {
-        $class->amount = 'AUTH';
-        $class->refTranID = '12345678';
-    }
 
     /** @test */
     public function shouldReturnRequestString(): void
@@ -47,6 +41,7 @@ class IgfsCgVoidAuthTest extends IgfsCgBaseTest
         $foo = $this->getClassMethod('checkFields');
         $this->setIgfsRequiredParamenters($obj);
         $exception = null;
+
         try {
             $foo->invoke($obj);
         } catch (\Exception $exception) {
@@ -64,5 +59,11 @@ class IgfsCgVoidAuthTest extends IgfsCgBaseTest
         $obj->shopID = null;
         $foo = $this->getClassMethod('checkFields');
         $foo->invoke($obj);
+    }
+
+    protected function setIgfsRequiredParamenters(&$class): void
+    {
+        $class->amount = 'AUTH';
+        $class->refTranID = '12345678';
     }
 }

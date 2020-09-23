@@ -2,19 +2,14 @@
 
 namespace PagOnline\Init;
 
-use PagOnline\IgfsUtils;
 use PagOnline\Exceptions\IgfsMissingParException;
+use PagOnline\IgfsUtils;
 
 /**
  * Class IgfsCgInit.
  */
 class IgfsCgInit extends BaseIgfsCgInit
 {
-    /**
-     * @var string
-     */
-    protected $requestNamespace = Requests\IgfsCgInitRequest::class;
-
     public $shopUserRef;
     public $shopUserName;
     public $shopUserAccount;
@@ -54,6 +49,10 @@ class IgfsCgInit extends BaseIgfsCgInit
 
     public $paymentID;
     public $redirectURL;
+    /**
+     * @var string
+     */
+    protected $requestNamespace = Requests\IgfsCgInitRequest::class;
 
     public function resetFields()
     {

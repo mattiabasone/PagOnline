@@ -21,10 +21,10 @@ class IgfsCgFactory
     {
         if (\class_exists($namespace)) {
             /**
-             * @var \PagOnline\Init\IgfsCgInit|\PagOnline\Init\IgfsCgVerify|\PagOnline\Init\IgfsCgSelector
+             * @var \PagOnline\Init\IgfsCgInit|\PagOnline\Init\IgfsCgSelector|\PagOnline\Init\IgfsCgVerify
              * @var \PagOnline\PayByMail\IgfsCgPayByMailInit|\PagOnline\PayByMail\IgfsCgPayByMailVerify                                             $igfsCgClass
              * @var \PagOnline\Mpi\IgfsCgMpiAuth|\PagOnline\Mpi\IgfsCgMpiEnroll                                                                     $igfsCgClass
-             * @var \PagOnline\Tokenizer\IgfsCgTokenizerCheck|\PagOnline\Tokenizer\IgfsCgTokenizerEnroll|\PagOnline\Tokenizer\IgfsCgTokenizerDelete $igfsCgClass
+             * @var \PagOnline\Tokenizer\IgfsCgTokenizerCheck|\PagOnline\Tokenizer\IgfsCgTokenizerDelete|\PagOnline\Tokenizer\IgfsCgTokenizerEnroll $igfsCgClass
              * @var \PagOnline\Tran\IgfsCgAuth|\PagOnline\Tran\IgfsCgConfirm|\PagOnline\Tran\IgfsCgCredit|\PagOnline\Tran\IgfsCgVoidAuth            $igfsCgClass
              */
             $igfsCgClass = new $namespace();
@@ -52,8 +52,8 @@ class IgfsCgFactory
             }
 
             return $igfsCgClass;
-        } else {
-            throw new ClassNotFoundException("Class {$namespace} does not exists");
         }
+
+        throw new ClassNotFoundException("Class {$namespace} does not exists");
     }
 }

@@ -2,9 +2,9 @@
 
 namespace PagOnline\Tran;
 
-use PagOnline\IgfsUtils;
 use PagOnline\BaseIgfsCg;
 use PagOnline\Exceptions\IgfsMissingParException;
+use PagOnline\IgfsUtils;
 
 /**
  * Class BaseIgfsCgTran.

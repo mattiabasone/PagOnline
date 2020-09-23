@@ -2,13 +2,13 @@
 
 namespace PagOnline;
 
-use SimpleXMLElement;
 use Illuminate\Support\Str;
-use PagOnline\Traits\HttpClient;
-use PagOnline\Exceptions\IOException;
-use PagOnline\Exceptions\IgfsException;
 use PagOnline\Exceptions\ConnectionException;
+use PagOnline\Exceptions\IgfsException;
 use PagOnline\Exceptions\IgfsMissingParException;
+use PagOnline\Exceptions\IOException;
+use PagOnline\Traits\HttpClient;
+use SimpleXMLElement;
 
 /**
  * Class BaseIgfsCg.
@@ -24,17 +24,6 @@ abstract class BaseIgfsCg implements IgfsCgInterface
      */
     const VERSION = '2.4.1.5';
 
-    protected static $soapBodyTag = 'Body';
-    protected static $soapResponseParentTag = '';
-    protected static $soapResponseTag = 'response';
-
-    /**
-     * Set the request namespace here.
-     *
-     * @var string
-     */
-    protected $requestNamespace = '';
-
     /**
      * Signature Key.
      *
@@ -45,7 +34,7 @@ abstract class BaseIgfsCg implements IgfsCgInterface
     /**
      * Payment Gateway server url.
      *
-     * @var string|null
+     * @var null|string
      */
     public $serverURL = null;
     public $serverURLs = null;
@@ -59,6 +48,17 @@ abstract class BaseIgfsCg implements IgfsCgInterface
     public $rc = null;
     public $error = null;
     public $errorDesc = null;
+
+    protected static $soapBodyTag = 'Body';
+    protected static $soapResponseParentTag = '';
+    protected static $soapResponseTag = 'response';
+
+    /**
+     * Set the request namespace here.
+     *
+     * @var string
+     */
+    protected $requestNamespace = '';
 
     protected $fields2Reset = false;
 
@@ -85,8 +85,6 @@ abstract class BaseIgfsCg implements IgfsCgInterface
         $this->fields2Reset = false;
     }
 
-    abstract protected function getServicePort();
-
     /**
      * {@inheritdoc}
      */
@@ -102,6 +100,88 @@ abstract class BaseIgfsCg implements IgfsCgInterface
     {
         return (string) new $this->requestNamespace();
     }
+
+    /**
+     * TODO: Refactor this.
+     *
+     * @return bool
+     */
+    public function execute(): bool
+    {
+        try {
+            $this->checkFields();
+            $mapResponse = [];
+            if (!empty($this->serverURL)) {
+                $mapResponse = $this->executeHttp($this->serverURL);
+            } else {
+                $sURLs = $this->serverURLs;
+                $sURL = \array_shift($sURLs);
+                $finished = false;
+                while (!$finished) {
+                    try {
+                        $mapResponse = $this->executeHttp($sURL);
+                        $finished = true;
+                    } catch (ConnectionException $e) {
+                        if (!empty($sURLs)) {
+                            $sURL = \array_shift($sURLs);
+                        } else {
+                            throw $e;
+                        }
+                    }
+                }
+            }
+
+            // Leggiamo i campi
+            $this->parseResponseMap($mapResponse);
+            $this->fields2Reset = true;
+            if (!$this->error) {
+                // Verifico la signature
+                if (!$this->checkResponseSignature($mapResponse)) {
+                    throw new IgfsException('Invalid IGFS Response signature');
+                }
+
+                return true;
+            }
+
+            return false;
+        } catch (\Throwable $e) {
+            $this->resetFields();
+            $this->fields2Reset = true;
+            $this->error = true;
+            $this->errorDesc = $e->getMessage();
+            if ($e instanceof IgfsMissingParException) {
+                $this->rc = Errors::IGFS_20000; // Missing data
+                $this->errorDesc = $e->getMessage();
+            }
+            if ($e instanceof ConnectionException) {
+                $this->rc = Errors::IGFS_007; // Communication error
+                $this->errorDesc = $e->getMessage();
+            }
+            if ($this->rc === null) {
+                $this->rc = Errors::IGFS_909; // System error
+            }
+
+            return false;
+        }
+    }
+
+    /**
+     * Returns public properties to array.
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+        $propertiesArray = [];
+        $publicProperties = (new \ReflectionObject($this))->getProperties(\ReflectionProperty::IS_PUBLIC);
+        foreach ($publicProperties as $publicProperty) {
+            $propertiesArray[$publicProperty->getName()] = $publicProperty->getValue($this);
+        }
+
+        return $propertiesArray;
+    }
+
+    abstract protected function getServicePort();
 
     /**
      * @return array
@@ -247,7 +327,7 @@ abstract class BaseIgfsCg implements IgfsCgInterface
     /**
      * @param string $response
      *
-     * @return SimpleXMLElement|null
+     * @return null|SimpleXMLElement
      */
     protected function responseXmlToObject(string $response): ?SimpleXMLElement
     {
@@ -338,6 +418,14 @@ abstract class BaseIgfsCg implements IgfsCgInterface
     }
 
     /**
+     * @return string
+     */
+    protected function getUniqueBoundaryValue()
+    {
+        return IgfsUtils::getUniqueBoundaryValue();
+    }
+
+    /**
      * Execute a POST request.
      *
      * @param $url
@@ -356,70 +444,6 @@ abstract class BaseIgfsCg implements IgfsCgInterface
         }
 
         return $response->getBody()->getContents();
-    }
-
-    /**
-     * TODO: Refactor this.
-     *
-     * @return bool
-     */
-    public function execute(): bool
-    {
-        try {
-            $this->checkFields();
-            $mapResponse = [];
-            if (!empty($this->serverURL)) {
-                $mapResponse = $this->executeHttp($this->serverURL);
-            } else {
-                $sURLs = $this->serverURLs;
-                $sURL = \array_shift($sURLs);
-                $finished = false;
-                while (!$finished) {
-                    try {
-                        $mapResponse = $this->executeHttp($sURL);
-                        $finished = true;
-                    } catch (ConnectionException $e) {
-                        if (!empty($sURLs)) {
-                            $sURL = \array_shift($sURLs);
-                        } else {
-                            throw $e;
-                        }
-                    }
-                }
-            }
-
-            // Leggiamo i campi
-            $this->parseResponseMap($mapResponse);
-            $this->fields2Reset = true;
-            if (!$this->error) {
-                // Verifico la signature
-                if (!$this->checkResponseSignature($mapResponse)) {
-                    throw new IgfsException('Invalid IGFS Response signature');
-                }
-
-                return true;
-            } else {
-                return false;
-            }
-        } catch (\Throwable $e) {
-            $this->resetFields();
-            $this->fields2Reset = true;
-            $this->error = true;
-            $this->errorDesc = $e->getMessage();
-            if ($e instanceof IgfsMissingParException) {
-                $this->rc = Errors::IGFS_20000; // Missing data
-                $this->errorDesc = $e->getMessage();
-            }
-            if ($e instanceof ConnectionException) {
-                $this->rc = Errors::IGFS_007; // Communication error
-                $this->errorDesc = $e->getMessage();
-            }
-            if ($this->rc === null) {
-                $this->rc = Errors::IGFS_909; // System error
-            }
-
-            return false;
-        }
     }
 
     /**
@@ -443,29 +467,5 @@ abstract class BaseIgfsCg implements IgfsCgInterface
         }
 
         return $mapResponse;
-    }
-
-    /**
-     * @return string
-     */
-    protected function getUniqueBoundaryValue()
-    {
-        return IgfsUtils::getUniqueBoundaryValue();
-    }
-
-    /**
-     * Returns public properties to array.
-     *
-     * @return array
-     */
-    public function toArray()
-    {
-        $propertiesArray = [];
-        $publicProperties = (new \ReflectionObject($this))->getProperties(\ReflectionProperty::IS_PUBLIC);
-        foreach ($publicProperties as $publicProperty) {
-            $propertiesArray[$publicProperty->getName()] = $publicProperty->getValue($this);
-        }
-
-        return $propertiesArray;
     }
 }

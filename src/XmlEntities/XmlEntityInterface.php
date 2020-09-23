@@ -21,7 +21,7 @@ interface XmlEntityInterface
      *
      * @param $xml
      *
-     * @return XmlEntityInterface|null
+     * @return null|XmlEntityInterface
      */
     public static function fromXml($xml): ?self;
 }

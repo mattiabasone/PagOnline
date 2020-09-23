@@ -2,12 +2,12 @@
 
 namespace PagOnline\Tests\Unit\PayByMail;
 
-use PagOnline\XmlEntities\Level3Info;
-use PagOnline\Tests\Unit\IgfsCgBaseTest;
-use PagOnline\PayByMail\IgfsCgPayByMailInit;
-use PagOnline\XmlEntities\Level3InfoProduct;
 use PagOnline\Exceptions\IgfsMissingParException;
+use PagOnline\PayByMail\IgfsCgPayByMailInit;
 use PagOnline\PayByMail\Requests\IgfsCgPayByMailInitRequest;
+use PagOnline\Tests\Unit\IgfsCgBaseTest;
+use PagOnline\XmlEntities\Level3Info;
+use PagOnline\XmlEntities\Level3InfoProduct;
 
 /**
  * Class IgfsCgInitTest.
@@ -16,12 +16,6 @@ class IgfsCgPayByMailInitTest extends IgfsCgBaseTest
 {
     protected $igfsCgClass = IgfsCgPayByMailInit::class;
     protected $igfsCgRequest = IgfsCgPayByMailInitRequest::CONTENT;
-
-    protected function setIgfsRequiredParamenters(&$class): void
-    {
-        $class->mailID = 'mail@example.org';
-        $class->shopUserRef = 'shopUserRef';
-    }
 
     /** @test */
     public function shouldChecksFieldsAndRaiseExceptionMissingTrType(): void
@@ -98,6 +92,7 @@ class IgfsCgPayByMailInitTest extends IgfsCgBaseTest
         $foo = $this->getClassMethod('checkFields');
         $this->setIgfsRequiredParamenters($obj);
         $exception = null;
+
         try {
             $foo->invoke($obj);
         } catch (\Exception $exception) {
@@ -115,5 +110,11 @@ class IgfsCgPayByMailInitTest extends IgfsCgBaseTest
         $obj->shopID = null;
         $foo = $this->getClassMethod('checkFields');
         $foo->invoke($obj);
+    }
+
+    protected function setIgfsRequiredParamenters(&$class): void
+    {
+        $class->mailID = 'mail@example.org';
+        $class->shopUserRef = 'shopUserRef';
     }
 }

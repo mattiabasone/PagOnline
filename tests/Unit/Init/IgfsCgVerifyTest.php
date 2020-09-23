@@ -2,15 +2,15 @@
 
 namespace PagOnline\Tests\Unit\Init;
 
-use PagOnline\Errors;
 use GuzzleHttp\Client;
+use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
-use PagOnline\Init\IgfsCgVerify;
-use GuzzleHttp\Handler\MockHandler;
-use PagOnline\Tests\Unit\IgfsCgBaseTest;
-use PagOnline\Init\Requests\IgfsCgVerifyRequest;
+use PagOnline\Errors;
 use PagOnline\Exceptions\IgfsMissingParException;
+use PagOnline\Init\IgfsCgVerify;
+use PagOnline\Init\Requests\IgfsCgVerifyRequest;
+use PagOnline\Tests\Unit\IgfsCgBaseTest;
 
 /**
  * Class IgfsCgInitTest.
@@ -39,6 +39,7 @@ class IgfsCgVerifyTest extends IgfsCgBaseTest
         $foo = $this->getClassMethod('checkFields');
 
         $exception = null;
+
         try {
             $foo->invoke($obj);
         } catch (\Exception $exception) {

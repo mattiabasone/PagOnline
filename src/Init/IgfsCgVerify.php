@@ -2,21 +2,16 @@
 
 namespace PagOnline\Init;
 
+use PagOnline\Exceptions\IgfsMissingParException;
 use PagOnline\IgfsUtils;
 use PagOnline\XmlEntities\Entry;
 use PagOnline\XmlEntities\Level3Info;
-use PagOnline\Exceptions\IgfsMissingParException;
 
 /**
  * Class IgfsCgVerify.
  */
 class IgfsCgVerify extends BaseIgfsCgInit
 {
-    /**
-     * @var string
-     */
-    protected $requestNamespace = Requests\IgfsCgVerifyRequest::class;
-
     public $paymentID;
     public $refTranID;
 
@@ -45,17 +40,10 @@ class IgfsCgVerify extends BaseIgfsCgInit
     public $payAddData;
     public $payUserRef;
     public $shopUserMobilePhone;
-
     /**
-     * {@inheritdoc}
+     * @var string
      */
-    protected function getAdditionalRequestSignatureFields(): array
-    {
-        return [
-            $this->paymentID,
-            $this->refTranID,
-        ];
-    }
+    protected $requestNamespace = Requests\IgfsCgVerifyRequest::class;
 
     /**
      * {@inheritdoc}
@@ -91,6 +79,17 @@ class IgfsCgVerify extends BaseIgfsCgInit
         $this->payAddData = null;
         $this->payUserRef = null;
         $this->shopUserMobilePhone = null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getAdditionalRequestSignatureFields(): array
+    {
+        return [
+            $this->paymentID,
+            $this->refTranID,
+        ];
     }
 
     protected function checkFields()

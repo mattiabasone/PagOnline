@@ -2,11 +2,11 @@
 
 namespace PagOnline\Tests\Unit;
 
-use PagOnline;
 use Illuminate\Support\Str;
+use Orchestra\Testbench\TestCase as OrchestraTestCase;
+use PagOnline;
 use PagOnline\IgfsCgFactory;
 use PagOnline\Laravel\PagOnlineServiceProvider;
-use Orchestra\Testbench\TestCase as OrchestraTestCase;
 
 class BaseLaravelTest extends OrchestraTestCase
 {
@@ -22,6 +22,20 @@ class BaseLaravelTest extends OrchestraTestCase
         parent::setUp();
         $this->poTerminalId = Str::random(24);
         $this->poSignatureKey = Str::random(24);
+    }
+
+    /** @test */
+    public function shouldCreateFacade(): void
+    {
+        $this->app->singleton('igfscg', function () {
+            return new IgfsCgFactory();
+        });
+        $this->app->alias('igfscg', IgfsCgFactory::class);
+        /** @var \PagOnline\Init\IgfsCgInit $igfsCgInit */
+        $igfsCgInit = \IgfsCg::make(PagOnline\Actions::IGFS_CG_INIT);
+        $this->assertIsObject($igfsCgInit);
+        $this->assertObjectHasAttribute('serverURL', $igfsCgInit);
+        $this->assertEquals($this->poServerUrl, $igfsCgInit->serverURL);
     }
 
     /**
@@ -64,19 +78,5 @@ class BaseLaravelTest extends OrchestraTestCase
             'IgfsCg' => \PagOnline\Laravel\Facades\IgfsCgFacade::class,
             'config' => \Illuminate\Config\Repository::class,
         ];
-    }
-
-    /** @test */
-    public function shouldCreateFacade(): void
-    {
-        $this->app->singleton('igfscg', function () {
-            return new IgfsCgFactory();
-        });
-        $this->app->alias('igfscg', IgfsCgFactory::class);
-        /** @var \PagOnline\Init\IgfsCgInit $igfsCgInit */
-        $igfsCgInit = \IgfsCg::make(PagOnline\Actions::IGFS_CG_INIT);
-        $this->assertIsObject($igfsCgInit);
-        $this->assertObjectHasAttribute('serverURL', $igfsCgInit);
-        $this->assertEquals($this->poServerUrl, $igfsCgInit->serverURL);
     }
 }

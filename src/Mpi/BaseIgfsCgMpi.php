@@ -2,8 +2,8 @@
 
 namespace PagOnline\Mpi;
 
-use PagOnline\IgfsUtils;
 use PagOnline\BaseIgfsCg;
+use PagOnline\IgfsUtils;
 
 /**
  * Class BaseIgfsCgMpi.

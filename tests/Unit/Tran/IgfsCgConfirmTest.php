@@ -2,9 +2,9 @@
 
 namespace PagOnline\Tests\Unit\Tran;
 
-use PagOnline\Tran\IgfsCgConfirm;
-use PagOnline\Tests\Unit\IgfsCgBaseTest;
 use PagOnline\Exceptions\IgfsMissingParException;
+use PagOnline\Tests\Unit\IgfsCgBaseTest;
+use PagOnline\Tran\IgfsCgConfirm;
 use PagOnline\Tran\Requests\IgfsCgConfirmRequest;
 
 /**
@@ -14,12 +14,6 @@ class IgfsCgConfirmTest extends IgfsCgBaseTest
 {
     protected $igfsCgClass = IgfsCgConfirm::class;
     protected $igfsCgRequest = IgfsCgConfirmRequest::CONTENT;
-
-    protected function setIgfsRequiredParamenters(&$class): void
-    {
-        $class->amount = 500;
-        $class->refTranID = '123456789';
-    }
 
     /** @test */
     public function shouldChecksFieldsAndRaiseException(): void
@@ -40,6 +34,7 @@ class IgfsCgConfirmTest extends IgfsCgBaseTest
         $foo = $this->getClassMethod('checkFields');
         $this->setIgfsRequiredParamenters($obj);
         $exception = null;
+
         try {
             $foo->invoke($obj);
         } catch (\Exception $exception) {
@@ -57,5 +52,11 @@ class IgfsCgConfirmTest extends IgfsCgBaseTest
         $obj->shopID = null;
         $foo = $this->getClassMethod('checkFields');
         $foo->invoke($obj);
+    }
+
+    protected function setIgfsRequiredParamenters(&$class): void
+    {
+        $class->amount = 500;
+        $class->refTranID = '123456789';
     }
 }

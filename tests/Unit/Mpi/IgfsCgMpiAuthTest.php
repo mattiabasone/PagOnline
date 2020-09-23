@@ -2,10 +2,10 @@
 
 namespace PagOnline\Tests\Unit\Mpi;
 
-use PagOnline\Mpi\IgfsCgMpiAuth;
-use PagOnline\Tests\Unit\IgfsCgBaseTest;
-use PagOnline\Mpi\Requests\IgfsCgMpiAuthRequest;
 use PagOnline\Exceptions\IgfsMissingParException;
+use PagOnline\Mpi\IgfsCgMpiAuth;
+use PagOnline\Mpi\Requests\IgfsCgMpiAuthRequest;
+use PagOnline\Tests\Unit\IgfsCgBaseTest;
 
 /**
  * Class IgfsCgInitTest.
@@ -58,6 +58,7 @@ class IgfsCgMpiAuthTest extends IgfsCgBaseTest
         $obj->paRes = 'paRes';
         $obj->md = 'md';
         $exception = null;
+
         try {
             $foo->invoke($obj);
         } catch (\Exception $exception) {

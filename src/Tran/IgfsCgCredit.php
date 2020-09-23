@@ -2,19 +2,14 @@
 
 namespace PagOnline\Tran;
 
-use PagOnline\IgfsUtils;
 use PagOnline\Exceptions\IgfsMissingParException;
+use PagOnline\IgfsUtils;
 
 /**
  * Class IgfsCgCredit.
  */
 class IgfsCgCredit extends BaseIgfsCgTran
 {
-    /**
-     * @var string
-     */
-    protected $requestNamespace = Requests\IgfsCgCreditRequest::class;
-
     public $shopUserRef;
     public $amount;
     public $currencyCode;
@@ -27,6 +22,27 @@ class IgfsCgCredit extends BaseIgfsCgTran
     public $description;
 
     public $pendingAmount;
+    /**
+     * @var string
+     */
+    protected $requestNamespace = Requests\IgfsCgCreditRequest::class;
+
+    public function resetFields(): void
+    {
+        parent::resetFields();
+        $this->shopUserRef = null;
+        $this->amount = null;
+        $this->currencyCode = null;
+        $this->refTranID = null;
+        $this->pan = null;
+        $this->payInstrToken = null;
+        $this->billingID = null;
+        $this->expireMonth = null;
+        $this->expireYear = null;
+        $this->description = null;
+
+        $this->pendingAmount = null;
+    }
 
     /**
      * {@inheritdoc}
@@ -48,23 +64,6 @@ class IgfsCgCredit extends BaseIgfsCgTran
             $this->addInfo4, // UDF4
             $this->addInfo5, // UDF5
         ];
-    }
-
-    public function resetFields(): void
-    {
-        parent::resetFields();
-        $this->shopUserRef = null;
-        $this->amount = null;
-        $this->currencyCode = null;
-        $this->refTranID = null;
-        $this->pan = null;
-        $this->payInstrToken = null;
-        $this->billingID = null;
-        $this->expireMonth = null;
-        $this->expireYear = null;
-        $this->description = null;
-
-        $this->pendingAmount = null;
     }
 
     protected function checkFields(): void

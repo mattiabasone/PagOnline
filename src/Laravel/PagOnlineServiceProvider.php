@@ -2,8 +2,8 @@
 
 namespace PagOnline\Laravel;
 
-use PagOnline\IgfsCgFactory;
 use Illuminate\Support\ServiceProvider;
+use PagOnline\IgfsCgFactory;
 
 /**
  * Class PagOnlineServiceProvider.

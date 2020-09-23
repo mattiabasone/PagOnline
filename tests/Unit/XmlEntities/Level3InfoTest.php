@@ -2,9 +2,9 @@
 
 namespace PagOnline\Tests\Unit\XmlEntities;
 
-use PHPUnit\Framework\TestCase;
 use PagOnline\XmlEntities\Level3Info;
 use PagOnline\XmlEntities\Level3InfoProduct;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Class Level3InfoTest.

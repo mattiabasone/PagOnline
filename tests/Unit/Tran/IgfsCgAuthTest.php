@@ -2,10 +2,10 @@
 
 namespace PagOnline\Tests\Unit\Tran;
 
-use PagOnline\Tran\IgfsCgAuth;
-use PagOnline\Tests\Unit\IgfsCgBaseTest;
-use PagOnline\Tran\Requests\IgfsCgAuthRequest;
 use PagOnline\Exceptions\IgfsMissingParException;
+use PagOnline\Tests\Unit\IgfsCgBaseTest;
+use PagOnline\Tran\IgfsCgAuth;
+use PagOnline\Tran\Requests\IgfsCgAuthRequest;
 
 /**
  * Class IgfsCgInitTest.
@@ -14,13 +14,6 @@ class IgfsCgAuthTest extends IgfsCgBaseTest
 {
     protected $igfsCgClass = IgfsCgAuth::class;
     protected $igfsCgRequest = IgfsCgAuthRequest::CONTENT;
-
-    protected function setIgfsRequiredParamenters(&$class): void
-    {
-        $class->trType = 'AUTH';
-        $class->amount = 500;
-        $class->currencyCode = 'EUR';
-    }
 
     /** @test */
     public function shouldChecksFieldsAndRaiseExceptionMissingTrType(): void
@@ -41,6 +34,7 @@ class IgfsCgAuthTest extends IgfsCgBaseTest
         $foo = $this->getClassMethod('checkFields');
         $this->setIgfsRequiredParamenters($obj);
         $exception = null;
+
         try {
             $foo->invoke($obj);
         } catch (\Exception $exception) {
@@ -58,5 +52,12 @@ class IgfsCgAuthTest extends IgfsCgBaseTest
         $obj->shopID = null;
         $foo = $this->getClassMethod('checkFields');
         $foo->invoke($obj);
+    }
+
+    protected function setIgfsRequiredParamenters(&$class): void
+    {
+        $class->trType = 'AUTH';
+        $class->amount = 500;
+        $class->currencyCode = 'EUR';
     }
 }

@@ -2,19 +2,14 @@
 
 namespace PagOnline\Mpi;
 
-use PagOnline\IgfsUtils;
 use PagOnline\Exceptions\IgfsMissingParException;
+use PagOnline\IgfsUtils;
 
 /**
  * Class IgfsCgMpiEnroll.
  */
 class IgfsCgMpiEnroll extends BaseIgfsCgMpi
 {
-    /**
-     * @var string
-     */
-    protected $requestNamespace = Requests\IgfsCgMpiEnrollRequest::class;
-
     public $shopUserRef;
     public $amount;
     public $currencyCode;
@@ -38,26 +33,10 @@ class IgfsCgMpiEnroll extends BaseIgfsCgMpi
     public $md;
     public $acsURL;
     public $acsPage;
-
-    protected function getAdditionalRequestSignatureFields(): array
-    {
-        return [
-            $this->shopUserRef, // SHOPUSERREF
-            $this->amount, // AMOUNT
-            $this->currencyCode, // CURRENCYCODE
-            $this->pan, // PAN
-            $this->payInstrToken, // PAYINSTRTOKEN
-            $this->expireMonth, // EXPIREMONTH
-            $this->expireYear, // EXPIREYEAR
-            $this->termURL, // TERMURL
-            $this->description, // DESCRIPTION
-            $this->addInfo1, // UDF1
-            $this->addInfo2, // UDF2
-            $this->addInfo3, // UDF3
-            $this->addInfo4, // UDF4
-            $this->addInfo5, // UDF5
-        ];
-    }
+    /**
+     * @var string
+     */
+    protected $requestNamespace = Requests\IgfsCgMpiEnrollRequest::class;
 
     /**
      * Reset request fields.
@@ -88,6 +67,26 @@ class IgfsCgMpiEnroll extends BaseIgfsCgMpi
         $this->md = null;
         $this->acsURL = null;
         $this->acsPage = null;
+    }
+
+    protected function getAdditionalRequestSignatureFields(): array
+    {
+        return [
+            $this->shopUserRef, // SHOPUSERREF
+            $this->amount, // AMOUNT
+            $this->currencyCode, // CURRENCYCODE
+            $this->pan, // PAN
+            $this->payInstrToken, // PAYINSTRTOKEN
+            $this->expireMonth, // EXPIREMONTH
+            $this->expireYear, // EXPIREYEAR
+            $this->termURL, // TERMURL
+            $this->description, // DESCRIPTION
+            $this->addInfo1, // UDF1
+            $this->addInfo2, // UDF2
+            $this->addInfo3, // UDF3
+            $this->addInfo4, // UDF4
+            $this->addInfo5, // UDF5
+        ];
     }
 
     protected function checkFields()

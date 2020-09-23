@@ -2,10 +2,10 @@
 
 namespace PagOnline\Tests\Unit\Init;
 
-use PagOnline\Init\IgfsCgSelector;
-use PagOnline\Tests\Unit\IgfsCgBaseTest;
 use PagOnline\Exceptions\IgfsMissingParException;
+use PagOnline\Init\IgfsCgSelector;
 use PagOnline\Init\Requests\IgfsCgSelectorRequest;
+use PagOnline\Tests\Unit\IgfsCgBaseTest;
 
 /**
  * Class IgfsCgInitTest.
@@ -91,6 +91,7 @@ class IgfsCgSelectorTest extends IgfsCgBaseTest
         $foo = $this->getClassMethod('checkFields');
 
         $exception = null;
+
         try {
             $foo->invoke($obj);
         } catch (\Exception $exception) {

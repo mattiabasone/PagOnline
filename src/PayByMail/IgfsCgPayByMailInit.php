@@ -2,19 +2,14 @@
 
 namespace PagOnline\PayByMail;
 
-use PagOnline\IgfsUtils;
 use PagOnline\Exceptions\IgfsMissingParException;
+use PagOnline\IgfsUtils;
 
 /**
  * Class IgfsCgPayByMailInit.
  */
 class IgfsCgPayByMailInit extends BaseIgfsCgPayByMail
 {
-    /**
-     * @var string
-     */
-    protected $requestNamespace = Requests\IgfsCgPayByMailInitRequest::class;
-
     public $shopUserRef;
     public $shopUserName;
     public $shopUserAccount;
@@ -38,30 +33,10 @@ class IgfsCgPayByMailInit extends BaseIgfsCgPayByMail
 
     public $mailID;
     public $linkURL;
-
     /**
-     * {@inheritdoc}
+     * @var string
      */
-    protected function getAdditionalRequestSignatureFields(): array
-    {
-        return [
-            $this->shopUserRef, // SHOPUSERREF
-            $this->shopUserName, // SHOPUSERNAME
-            $this->shopUserAccount, // SHOPUSERACCOUNT
-            $this->shopUserMobilePhone, //SHOPUSERMOBILEPHONE
-            $this->shopUserIMEI, //SHOPUSERIMEI
-            $this->trType, // TRTYPE
-            $this->amount, // AMOUNT
-            $this->currencyCode, // CURRENCYCODE
-            $this->langID, // LANGID
-            $this->callbackURL, // CALLBACKURL
-            $this->addInfo1, // UDF1
-            $this->addInfo2, // UDF2
-            $this->addInfo3, // UDF3
-            $this->addInfo4, // UDF4
-            $this->addInfo5,
-        ];
-    }
+    protected $requestNamespace = Requests\IgfsCgPayByMailInitRequest::class;
 
     public function resetFields()
     {
@@ -89,6 +64,30 @@ class IgfsCgPayByMailInit extends BaseIgfsCgPayByMail
 
         $this->mailID = null;
         $this->linkURL = null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getAdditionalRequestSignatureFields(): array
+    {
+        return [
+            $this->shopUserRef, // SHOPUSERREF
+            $this->shopUserName, // SHOPUSERNAME
+            $this->shopUserAccount, // SHOPUSERACCOUNT
+            $this->shopUserMobilePhone, //SHOPUSERMOBILEPHONE
+            $this->shopUserIMEI, //SHOPUSERIMEI
+            $this->trType, // TRTYPE
+            $this->amount, // AMOUNT
+            $this->currencyCode, // CURRENCYCODE
+            $this->langID, // LANGID
+            $this->callbackURL, // CALLBACKURL
+            $this->addInfo1, // UDF1
+            $this->addInfo2, // UDF2
+            $this->addInfo3, // UDF3
+            $this->addInfo4, // UDF4
+            $this->addInfo5,
+        ];
     }
 
     protected function checkFields()

@@ -318,7 +318,7 @@ final class Errors
      *
      * @param $errorCode
      *
-     * @return string|null
+     * @return null|string
      */
     public static function getMessage($errorCode): ?string
     {

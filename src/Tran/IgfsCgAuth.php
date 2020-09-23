@@ -2,22 +2,17 @@
 
 namespace PagOnline\Tran;
 
-use SimpleXMLElement;
-use PagOnline\IgfsUtils;
 use PagOnline\BaseIgfsCg;
-use PagOnline\XmlEntities\Entry;
 use PagOnline\Exceptions\IgfsMissingParException;
+use PagOnline\IgfsUtils;
+use PagOnline\XmlEntities\Entry;
+use SimpleXMLElement;
 
 /**
  * Class IgfsCgAuth.
  */
 class IgfsCgAuth extends BaseIgfsCgTran
 {
-    /**
-     * @var string
-     */
-    protected $requestNamespace = Requests\IgfsCgAuthRequest::class;
-
     public $shopUserRef;
     public $shopUserName;
     public $shopUserAccount;
@@ -69,37 +64,10 @@ class IgfsCgAuth extends BaseIgfsCgTran
     public $receiptPdf;
     public $payAddData;
     public $payUserRef;
-
     /**
-     * {@inheritdoc}
+     * @var string
      */
-    protected function getAdditionalRequestSignatureFields(): array
-    {
-        return [
-            $this->shopUserRef, // SHOPUSERREF
-            $this->shopUserName, // SHOPUSERNAME
-            $this->shopUserAccount, // SHOPUSERACCOUNT
-            $this->shopUserMobilePhone, //SHOPUSERMOBILEPHONE
-            $this->shopUserIMEI, //SHOPUSERIMEI
-            $this->shopUserIP, // SHOPUSERIP
-            $this->trType, // TRTYPE
-            $this->amount, // AMOUNT
-            $this->currencyCode, // CURRENCYCODE
-            $this->callbackURL, // CALLBACKURL
-            $this->pan, // PAN
-            $this->payInstrToken, // PAYINSTRTOKEN
-            $this->payload, // PAYLOAD
-            $this->cvv2, // CVV2
-            $this->expireMonth, // EXPIREMONTH
-            $this->expireYear, // EXPIREYEAR
-            $this->addInfo1, // UDF1
-            $this->addInfo2, // UDF2
-            $this->addInfo3, // UDF3
-            $this->addInfo4, // UDF4
-            $this->addInfo5, // UDF5
-            $this->topUpID,
-        ];
-    }
+    protected $requestNamespace = Requests\IgfsCgAuthRequest::class;
 
     public function resetFields(): void
     {
@@ -155,6 +123,37 @@ class IgfsCgAuth extends BaseIgfsCgTran
         $this->receiptPdf = null;
         $this->payAddData = null;
         $this->payUserRef = null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getAdditionalRequestSignatureFields(): array
+    {
+        return [
+            $this->shopUserRef, // SHOPUSERREF
+            $this->shopUserName, // SHOPUSERNAME
+            $this->shopUserAccount, // SHOPUSERACCOUNT
+            $this->shopUserMobilePhone, //SHOPUSERMOBILEPHONE
+            $this->shopUserIMEI, //SHOPUSERIMEI
+            $this->shopUserIP, // SHOPUSERIP
+            $this->trType, // TRTYPE
+            $this->amount, // AMOUNT
+            $this->currencyCode, // CURRENCYCODE
+            $this->callbackURL, // CALLBACKURL
+            $this->pan, // PAN
+            $this->payInstrToken, // PAYINSTRTOKEN
+            $this->payload, // PAYLOAD
+            $this->cvv2, // CVV2
+            $this->expireMonth, // EXPIREMONTH
+            $this->expireYear, // EXPIREYEAR
+            $this->addInfo1, // UDF1
+            $this->addInfo2, // UDF2
+            $this->addInfo3, // UDF3
+            $this->addInfo4, // UDF4
+            $this->addInfo5, // UDF5
+            $this->topUpID,
+        ];
     }
 
     protected function checkFields(): void
@@ -289,6 +288,7 @@ class IgfsCgAuth extends BaseIgfsCgTran
         } catch (\Exception $e) {
             $this->receiptPdf = null;
         }
+
         try {
             $xml = $response[BaseIgfsCg::$soapResponseTag];
 

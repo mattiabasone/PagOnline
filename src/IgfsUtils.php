@@ -70,7 +70,7 @@ class IgfsUtils
      *
      * @param int $timestamp
      *
-     * @return string|null
+     * @return null|string
      */
     public static function formatXMLGregorianCalendar($timestamp): ?string
     {
@@ -89,7 +89,7 @@ class IgfsUtils
     /**
      * @param $text
      *
-     * @return \DateTimeImmutable|null
+     * @return null|\DateTimeImmutable
      */
     public static function parseXMLGregorianCalendar(?string $text)
     {
@@ -113,7 +113,7 @@ class IgfsUtils
      * @param $text
      * @param string $format Date format
      *
-     * @return bool|\DateTimeImmutable|null
+     * @return null|bool|\DateTimeImmutable
      */
     public static function parseDateFormat($text, string $format): ?DateTimeImmutable
     {

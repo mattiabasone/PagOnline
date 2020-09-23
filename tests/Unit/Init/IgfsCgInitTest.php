@@ -3,17 +3,17 @@
 namespace PagOnline\Tests\Unit\Init;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
-use PagOnline\Init\IgfsCgInit;
-use GuzzleHttp\Handler\MockHandler;
-use PagOnline\XmlEntities\Level3Info;
-use PagOnline\XmlEntities\MandateInfo;
-use PagOnline\Tests\Unit\IgfsCgBaseTest;
-use PagOnline\XmlEntities\Level3InfoProduct;
-use PagOnline\Init\Requests\IgfsCgInitRequest;
-use PagOnline\XmlEntities\Init\InitTerminalInfo;
 use PagOnline\Exceptions\IgfsMissingParException;
+use PagOnline\Init\IgfsCgInit;
+use PagOnline\Init\Requests\IgfsCgInitRequest;
+use PagOnline\Tests\Unit\IgfsCgBaseTest;
+use PagOnline\XmlEntities\Init\InitTerminalInfo;
+use PagOnline\XmlEntities\Level3Info;
+use PagOnline\XmlEntities\Level3InfoProduct;
+use PagOnline\XmlEntities\MandateInfo;
 
 /**
  * Class IgfsCgInitTest.
@@ -22,12 +22,6 @@ class IgfsCgInitTest extends IgfsCgBaseTest
 {
     protected $igfsCgClass = IgfsCgInit::class;
     protected $igfsCgRequest = IgfsCgInitRequest::CONTENT;
-
-    protected function setIgfsRequiredParamenters(&$class): void
-    {
-        $class->notifyURL = 'https://example.com/verify/';
-        $class->errorURL = 'https://example.com/error/';
-    }
 
     /** @test */
     public function shouldChecksFieldsAndRaiseExceptionMissingTrType(): void
@@ -170,6 +164,7 @@ class IgfsCgInitTest extends IgfsCgBaseTest
         $checkFieldsMethod = $this->getClassMethod('checkFields');
 
         $exception = null;
+
         try {
             $checkFieldsMethod->invoke($obj);
         } catch (\Exception $exception) {
@@ -187,6 +182,7 @@ class IgfsCgInitTest extends IgfsCgBaseTest
         $obj->termInfo = [new InitTerminalInfo()];
         $obj->termInfo[0]->tid = 'tid';
         $exception = null;
+
         try {
             $checkFieldsMethod->invoke($obj);
         } catch (\Exception $exception) {
@@ -403,5 +399,11 @@ class IgfsCgInitTest extends IgfsCgBaseTest
         $this->setIgfsRequiredParamenters($obj);
         $this->assertFalse($obj->execute());
         $this->assertTrue($obj->error);
+    }
+
+    protected function setIgfsRequiredParamenters(&$class): void
+    {
+        $class->notifyURL = 'https://example.com/verify/';
+        $class->errorURL = 'https://example.com/error/';
     }
 }

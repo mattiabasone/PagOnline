@@ -2,8 +2,8 @@
 
 namespace PagOnline\Tests\Unit\XmlEntities\Init;
 
-use PHPUnit\Framework\TestCase;
 use PagOnline\XmlEntities\Init\SelectorTerminalInfo;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Class Level3InfoTest.

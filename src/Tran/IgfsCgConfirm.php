@@ -2,25 +2,35 @@
 
 namespace PagOnline\Tran;
 
-use PagOnline\IgfsUtils;
 use PagOnline\Exceptions\IgfsMissingParException;
+use PagOnline\IgfsUtils;
 
 /**
  * Class IgfsCgConfirm.
  */
 class IgfsCgConfirm extends BaseIgfsCgTran
 {
-    /**
-     * @var string
-     */
-    protected $requestNamespace = Requests\IgfsCgConfirmRequest::class;
-
     public $amount;
     public $refTranID;
     public $paymentReason;
     public $topUpID;
 
     public $pendingAmount;
+    /**
+     * @var string
+     */
+    protected $requestNamespace = Requests\IgfsCgConfirmRequest::class;
+
+    public function resetFields(): void
+    {
+        parent::resetFields();
+        $this->amount = null;
+        $this->refTranID = null;
+        $this->paymentReason = null;
+        $this->topUpID = null;
+
+        $this->pendingAmount = null;
+    }
 
     /**
      * {@inheritdoc}
@@ -37,17 +47,6 @@ class IgfsCgConfirm extends BaseIgfsCgTran
             $this->addInfo5, // UDF5
             $this->topUpID,
         ];
-    }
-
-    public function resetFields(): void
-    {
-        parent::resetFields();
-        $this->amount = null;
-        $this->refTranID = null;
-        $this->paymentReason = null;
-        $this->topUpID = null;
-
-        $this->pendingAmount = null;
     }
 
     protected function checkFields(): void

@@ -3,10 +3,10 @@
 namespace PagOnline\Tests\Unit;
 
 use PagOnline\Actions;
+use PagOnline\Exceptions\ClassNotFoundException;
 use PagOnline\IgfsCgFactory;
 use PagOnline\Init\IgfsCgInit;
 use PHPUnit\Framework\TestCase;
-use PagOnline\Exceptions\ClassNotFoundException;
 
 /**
  * Class IgfsCgFactoryTest.

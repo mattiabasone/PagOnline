@@ -2,19 +2,14 @@
 
 namespace PagOnline\Tokenizer;
 
-use PagOnline\IgfsUtils;
 use PagOnline\Exceptions\IgfsMissingParException;
+use PagOnline\IgfsUtils;
 
 /**
  * Class IgfsCgTokenizerCheck.
  */
 class IgfsCgTokenizerCheck extends BaseIgfsCgTokenizer
 {
-    /**
-     * @var string
-     */
-    protected $requestNamespace = Requests\IgfsCgTokenizerCheckRequest::class;
-
     public $payInstrToken;
     public $billingID;
 
@@ -22,16 +17,10 @@ class IgfsCgTokenizerCheck extends BaseIgfsCgTokenizer
     public $expireMonth;
     public $expireYear;
     public $accountName;
-
     /**
-     * {@inheritdoc}
+     * @var string
      */
-    protected function getAdditionalRequestSignatureFields(): array
-    {
-        return [
-            $this->payInstrToken,
-        ];
-    }
+    protected $requestNamespace = Requests\IgfsCgTokenizerCheckRequest::class;
 
     /**
      * {@inheritdoc}
@@ -46,6 +35,16 @@ class IgfsCgTokenizerCheck extends BaseIgfsCgTokenizer
         $this->expireMonth = null;
         $this->expireYear = null;
         $this->accountName = null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getAdditionalRequestSignatureFields(): array
+    {
+        return [
+            $this->payInstrToken,
+        ];
     }
 
     /**

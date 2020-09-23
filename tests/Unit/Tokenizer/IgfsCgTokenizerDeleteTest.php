@@ -2,9 +2,9 @@
 
 namespace PagOnline\Tests\Unit\Tokenizer;
 
+use PagOnline\Exceptions\IgfsMissingParException;
 use PagOnline\Tests\Unit\IgfsCgBaseTest;
 use PagOnline\Tokenizer\IgfsCgTokenizerDelete;
-use PagOnline\Exceptions\IgfsMissingParException;
 use PagOnline\Tokenizer\Requests\IgfsCgTokenizerDeleteRequest;
 
 /**
@@ -14,11 +14,6 @@ class IgfsCgTokenizerDeleteTest extends IgfsCgBaseTest
 {
     protected $igfsCgClass = IgfsCgTokenizerDelete::class;
     protected $igfsCgRequest = IgfsCgTokenizerDeleteRequest::CONTENT;
-
-    protected function setIgfsRequiredParamenters(&$class): void
-    {
-        $class->payInstrToken = 'payInstrToken';
-    }
 
     /** @test */
     public function shouldChecksFieldsAndRaiseExceptionMissingPayInstrToken(): void
@@ -38,6 +33,7 @@ class IgfsCgTokenizerDeleteTest extends IgfsCgBaseTest
         $foo = $this->getClassMethod('checkFields');
         $this->setIgfsRequiredParamenters($obj);
         $exception = null;
+
         try {
             $foo->invoke($obj);
         } catch (\Exception $exception) {
@@ -55,5 +51,10 @@ class IgfsCgTokenizerDeleteTest extends IgfsCgBaseTest
         $obj->shopID = null;
         $foo = $this->getClassMethod('checkFields');
         $foo->invoke($obj);
+    }
+
+    protected function setIgfsRequiredParamenters(&$class): void
+    {
+        $class->payInstrToken = 'payInstrToken';
     }
 }

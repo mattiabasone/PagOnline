@@ -31,7 +31,7 @@ trait EntityAttributes
     /**
      * @param string $attribute
      *
-     * @return string|null
+     * @return null|string
      */
     public function getCustomAttributeXml(string $attribute): ?string
     {

@@ -2,8 +2,8 @@
 
 namespace PagOnline\Init;
 
-use PagOnline\IgfsUtils;
 use PagOnline\Exceptions\IgfsMissingParException;
+use PagOnline\IgfsUtils;
 use PagOnline\XmlEntities\Init\SelectorTerminalInfo;
 
 /**
@@ -11,11 +11,6 @@ use PagOnline\XmlEntities\Init\SelectorTerminalInfo;
  */
 class IgfsCgSelector extends BaseIgfsCgInit
 {
-    /**
-     * @var string
-     */
-    protected $requestNamespace = Requests\IgfsCgSelectorRequest::class;
-
     public $shopUserRef;
     public $trType = 'AUTH';
     public $amount;
@@ -30,6 +25,10 @@ class IgfsCgSelector extends BaseIgfsCgInit
     public $billingID;
 
     public $termInfo;
+    /**
+     * @var string
+     */
+    protected $requestNamespace = Requests\IgfsCgSelectorRequest::class;
 
     /**
      * {@inheritdoc}
@@ -124,6 +123,7 @@ class IgfsCgSelector extends BaseIgfsCgInit
     protected function parseResponseMap($response)
     {
         parent::parseResponseMap($response);
+
         try {
             $responseNode = $this->responseXmlToObject($response[static::$soapResponseTag]);
             if ($responseNode === null || $responseNode->children()->count() === 0) {

@@ -2,19 +2,14 @@
 
 namespace PagOnline\PayByMail;
 
-use PagOnline\IgfsUtils;
 use PagOnline\Exceptions\IgfsMissingParException;
+use PagOnline\IgfsUtils;
 
 /**
  * Class IgfsCgPayByMailVerify.
  */
 class IgfsCgPayByMailVerify extends BaseIgfsCgPayByMail
 {
-    /**
-     * @var string
-     */
-    protected $requestNamespace = Requests\IgfsCgPayByMailVerifyRequest::class;
-
     public $mailID;
 
     public $tranID;
@@ -24,16 +19,10 @@ class IgfsCgPayByMailVerify extends BaseIgfsCgPayByMail
     public $addInfo3;
     public $addInfo4;
     public $addInfo5;
-
     /**
-     * {@inheritdoc}
+     * @var string
      */
-    protected function getAdditionalRequestSignatureFields(): array
-    {
-        return [
-            $this->mailID,
-        ];
-    }
+    protected $requestNamespace = Requests\IgfsCgPayByMailVerifyRequest::class;
 
     /**
      * {@inheritdoc}
@@ -49,6 +38,16 @@ class IgfsCgPayByMailVerify extends BaseIgfsCgPayByMail
         $this->addInfo3 = null;
         $this->addInfo4 = null;
         $this->addInfo5 = null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getAdditionalRequestSignatureFields(): array
+    {
+        return [
+            $this->mailID,
+        ];
     }
 
     protected function checkFields()

@@ -2,12 +2,12 @@
 
 namespace PagOnline\XmlEntities;
 
-use ReflectionObject;
-use SimpleXMLElement;
-use ReflectionProperty;
 use PagOnline\IgfsUtils;
 use PagOnline\XmlEntities\Traits\CastProperties;
 use PagOnline\XmlEntities\Traits\EntityAttributes;
+use ReflectionObject;
+use ReflectionProperty;
+use SimpleXMLElement;
 
 /**
  * Class BaseXmlEntity.
@@ -30,17 +30,6 @@ abstract class BaseXmlEntity implements XmlEntityInterface
     }
 
     /**
-     * Load attributes from public properties.
-     */
-    protected function loadAttributes(): void
-    {
-        $publicProperties = (new ReflectionObject($this))->getProperties(ReflectionProperty::IS_PUBLIC);
-        foreach ($publicProperties as $publicProperty) {
-            \array_push($this->attributes, $publicProperty->getName());
-        }
-    }
-
-    /**
      * Get object attributes.
      *
      * @return array
@@ -48,17 +37,6 @@ abstract class BaseXmlEntity implements XmlEntityInterface
     public function getAttributes()
     {
         return $this->attributes;
-    }
-
-    /**
-     * @param string $attribute
-     * @param string $value
-     *
-     * @return string
-     */
-    protected function attributeValueToTagString(string $attribute, string $value)
-    {
-        return "<{$attribute}><![CDATA[{$value}]]></{$attribute}>";
     }
 
     /**
@@ -111,32 +89,11 @@ abstract class BaseXmlEntity implements XmlEntityInterface
     }
 
     /**
-     * @param \SimpleXMLElement $dom
-     * @param $attribute
-     */
-    protected function setCustomAttributeFromDom(SimpleXMLElement $dom, $attribute)
-    {
-        if ($this->entityAttributes[$attribute]['type'] === 'array') {
-            $value = [];
-            foreach ($dom->xpath($attribute) as $item) {
-                $value[] = $this->entityAttributes[$attribute]['namespace']::fromXml($item->asXML());
-            }
-        } else {
-            $element = $dom->xpath($attribute);
-            $value = null;
-            if (\count($element) > 0) {
-                $value = $this->entityAttributes[$attribute]['namespace']::fromXml($element[0]->asXML());
-            }
-        }
-        $this->{$attribute} = $value;
-    }
-
-    /**
      * Generate BaseXmlEntity.
      *
      * @param $xml
      *
-     * @return \PagOnline\XmlEntities\XmlEntityInterface|null
+     * @return null|\PagOnline\XmlEntities\XmlEntityInterface
      */
     public static function fromXml($xml): ?XmlEntityInterface
     {
@@ -182,5 +139,48 @@ abstract class BaseXmlEntity implements XmlEntityInterface
         }
 
         return $returnArray;
+    }
+
+    /**
+     * Load attributes from public properties.
+     */
+    protected function loadAttributes(): void
+    {
+        $publicProperties = (new ReflectionObject($this))->getProperties(ReflectionProperty::IS_PUBLIC);
+        foreach ($publicProperties as $publicProperty) {
+            \array_push($this->attributes, $publicProperty->getName());
+        }
+    }
+
+    /**
+     * @param string $attribute
+     * @param string $value
+     *
+     * @return string
+     */
+    protected function attributeValueToTagString(string $attribute, string $value)
+    {
+        return "<{$attribute}><![CDATA[{$value}]]></{$attribute}>";
+    }
+
+    /**
+     * @param \SimpleXMLElement $dom
+     * @param $attribute
+     */
+    protected function setCustomAttributeFromDom(SimpleXMLElement $dom, $attribute)
+    {
+        if ($this->entityAttributes[$attribute]['type'] === 'array') {
+            $value = [];
+            foreach ($dom->xpath($attribute) as $item) {
+                $value[] = $this->entityAttributes[$attribute]['namespace']::fromXml($item->asXML());
+            }
+        } else {
+            $element = $dom->xpath($attribute);
+            $value = null;
+            if (\count($element) > 0) {
+                $value = $this->entityAttributes[$attribute]['namespace']::fromXml($element[0]->asXML());
+            }
+        }
+        $this->{$attribute} = $value;
     }
 }

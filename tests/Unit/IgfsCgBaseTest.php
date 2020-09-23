@@ -2,11 +2,11 @@
 
 namespace PagOnline\Tests\Unit;
 
-use ReflectionClass;
-use PagOnline\IgfsCgInterface;
-use PHPUnit\Framework\TestCase;
 use PagOnline\Exceptions\IgfsException;
 use PagOnline\Exceptions\IgfsMissingParException;
+use PagOnline\IgfsCgInterface;
+use PHPUnit\Framework\TestCase;
+use ReflectionClass;
 
 /**
  * Class IgfsCgBaseTest.
@@ -15,52 +15,6 @@ abstract class IgfsCgBaseTest extends TestCase
 {
     protected $igfsCgClass;
     protected $igfsCgAction;
-
-    /**
-     * @param $name
-     *
-     * @throws \ReflectionException
-     *
-     * @return \ReflectionMethod
-     */
-    protected function getClassMethod($name): \ReflectionMethod
-    {
-        $class = new ReflectionClass($this->igfsCgClass);
-        $method = $class->getMethod($name);
-        $method->setAccessible(true);
-
-        return $method;
-    }
-
-    /**
-     * @param \PagOnline\IgfsCgInterface $class
-     */
-    protected function setIgfsBaseValues(&$class): void
-    {
-        $class->serverURL = 'https://server.com/UNI_CG_SERVICES/services';
-        $class->tid = 'UNI_MYBK';
-        $class->kSig = 'UNI_TESTKEY';
-        $class->shopID = '5c6fdf5d20485';
-        $class->langID = 'EN';
-    }
-
-    /**
-     * @param $class
-     */
-    protected function setIgfsRequiredParamenters(&$class)
-    {
-    }
-
-    /**
-     * @return \PagOnline\IgfsCgInterface
-     */
-    protected function makeIgfsCg(): IgfsCgInterface
-    {
-        $class = new $this->igfsCgClass();
-        $this->setIgfsBaseValues($class);
-
-        return $class;
-    }
 
     /** @test */
     public function shouldReturnRequestString()
@@ -210,5 +164,51 @@ abstract class IgfsCgBaseTest extends TestCase
         $uniqueId = $getUniqueBoundaryValueMethod->invoke($obj);
         $this->assertIsString($uniqueId);
         $this->assertRegExp('([a-z0-9]{13})', $uniqueId);
+    }
+
+    /**
+     * @param $name
+     *
+     * @throws \ReflectionException
+     *
+     * @return \ReflectionMethod
+     */
+    protected function getClassMethod($name): \ReflectionMethod
+    {
+        $class = new ReflectionClass($this->igfsCgClass);
+        $method = $class->getMethod($name);
+        $method->setAccessible(true);
+
+        return $method;
+    }
+
+    /**
+     * @param \PagOnline\IgfsCgInterface $class
+     */
+    protected function setIgfsBaseValues(&$class): void
+    {
+        $class->serverURL = 'https://server.com/UNI_CG_SERVICES/services';
+        $class->tid = 'UNI_MYBK';
+        $class->kSig = 'UNI_TESTKEY';
+        $class->shopID = '5c6fdf5d20485';
+        $class->langID = 'EN';
+    }
+
+    /**
+     * @param $class
+     */
+    protected function setIgfsRequiredParamenters(&$class)
+    {
+    }
+
+    /**
+     * @return \PagOnline\IgfsCgInterface
+     */
+    protected function makeIgfsCg(): IgfsCgInterface
+    {
+        $class = new $this->igfsCgClass();
+        $this->setIgfsBaseValues($class);
+
+        return $class;
     }
 }

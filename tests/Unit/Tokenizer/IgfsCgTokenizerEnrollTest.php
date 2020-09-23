@@ -2,9 +2,9 @@
 
 namespace PagOnline\Tests\Unit\Tokenizer;
 
+use PagOnline\Exceptions\IgfsMissingParException;
 use PagOnline\Tests\Unit\IgfsCgBaseTest;
 use PagOnline\Tokenizer\IgfsCgTokenizerEnroll;
-use PagOnline\Exceptions\IgfsMissingParException;
 use PagOnline\Tokenizer\Requests\IgfsCgTokenizerEnrollRequest;
 
 /**
@@ -14,17 +14,6 @@ class IgfsCgTokenizerEnrollTest extends IgfsCgBaseTest
 {
     protected $igfsCgClass = IgfsCgTokenizerEnroll::class;
     protected $igfsCgRequest = IgfsCgTokenizerEnrollRequest::CONTENT;
-
-    /**
-     * @param $class
-     */
-    protected function setIgfsRequiredParamenters(&$class): void
-    {
-        $class->pan = '123456';
-        $class->expireMonth = '01';
-        $class->expireYear = '2050';
-        $class->payInstrToken = 'payInstrToken';
-    }
 
     /** @test */
     public function shouldChecksFieldsAndRaiseExceptionMissingPan(): void
@@ -80,6 +69,7 @@ class IgfsCgTokenizerEnrollTest extends IgfsCgBaseTest
         $foo = $this->getClassMethod('checkFields');
         $this->setIgfsRequiredParamenters($obj);
         $exception = null;
+
         try {
             $foo->invoke($obj);
         } catch (\Exception $exception) {
@@ -97,5 +87,16 @@ class IgfsCgTokenizerEnrollTest extends IgfsCgBaseTest
         $obj->shopID = null;
         $foo = $this->getClassMethod('checkFields');
         $foo->invoke($obj);
+    }
+
+    /**
+     * @param $class
+     */
+    protected function setIgfsRequiredParamenters(&$class): void
+    {
+        $class->pan = '123456';
+        $class->expireMonth = '01';
+        $class->expireYear = '2050';
+        $class->payInstrToken = 'payInstrToken';
     }
 }

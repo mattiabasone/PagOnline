@@ -2,36 +2,24 @@
 
 namespace PagOnline\Mpi;
 
-use PagOnline\IgfsUtils;
 use PagOnline\Exceptions\IgfsMissingParException;
+use PagOnline\IgfsUtils;
 
 /**
  * Class IgfsCgMpiAuth.
  */
 class IgfsCgMpiAuth extends BaseIgfsCgMpi
 {
-    /**
-     * @var string
-     */
-    protected $requestNamespace = Requests\IgfsCgMpiAuthRequest::class;
-
     public $paRes;
     public $md;
 
     public $authStatus;
     public $cavv;
     public $eci;
-
     /**
-     * @return array
+     * @var string
      */
-    protected function getAdditionalRequestSignatureFields(): array
-    {
-        return [
-            $this->paRes, // PARES
-            $this->md, // MD
-        ];
-    }
+    protected $requestNamespace = Requests\IgfsCgMpiAuthRequest::class;
 
     public function resetFields()
     {
@@ -42,6 +30,17 @@ class IgfsCgMpiAuth extends BaseIgfsCgMpi
         $this->authStatus = null;
         $this->cavv = null;
         $this->eci = null;
+    }
+
+    /**
+     * @return array
+     */
+    protected function getAdditionalRequestSignatureFields(): array
+    {
+        return [
+            $this->paRes, // PARES
+            $this->md, // MD
+        ];
     }
 
     protected function checkFields()
