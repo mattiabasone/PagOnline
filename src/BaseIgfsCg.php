@@ -285,8 +285,8 @@ abstract class BaseIgfsCg implements IgfsCgInterface
     /**
      * @param string $request
      * @param string $parameter
-     * @param mixed $value
-     * @param bool $wrap_cdata
+     * @param mixed  $value
+     * @param bool   $wrap_cdata
      */
     protected function replaceRequestParameter(
         string &$request,

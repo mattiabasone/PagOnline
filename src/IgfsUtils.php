@@ -24,7 +24,7 @@ class IgfsUtils
     /**
      * Get value from array map.
      *
-     * @param array $map
+     * @param array  $map
      * @param string $key
      *
      * @return mixed

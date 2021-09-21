@@ -165,7 +165,7 @@ abstract class BaseXmlEntity implements XmlEntityInterface
 
     /**
      * @param \SimpleXMLElement $dom
-     * @param string $attribute
+     * @param string            $attribute
      */
     protected function setCustomAttributeFromDom(SimpleXMLElement $dom, $attribute)
     {
