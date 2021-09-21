@@ -5,9 +5,6 @@ namespace PagOnline\Tokenizer;
 use PagOnline\Exceptions\IgfsMissingParException;
 use PagOnline\IgfsUtils;
 
-/**
- * Class IgfsCgTokenizerDelete.
- */
 class IgfsCgTokenizerDelete extends BaseIgfsCgTokenizer
 {
     public $payInstrToken;
@@ -52,7 +49,7 @@ class IgfsCgTokenizerDelete extends BaseIgfsCgTokenizer
     }
 
     /**
-     * @param $response
+     * @param array $response
      *
      * @throws \PagOnline\Exceptions\IgfsException
      *

@@ -2,9 +2,6 @@
 
 namespace PagOnline;
 
-/**
- * Class Errors.
- */
 final class Errors
 {
     // Ok statuses
@@ -316,11 +313,11 @@ final class Errors
     /**
      * Get message.
      *
-     * @param $errorCode
+     * @param string $errorCode
      *
      * @return null|string
      */
-    public static function getMessage($errorCode): ?string
+    public static function getMessage(string $errorCode): ?string
     {
         return self::MESSAGES[$errorCode] ?? null;
     }

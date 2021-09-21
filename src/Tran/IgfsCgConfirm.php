@@ -5,9 +5,6 @@ namespace PagOnline\Tran;
 use PagOnline\Exceptions\IgfsMissingParException;
 use PagOnline\IgfsUtils;
 
-/**
- * Class IgfsCgConfirm.
- */
 class IgfsCgConfirm extends BaseIgfsCgTran
 {
     public $amount;
@@ -75,7 +72,7 @@ class IgfsCgConfirm extends BaseIgfsCgTran
     }
 
     /**
-     * @param $response
+     * @param array $response
      */
     protected function parseResponseMap($response): void
     {
@@ -85,7 +82,7 @@ class IgfsCgConfirm extends BaseIgfsCgTran
     }
 
     /**
-     * @param $response
+     * @param array $response
      *
      * @throws \PagOnline\Exceptions\IgfsException
      *

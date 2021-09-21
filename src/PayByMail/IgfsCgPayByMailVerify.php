@@ -5,9 +5,6 @@ namespace PagOnline\PayByMail;
 use PagOnline\Exceptions\IgfsMissingParException;
 use PagOnline\IgfsUtils;
 
-/**
- * Class IgfsCgPayByMailVerify.
- */
 class IgfsCgPayByMailVerify extends BaseIgfsCgPayByMail
 {
     public $mailID;
@@ -89,7 +86,7 @@ class IgfsCgPayByMailVerify extends BaseIgfsCgPayByMail
     }
 
     /**
-     * @param $response
+     * @param array $response
      *
      * @throws \PagOnline\Exceptions\IgfsException
      *

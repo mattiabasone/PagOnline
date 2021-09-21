@@ -8,9 +8,6 @@ use PagOnline\IgfsUtils;
 use PagOnline\XmlEntities\Entry;
 use SimpleXMLElement;
 
-/**
- * Class IgfsCgAuth.
- */
 class IgfsCgAuth extends BaseIgfsCgTran
 {
     public $shopUserRef;
@@ -322,7 +319,7 @@ class IgfsCgAuth extends BaseIgfsCgTran
     }
 
     /**
-     * @param $response
+     * @param array $response
      *
      * @throws \PagOnline\Exceptions\IgfsException
      *

@@ -25,7 +25,7 @@ trait HttpClient
     protected $httpClient;
 
     /**
-     * @var
+     * @var array
      */
     protected $httpCustomConfiguration = [];
 
@@ -172,8 +172,8 @@ trait HttpClient
     /**
      * Make HTTP Post request.
      *
-     * @param $url
-     * @param $request
+     * @param string $url
+     * @param string $request
      *
      * @return \Psr\Http\Message\ResponseInterface
      */

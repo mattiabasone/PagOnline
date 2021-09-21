@@ -230,11 +230,11 @@ abstract class BaseIgfsCg implements IgfsCgInterface
     /**
      * Set signature key on request.
      *
-     * @param $request
+     * @param string $request
      *
      * @throws IgfsException
      *
-     * @return mixed
+     * @return void
      */
     protected function setRequestSignature(&$request): void
     {
@@ -283,9 +283,9 @@ abstract class BaseIgfsCg implements IgfsCgInterface
     }
 
     /**
-     * @param $request
-     * @param $parameter
-     * @param $value
+     * @param string $request
+     * @param string $parameter
+     * @param mixed $value
      * @param bool $wrap_cdata
      */
     protected function replaceRequestParameter(
@@ -344,7 +344,7 @@ abstract class BaseIgfsCg implements IgfsCgInterface
     }
 
     /**
-     * @param $response
+     * @param string $response
      *
      * @return array
      */
@@ -363,7 +363,7 @@ abstract class BaseIgfsCg implements IgfsCgInterface
     }
 
     /**
-     * @param $response
+     * @param array $response
      */
     protected function parseResponseMap($response)
     {
@@ -378,7 +378,7 @@ abstract class BaseIgfsCg implements IgfsCgInterface
     }
 
     /**
-     * @param $response
+     * @param array $response
      *
      * @return bool
      */
@@ -397,7 +397,7 @@ abstract class BaseIgfsCg implements IgfsCgInterface
     }
 
     /**
-     * @param $url
+     * @param string $url
      *
      * @throws \PagOnline\Exceptions\IOException
      * @throws \PagOnline\Exceptions\IgfsException
@@ -410,7 +410,7 @@ abstract class BaseIgfsCg implements IgfsCgInterface
         $this->setRequestSignature($request);
         $response = $this->post($url, $request);
 
-        if (empty($response)) {
+        if ($response === '') {
             throw new IgfsException('IGFS Response is null');
         }
 
@@ -428,12 +428,12 @@ abstract class BaseIgfsCg implements IgfsCgInterface
     /**
      * Execute a POST request.
      *
-     * @param $url
-     * @param $request
+     * @param string $url
+     * @param string $request
      *
      * @throws ConnectionException
      *
-     * @return bool|string
+     * @return string
      */
     private function post($url, $request): string
     {
@@ -446,10 +446,8 @@ abstract class BaseIgfsCg implements IgfsCgInterface
         return $response->getBody()->getContents();
     }
 
-    /**
-     * TODO: unused variables.
-     *
-     * @param $url
+    /***
+     * @param string $url
      *
      * @throws IgfsException
      * @throws IOException

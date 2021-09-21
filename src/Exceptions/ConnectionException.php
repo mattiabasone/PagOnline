@@ -2,16 +2,13 @@
 
 namespace PagOnline\Exceptions;
 
-/**
- * Class ConnectionException.
- */
 class ConnectionException extends IOException
 {
     /**
      * ConnectionException constructor.
      *
-     * @param $url
-     * @param $message
+     * @param string $url
+     * @param string $message
      */
     public function __construct($url, $message)
     {

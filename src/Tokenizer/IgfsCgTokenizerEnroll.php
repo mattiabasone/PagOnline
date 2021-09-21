@@ -128,7 +128,7 @@ class IgfsCgTokenizerEnroll extends BaseIgfsCgTokenizer
     }
 
     /**
-     * @param $response
+     * @param array $response
      *
      * @throws \PagOnline\Exceptions\IgfsException
      *

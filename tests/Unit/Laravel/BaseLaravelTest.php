@@ -1,6 +1,6 @@
 <?php
 
-namespace PagOnline\Tests\Unit;
+namespace PagOnline\Tests\Unit\Laravel;
 
 use Illuminate\Support\Str;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;

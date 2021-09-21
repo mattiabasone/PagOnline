@@ -2,12 +2,10 @@
 
 namespace PagOnline\Mpi;
 
+use PagOnline\Exceptions\IgfsException;
 use PagOnline\Exceptions\IgfsMissingParException;
 use PagOnline\IgfsUtils;
 
-/**
- * Class IgfsCgMpiAuth.
- */
 class IgfsCgMpiAuth extends BaseIgfsCgMpi
 {
     public $paRes;
@@ -68,9 +66,9 @@ class IgfsCgMpiAuth extends BaseIgfsCgMpi
     }
 
     /**
-     * @param $response
+     * @param array $response
      */
-    protected function parseResponseMap($response)
+    protected function parseResponseMap($response): void
     {
         parent::parseResponseMap($response);
         $this->authStatus = IgfsUtils::getValue($response, 'authStatus');
@@ -81,13 +79,13 @@ class IgfsCgMpiAuth extends BaseIgfsCgMpi
     }
 
     /**
-     * @param $response
+     * @param array $response
      *
-     * @throws \PagOnline\Exceptions\IgfsException
+     * @throws IgfsException
      *
      * @return string
      */
-    protected function getResponseSignature($response)
+    protected function getResponseSignature($response): string
     {
         $fields = [
             IgfsUtils::getValue($response, 'tid'), // TID

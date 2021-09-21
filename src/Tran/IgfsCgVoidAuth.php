@@ -61,7 +61,7 @@ class IgfsCgVoidAuth extends BaseIgfsCgTran
     }
 
     /**
-     * @param $response
+     * @param array $response
      *
      * @throws \PagOnline\Exceptions\IgfsException
      *

@@ -2,13 +2,11 @@
 
 namespace PagOnline\Init;
 
+use PagOnline\Exceptions\IgfsException;
 use PagOnline\Exceptions\IgfsMissingParException;
 use PagOnline\IgfsUtils;
 use PagOnline\XmlEntities\Init\SelectorTerminalInfo;
 
-/**
- * Class IgfsCgSelector.
- */
 class IgfsCgSelector extends BaseIgfsCgInit
 {
     public $shopUserRef;
@@ -118,7 +116,7 @@ class IgfsCgSelector extends BaseIgfsCgInit
     }
 
     /**
-     * @param $response
+     * @param array $response
      */
     protected function parseResponseMap($response)
     {
@@ -142,9 +140,9 @@ class IgfsCgSelector extends BaseIgfsCgInit
     }
 
     /**
-     * @param $response
+     * @param array $response
      *
-     * @throws \PagOnline\Exceptions\IgfsException
+     * @throws IgfsException
      *
      * @return string
      */

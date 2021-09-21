@@ -19,7 +19,7 @@ interface XmlEntityInterface
     /**
      * Parse XML and returns XmlEntityInterface.
      *
-     * @param $xml
+     * @param string $xml
      *
      * @return null|XmlEntityInterface
      */

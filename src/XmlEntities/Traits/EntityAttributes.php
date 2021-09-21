@@ -39,13 +39,13 @@ trait EntityAttributes
             return null;
         }
         $xmlContent = '';
-        if ($this->entityAttributes[$attribute]['type'] = 'array') {
+        if ($this->entityAttributes[$attribute]['type'] == 'array') {
             foreach ($this->{$attribute} as $item) {
                 /* @var \PagOnline\XmlEntities\XmlEntityInterface $item */
                 $xmlContent .= $item instanceof XmlEntityInterface ? $item->toXml($attribute) : '';
             }
         } else {
-            $xmlContent .= $this->{$attribute} instanceof XmlEntityInterface ? $this->{$attribute}->toXml() : '';
+            $xmlContent .= $this->{$attribute} instanceof XmlEntityInterface ? $this->{$attribute}->toXml($attribute) : '';
         }
 
         return $xmlContent;

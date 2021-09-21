@@ -24,8 +24,8 @@ class IgfsUtils
     /**
      * Get value from array map.
      *
-     * @param $map
-     * @param $key
+     * @param array $map
+     * @param string $key
      *
      * @return mixed
      */
@@ -47,7 +47,7 @@ class IgfsUtils
     /**
      * Transform DOM nodes to associative array.
      *
-     * @param $nodes
+     * @param \SimpleXMLElement $nodes
      *
      * @return array
      */
@@ -74,11 +74,12 @@ class IgfsUtils
      */
     public static function formatXMLGregorianCalendar($timestamp): ?string
     {
-        if ($timestamp === null || !\is_int($timestamp)) {
+        $integerTimestamp = (int) $timestamp;
+        if ($integerTimestamp === 0) {
             return null;
         }
 
-        $dateTimeObject = (new DateTimeImmutable())->setTimestamp((int) $timestamp);
+        $dateTimeObject = (new DateTimeImmutable())->setTimestamp($integerTimestamp);
 
         return $dateTimeObject->format('Y-m-d').
             'T'.
@@ -87,7 +88,7 @@ class IgfsUtils
     }
 
     /**
-     * @param $text
+     * @param null|string $text
      *
      * @return null|\DateTimeImmutable
      */
@@ -110,12 +111,12 @@ class IgfsUtils
     }
 
     /**
-     * @param $text
+     * @param string $text
      * @param string $format Date format
      *
-     * @return null|bool|\DateTimeImmutable
+     * @return null|\DateTimeImmutable
      */
-    public static function parseDateFormat($text, string $format): ?DateTimeImmutable
+    public static function parseDateFormat(string $text, string $format): ?DateTimeImmutable
     {
         $date = DateTimeImmutable::createFromFormat($format, $text);
 

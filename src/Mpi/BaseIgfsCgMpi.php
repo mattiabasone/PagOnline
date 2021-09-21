@@ -5,13 +5,10 @@ namespace PagOnline\Mpi;
 use PagOnline\BaseIgfsCg;
 use PagOnline\IgfsUtils;
 
-/**
- * Class BaseIgfsCgMpi.
- */
 abstract class BaseIgfsCgMpi extends BaseIgfsCg
 {
     /**
-     * @var
+     * @var mixed
      */
     public $xid;
 
@@ -30,7 +27,7 @@ abstract class BaseIgfsCgMpi extends BaseIgfsCg
     }
 
     /**
-     * @param $response
+     * @param array $response
      */
     protected function parseResponseMap($response)
     {

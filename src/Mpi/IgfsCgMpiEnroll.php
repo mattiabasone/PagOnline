@@ -5,9 +5,6 @@ namespace PagOnline\Mpi;
 use PagOnline\Exceptions\IgfsMissingParException;
 use PagOnline\IgfsUtils;
 
-/**
- * Class IgfsCgMpiEnroll.
- */
 class IgfsCgMpiEnroll extends BaseIgfsCgMpi
 {
     public $shopUserRef;
@@ -155,7 +152,7 @@ class IgfsCgMpiEnroll extends BaseIgfsCgMpi
     }
 
     /**
-     * @param $response
+     * @param array $response
      *
      * @throws \PagOnline\Exceptions\IgfsException
      *

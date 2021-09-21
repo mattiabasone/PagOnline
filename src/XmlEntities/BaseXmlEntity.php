@@ -91,7 +91,7 @@ abstract class BaseXmlEntity implements XmlEntityInterface
     /**
      * Generate BaseXmlEntity.
      *
-     * @param $xml
+     * @param string $xml
      *
      * @return null|\PagOnline\XmlEntities\XmlEntityInterface
      */
@@ -165,7 +165,7 @@ abstract class BaseXmlEntity implements XmlEntityInterface
 
     /**
      * @param \SimpleXMLElement $dom
-     * @param $attribute
+     * @param string $attribute
      */
     protected function setCustomAttributeFromDom(SimpleXMLElement $dom, $attribute)
     {

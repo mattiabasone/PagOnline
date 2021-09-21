@@ -7,9 +7,6 @@ use PagOnline\IgfsUtils;
 use PagOnline\XmlEntities\Entry;
 use PagOnline\XmlEntities\Level3Info;
 
-/**
- * Class IgfsCgVerify.
- */
 class IgfsCgVerify extends BaseIgfsCgInit
 {
     public $paymentID;
@@ -182,7 +179,7 @@ class IgfsCgVerify extends BaseIgfsCgInit
     }
 
     /**
-     * @param $response
+     * @param array $response
      *
      * @throws \PagOnline\Exceptions\IgfsException
      *

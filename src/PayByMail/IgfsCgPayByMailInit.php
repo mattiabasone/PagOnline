@@ -2,12 +2,10 @@
 
 namespace PagOnline\PayByMail;
 
+use PagOnline\Exceptions\IgfsException;
 use PagOnline\Exceptions\IgfsMissingParException;
 use PagOnline\IgfsUtils;
 
-/**
- * Class IgfsCgPayByMailInit.
- */
 class IgfsCgPayByMailInit extends BaseIgfsCgPayByMail
 {
     public $shopUserRef;
@@ -151,7 +149,7 @@ class IgfsCgPayByMailInit extends BaseIgfsCgPayByMail
     }
 
     /**
-     * @param $response
+     * @param array $response
      */
     protected function parseResponseMap($response)
     {
@@ -163,13 +161,13 @@ class IgfsCgPayByMailInit extends BaseIgfsCgPayByMail
     }
 
     /**
-     * @param $response
+     * @param array $response
      *
-     * @throws \PagOnline\Exceptions\IgfsException
+     * @throws IgfsException
      *
      * @return string
      */
-    protected function getResponseSignature($response)
+    protected function getResponseSignature($response): string
     {
         $fields = [
             IgfsUtils::getValue($response, 'tid'), // TID

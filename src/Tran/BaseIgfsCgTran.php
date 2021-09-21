@@ -55,6 +55,9 @@ abstract class BaseIgfsCgTran extends BaseIgfsCg
         return 'PaymentTranGatewayPort';
     }
 
+    /**
+     * @param array $response
+     */
     protected function parseResponseMap($response): void
     {
         parent::parseResponseMap($response);
