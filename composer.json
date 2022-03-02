@@ -1,5 +1,5 @@
 {
-    "name": "mattiabasone/pagonline",
+    "name": "abettini/pagonline",
     "description": "PagOnline API Library with Laravel integration",
     "keywords": [
         "payment",
@@ -11,6 +11,10 @@
         {
             "name": "Mattia Basone",
             "email": "mattia.basone@gmail.com"
+        },
+        {
+            "name": "Andrea Bettini",
+            "email": "andrea.bettini@jointly.pro"
         }
     ],
     "support": {
