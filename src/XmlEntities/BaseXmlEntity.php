@@ -9,9 +9,6 @@ use ReflectionObject;
 use ReflectionProperty;
 use SimpleXMLElement;
 
-/**
- * Class BaseXmlEntity.
- */
 abstract class BaseXmlEntity implements XmlEntityInterface
 {
     use CastProperties, EntityAttributes;
@@ -34,7 +31,7 @@ abstract class BaseXmlEntity implements XmlEntityInterface
      *
      * @return array
      */
-    public function getAttributes()
+    public function getAttributes(): array
     {
         return $this->attributes;
     }
@@ -74,7 +71,7 @@ abstract class BaseXmlEntity implements XmlEntityInterface
      * @param array  $response
      * @param string $attribute
      */
-    public function setAttributeFromResponse($response, $attribute)
+    public function setAttributeFromResponse($response, $attribute): void
     {
         $value = (string) IgfsUtils::getValue($response, $attribute);
         if ($this->isDateAttribute($attribute)) {
@@ -116,7 +113,7 @@ abstract class BaseXmlEntity implements XmlEntityInterface
                         $object->setAttributeFromResponse($xmlArray, $attribute);
                     } else {
                         foreach ($dom->xpath($attribute) as $entry) {
-                            \array_push($object->{$attribute}, $entry->__toString());
+                            $object->{$attribute}[] = $entry->__toString();
                         }
                     }
                 } else {
@@ -131,7 +128,7 @@ abstract class BaseXmlEntity implements XmlEntityInterface
     /**
      * @return array
      */
-    public function toArray()
+    public function toArray(): array
     {
         $returnArray = [];
         foreach ($this->attributes as $attribute) {
@@ -148,7 +145,7 @@ abstract class BaseXmlEntity implements XmlEntityInterface
     {
         $publicProperties = (new ReflectionObject($this))->getProperties(ReflectionProperty::IS_PUBLIC);
         foreach ($publicProperties as $publicProperty) {
-            \array_push($this->attributes, $publicProperty->getName());
+            $this->attributes[] = $publicProperty->getName();
         }
     }
 
@@ -158,7 +155,7 @@ abstract class BaseXmlEntity implements XmlEntityInterface
      *
      * @return string
      */
-    protected function attributeValueToTagString(string $attribute, string $value)
+    protected function attributeValueToTagString(string $attribute, string $value): string
     {
         return "<{$attribute}><![CDATA[{$value}]]></{$attribute}>";
     }
@@ -167,7 +164,7 @@ abstract class BaseXmlEntity implements XmlEntityInterface
      * @param \SimpleXMLElement $dom
      * @param string            $attribute
      */
-    protected function setCustomAttributeFromDom(SimpleXMLElement $dom, $attribute)
+    protected function setCustomAttributeFromDom(SimpleXMLElement $dom, $attribute): void
     {
         if ($this->entityAttributes[$attribute]['type'] === 'array') {
             $value = [];

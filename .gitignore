@@ -8,3 +8,4 @@ clover.xml
 /tests/demo/config.php
 /tests/demo/paymentID.txt
 /tests/demo/shopID.txt
+/.php-cs-fixer.cache

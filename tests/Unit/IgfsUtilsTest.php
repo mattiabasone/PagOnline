@@ -3,12 +3,8 @@
 namespace PagOnline\Tests\Unit;
 
 use PagOnline\IgfsUtils;
-use PHPUnit\Framework\TestCase;
 
-/**
- * Class IgfsUtilsTest.
- */
-class IgfsUtilsTest extends TestCase
+class IgfsUtilsTest extends IgfsTestCase
 {
     /**
      * @test
@@ -22,7 +18,7 @@ class IgfsUtilsTest extends TestCase
     public function shouldReturnUniqueBoundaryValue(): void
     {
         $uniqueId = IgfsUtils::getUniqueBoundaryValue();
-        $this->assertRegExp('([a-z0-9]{13})', $uniqueId);
+        $this->assertMatchesRegex('([a-z0-9]{13})', $uniqueId);
     }
 
     /** @test */
