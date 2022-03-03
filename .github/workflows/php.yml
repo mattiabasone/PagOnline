@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php-versions: ['7.2', '7.3', '7.4', '8.0']
+        php-versions: ['7.2', '7.3', '7.4', '8.0', '8.1']
 
     steps:
       - uses: actions/checkout@v2
@@ -42,16 +42,16 @@ jobs:
       - name: Run PHPUnit
         run: vendor/bin/phpunit --coverage-text --coverage-clover clover.xml
       - name: "[Coveralls] Extract branch name"
-        if: matrix.php-versions == '7.4'
+        if: matrix.php-versions == '8.0'
         shell: bash
         run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
         id: extract_branch
       - name: "[Coveralls] Checkout branch"
-        if: matrix.php-versions == '7.4'
+        if: matrix.php-versions == '8.0'
         shell: bash
         run: git fetch && git checkout ${{ steps.extract_branch.outputs.branch }}
       - name: "[Coveralls] Send report"
-        if: matrix.php-versions == '7.4'
+        if: matrix.php-versions == '8.0'
         run: vendor/bin/php-coveralls -v -x clover.xml -o coveralls-upload.json
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
