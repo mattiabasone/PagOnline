@@ -5,13 +5,12 @@ namespace PagOnline\Tests\Unit;
 use PagOnline\Exceptions\IgfsException;
 use PagOnline\Exceptions\IgfsMissingParException;
 use PagOnline\IgfsCgInterface;
-use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 
 /**
  * Class IgfsCgBaseTest.
  */
-abstract class IgfsCgBaseTest extends TestCase
+abstract class IgfsCgBaseTest extends IgfsTestCase
 {
     protected $igfsCgClass;
     protected $igfsCgAction;
@@ -163,7 +162,7 @@ abstract class IgfsCgBaseTest extends TestCase
         $getUniqueBoundaryValueMethod = $this->getClassMethod('getUniqueBoundaryValue');
         $uniqueId = $getUniqueBoundaryValueMethod->invoke($obj);
         $this->assertIsString($uniqueId);
-        $this->assertRegExp('([a-z0-9]{13})', $uniqueId);
+        $this->assertMatchesRegex('([a-z0-9]{13})', $uniqueId);
     }
 
     /**

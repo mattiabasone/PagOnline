@@ -1,23 +1,23 @@
 <?php
+
 $finder = PhpCsFixer\Finder::create()
     ->in([
         __DIR__.'/src',
         __DIR__.'/tests'
     ]);
-return PhpCsFixer\Config::create()
+return (new \PhpCsFixer\Config())
     ->setFinder($finder)
     ->setRules([
         '@Symfony' => true,
         'array_syntax' => ['syntax' => 'short'],
         'blank_line_after_namespace' => true,
         'blank_line_after_opening_tag' => true,
-        'blank_line_before_return' => true,
-        'blank_line_before_statement' => true,
+        'blank_line_before_statement' => ['statements' => ['return']],
         'declare_strict_types' => false,
         'fully_qualified_strict_types' => true,
         'line_ending' => true,
         'linebreak_after_opening_tag' => true,
-        'lowercase_constants' => true,
+        'constant_case' => ['case' => 'lower'],
         'mb_str_functions' => true,
         'native_function_invocation' => true,
         'no_closing_tag' => true,
