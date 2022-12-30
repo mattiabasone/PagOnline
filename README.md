@@ -7,7 +7,7 @@ With this package I'm trying to improve the crappy IGFS CG PHP Library provided 
 [![PHP Version](https://img.shields.io/packagist/php-v/mattiabasone/PagOnline)]()
 [![Latest Stable Version](https://poser.pugx.org/mattiabasone/pagonline/v/stable)](https://packagist.org/packages/mattiabasone/pagonline)
 [![Total Downloads](https://poser.pugx.org/mattiabasone/pagonline/downloads)](https://packagist.org/packages/mattiabasone/pagonline)
-[![Build Status](https://img.shields.io/github/workflow/status/mattiabasone/PagOnline/Test)](https://github.com/mattiabasone/PagOnline/actions?query=workflow%3ATest)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/mattiabasone/PagOnline/.github/workflows/php.yml?branch=master)](https://github.com/mattiabasone/PagOnline/actions?query=workflow%3ATest)
 [![Coverage Status](https://scrutinizer-ci.com/g/mattiabasone/PagOnline/badges/coverage.png?b=master)](https://coveralls.io/github/mattiabasone/PagOnline)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/mattiabasone/PagOnline/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/mattiabasone/PagOnline/?branch=master)
 
