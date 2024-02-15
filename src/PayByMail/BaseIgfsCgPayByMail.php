@@ -11,7 +11,7 @@ use PagOnline\Exceptions\IgfsMissingParException;
 abstract class BaseIgfsCgPayByMail extends BaseIgfsCg
 {
     /**
-     * @throws \PagOnline\Exceptions\IgfsMissingParException
+     * @throws IgfsMissingParException
      */
     protected function checkFields()
     {

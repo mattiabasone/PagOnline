@@ -83,7 +83,7 @@ class IgfsCgSelectorTest extends IgfsCgBaseTest
     /** @test */
     public function shouldCheckFieldsAndPass(): void
     {
-        /** @var \PagOnline\Init\IgfsCgSelector $obj */
+        /** @var IgfsCgSelector $obj */
         $obj = $this->makeIgfsCg();
         $obj->amount = 500;
         $obj->currencyCode = 'EU';

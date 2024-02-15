@@ -2,11 +2,6 @@
 
 namespace PagOnline;
 
-use DateTimeImmutable;
-
-/**
- * Class IgfsUtils.
- */
 class IgfsUtils
 {
     public const DATE_FORMATS = [
@@ -41,7 +36,7 @@ class IgfsUtils
      */
     public static function getUniqueBoundaryValue(): string
     {
-        return \uniqid();
+        return uniqid();
     }
 
     /**
@@ -56,7 +51,7 @@ class IgfsUtils
         $fields = [];
         foreach ($nodes->children() as $item) {
             if (\count($item) === 0) {
-                $fields[$item->getName()] = \trim((string) $item);
+                $fields[$item->getName()] = trim((string) $item);
             } else {
                 $fields[$item->getName()] = (string) $item->asXML();
             }
@@ -79,7 +74,7 @@ class IgfsUtils
             return null;
         }
 
-        $dateTimeObject = (new DateTimeImmutable())->setTimestamp($integerTimestamp);
+        $dateTimeObject = (new \DateTimeImmutable())->setTimestamp($integerTimestamp);
 
         return $dateTimeObject->format('Y-m-d').
             'T'.
@@ -99,7 +94,7 @@ class IgfsUtils
         }
 
         $date = null;
-        $text = \str_replace('T', ' ', $text);
+        $text = str_replace('T', ' ', $text);
         foreach (self::DATE_FORMATS as $dateFormat) {
             $date = self::parseDateFormat($text, $dateFormat);
             if ($date !== null) {
@@ -116,9 +111,9 @@ class IgfsUtils
      *
      * @return null|\DateTimeImmutable
      */
-    public static function parseDateFormat(string $text, string $format): ?DateTimeImmutable
+    public static function parseDateFormat(string $text, string $format): ?\DateTimeImmutable
     {
-        $date = DateTimeImmutable::createFromFormat($format, $text);
+        $date = \DateTimeImmutable::createFromFormat($format, $text);
 
         return $date ?: null;
     }

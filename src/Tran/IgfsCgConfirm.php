@@ -103,6 +103,7 @@ class IgfsCgConfirm extends BaseIgfsCgTran
             IgfsUtils::getValue($response, 'addInfo4'), // UDF4
             IgfsUtils::getValue($response, 'addInfo5'),  // UDF5
         ];
+
         // signature dove il buffer e' cosi composto TID|SHOPID|RC|ERRORDESC|ORDERID|DATE|UDF1|UDF2|UDF3|UDF4|UDF5
         return $this->getSignature($fields);
     }

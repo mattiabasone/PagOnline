@@ -16,12 +16,12 @@ class MandateInfoTest extends TestCase
         $mandate = new MandateInfo();
         $mandate->contractID = '1234567';
         $mandate->frequency = 1;
-        $mandate->durationEndDate = \time();
-        $mandate->durationStartDate = \time();
-        $mandate->finalCollectionDate = \time();
-        $mandate->firstCollectionDate = \time();
+        $mandate->durationEndDate = time();
+        $mandate->durationStartDate = time();
+        $mandate->finalCollectionDate = time();
+        $mandate->firstCollectionDate = time();
 
-        $object = \simplexml_load_string($mandate->toXml('MandateInfo'));
+        $object = simplexml_load_string($mandate->toXml('MandateInfo'));
         $this->assertNotFalse($object);
         $this->assertInstanceOf(\SimpleXMLElement::class, $object);
     }
@@ -31,16 +31,16 @@ class MandateInfoTest extends TestCase
     {
         $mandate = new MandateInfo();
         $mandate->contractID = '1234567';
-        $mandate->durationEndDate = \time();
-        $mandate->durationStartDate = \time();
-        $mandate->finalCollectionDate = \time();
-        $mandate->firstCollectionDate = \time();
+        $mandate->durationEndDate = time();
+        $mandate->durationStartDate = time();
+        $mandate->finalCollectionDate = time();
+        $mandate->firstCollectionDate = time();
 
-        $object = \simplexml_load_string($mandate->toXml('MandateInfo'));
-        $this->assertObjectHasAttribute('contractID', $object);
-        $this->assertObjectHasAttribute('durationEndDate', $object);
-        $this->assertObjectHasAttribute('durationStartDate', $object);
-        $this->assertObjectHasAttribute('firstCollectionDate', $object);
-        $this->assertObjectNotHasAttribute('frequency', $object);
+        $object = simplexml_load_string($mandate->toXml('MandateInfo'));
+        $this->assertObjectHasProperty('contractID', $object);
+        $this->assertObjectHasProperty('durationEndDate', $object);
+        $this->assertObjectHasProperty('durationStartDate', $object);
+        $this->assertObjectHasProperty('firstCollectionDate', $object);
+        $this->assertObjectNotHasProperty('frequency', $object);
     }
 }

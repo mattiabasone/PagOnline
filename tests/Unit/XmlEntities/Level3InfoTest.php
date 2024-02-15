@@ -40,7 +40,7 @@ class Level3InfoTest extends TestCase
     public function shouldReturnXmlString(): void
     {
         $level3Info = $this->getBaseElement();
-        $object = \simplexml_load_string($level3Info->toXml('Level3Info'));
+        $object = simplexml_load_string($level3Info->toXml('Level3Info'));
         $this->assertNotFalse($object);
         $this->assertInstanceOf(\SimpleXMLElement::class, $object);
     }
@@ -50,22 +50,22 @@ class Level3InfoTest extends TestCase
     {
         $level3Info = $this->getBaseElement();
 
-        $object = \simplexml_load_string($level3Info->toXml('Level3Info'));
+        $object = simplexml_load_string($level3Info->toXml('Level3Info'));
 
-        $this->assertObjectHasAttribute('billingEmail', $object);
-        $this->assertObjectHasAttribute('vat', $object);
-        $this->assertObjectHasAttribute('product', $object);
-        $this->assertObjectNotHasAttribute('note', $object);
+        $this->assertObjectHasProperty('billingEmail', $object);
+        $this->assertObjectHasProperty('vat', $object);
+        $this->assertObjectHasProperty('product', $object);
+        $this->assertObjectNotHasProperty('note', $object);
     }
 
     /** @test */
     public function shouldFormatToXml(): void
     {
-        /** @var \PagOnline\XmlEntities\Level3Info $level3Info */
+        /** @var Level3Info $level3Info */
         $level3Info = Level3Info::fromXml(
-            \file_get_contents(__DIR__.'/../resources/level3info.xml')
+            file_get_contents(__DIR__.'/../resources/level3info.xml')
         );
-        $this->assertObjectHasAttribute('billingEmail', $level3Info);
+        $this->assertObjectHasProperty('billingEmail', $level3Info);
         $this->assertEquals('email@example.org', $level3Info->billingEmail);
         $this->assertIsArray($level3Info->product);
     }
@@ -73,8 +73,8 @@ class Level3InfoTest extends TestCase
     /** @test */
     public function shouldReturnXmlStringWhenGeneratedFromXml(): void
     {
-        $baseXmlResource = \file_get_contents(__DIR__.'/../resources/level3info.xml');
-        /** @var \PagOnline\XmlEntities\Level3Info $level3Info */
+        $baseXmlResource = file_get_contents(__DIR__.'/../resources/level3info.xml');
+        /** @var Level3Info $level3Info */
         $level3Info = Level3Info::fromXml($baseXmlResource);
         $this->assertXmlStringEqualsXmlString($baseXmlResource, $level3Info->toXml('Level3Info'));
     }

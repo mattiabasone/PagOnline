@@ -89,12 +89,8 @@ Set the following environment variables in your `.env` file:
 - `PAGONLINE_CURRENCY_CODE` currency code (_default: EUR_)
 - `PAGONLINE_LANGUAGE_ID` language code (_default: IT_)
 
-### TODO
-
-- [ ] Unit Tests
-
 ### Contributing
 
 If you want to contribute to this project, please use php-cs-fixer to format your code to PSR standards and rules 
-specified in the configuration file `.php_cs.dist` provided in this repository.
+specified in the configuration file `.php-cs-fixer.dist.php` provided in this repository.
 Thank you!

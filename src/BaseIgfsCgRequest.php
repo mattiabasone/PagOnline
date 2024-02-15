@@ -2,12 +2,9 @@
 
 namespace PagOnline;
 
-/**
- * Class BaseIgfsCgRequest.
- */
 abstract class BaseIgfsCgRequest
 {
-    const CONTENT = '';
+    public const CONTENT = '';
 
     /**
      * @return string

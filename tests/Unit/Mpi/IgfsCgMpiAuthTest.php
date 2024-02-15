@@ -52,7 +52,7 @@ class IgfsCgMpiAuthTest extends IgfsCgBaseTest
     /** @test */
     public function shouldCheckFieldsAndPass(): void
     {
-        /** @var \PagOnline\Mpi\IgfsCgMpiAuth $obj */
+        /** @var IgfsCgMpiAuth $obj */
         $obj = $this->makeIgfsCg();
         $foo = $this->getClassMethod('checkFields');
         $obj->paRes = 'paRes';

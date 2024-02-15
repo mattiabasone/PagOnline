@@ -158,7 +158,7 @@ class IgfsCgInitTest extends IgfsCgBaseTest
     /** @test */
     public function shouldCheckFieldsAndPass(): void
     {
-        /** @var \PagOnline\Init\IgfsCgInit $obj */
+        /** @var IgfsCgInit $obj */
         $obj = $this->makeIgfsCg();
         $this->setIgfsRequiredParamenters($obj);
         $checkFieldsMethod = $this->getClassMethod('checkFields');
@@ -194,7 +194,7 @@ class IgfsCgInitTest extends IgfsCgBaseTest
     /** @test */
     public function shouldRaiseExceptionForMissingShopId(): void
     {
-        /** @var \PagOnline\Init\IgfsCgInit $obj */
+        /** @var IgfsCgInit $obj */
         $obj = $this->makeIgfsCg();
         $this->setIgfsRequiredParamenters($obj);
         $obj->shopID = null;
@@ -213,25 +213,25 @@ class IgfsCgInitTest extends IgfsCgBaseTest
             new Response(
                 200,
                 ['Content-Type' => 'text/xml; charset="utf-8"'],
-                \file_get_contents(__DIR__.'/../resources/init/success.xml')
+                file_get_contents(__DIR__.'/../resources/init/success.xml')
             ),
             // Sixth
             new Response(
                 200,
                 ['Content-Type' => 'text/xml; charset="utf-8"'],
-                \file_get_contents(__DIR__.'/../resources/init/success.xml')
+                file_get_contents(__DIR__.'/../resources/init/success.xml')
             ),
             // Sixth
             new Response(
                 200,
                 ['Content-Type' => 'text/xml; charset="utf-8"'],
-                \file_get_contents(__DIR__.'/../resources/init/success.xml')
+                file_get_contents(__DIR__.'/../resources/init/success.xml')
             ),
         ]);
 
         $handler = HandlerStack::create($mock);
 
-        /** @var \PagOnline\Init\IgfsCgInit $obj */
+        /** @var IgfsCgInit $obj */
         $obj = $this->makeIgfsCg();
         $obj->setHttpClient(new Client(['handler' => $handler]));
         $this->setIgfsRequiredParamenters($obj);
@@ -270,13 +270,13 @@ class IgfsCgInitTest extends IgfsCgBaseTest
             new Response(
                 200,
                 ['Content-Type' => 'text/xml; charset="utf-8"'],
-                \file_get_contents(__DIR__.'/../resources/init/error.xml')
+                file_get_contents(__DIR__.'/../resources/init/error.xml')
             ),
         ]);
 
         $handler = HandlerStack::create($mock);
 
-        /** @var \PagOnline\Init\IgfsCgInit $obj */
+        /** @var IgfsCgInit $obj */
         $obj = $this->makeIgfsCg();
         $obj->setHttpClient(new Client(['handler' => $handler]));
         $this->setIgfsRequiredParamenters($obj);
@@ -295,7 +295,7 @@ class IgfsCgInitTest extends IgfsCgBaseTest
         ]);
         $handler = HandlerStack::create($mock);
 
-        /** @var \PagOnline\Init\IgfsCgInit $obj */
+        /** @var IgfsCgInit $obj */
         $obj = $this->makeIgfsCg();
         $obj->setHttpClient(new Client(['handler' => $handler]));
         $this->setIgfsRequiredParamenters($obj);
@@ -314,7 +314,7 @@ class IgfsCgInitTest extends IgfsCgBaseTest
         ]);
         $handler = HandlerStack::create($mock);
 
-        /** @var \PagOnline\Init\IgfsCgInit $obj */
+        /** @var IgfsCgInit $obj */
         $obj = $this->makeIgfsCg();
         $obj->setHttpClient(new Client(['handler' => $handler]));
         $this->setIgfsRequiredParamenters($obj);
@@ -330,7 +330,7 @@ class IgfsCgInitTest extends IgfsCgBaseTest
 
         $handler = HandlerStack::create($mock);
 
-        /** @var \PagOnline\Init\IgfsCgInit $obj */
+        /** @var IgfsCgInit $obj */
         $obj = $this->makeIgfsCg();
         $this->setIgfsRequiredParamenters($obj);
         $obj->setHttpClient(new Client(['handler' => $handler]));
@@ -353,7 +353,7 @@ class IgfsCgInitTest extends IgfsCgBaseTest
 
         $handler = HandlerStack::create($mock);
 
-        /** @var \PagOnline\Init\IgfsCgInit $obj */
+        /** @var IgfsCgInit $obj */
         $obj = $this->makeIgfsCg();
         $this->setIgfsRequiredParamenters($obj);
         $obj->setHttpClient(new Client(['handler' => $handler]));
@@ -376,17 +376,17 @@ class IgfsCgInitTest extends IgfsCgBaseTest
             new Response(
                 200,
                 ['Content-Type' => 'text/xml; charset="utf-8"'],
-                \file_get_contents(__DIR__.'/../resources/init/no_error_tag.xml')
+                file_get_contents(__DIR__.'/../resources/init/no_error_tag.xml')
             ),
             new Response(
                 200,
                 ['Content-Type' => 'text/xml; charset="utf-8"'],
-                \file_get_contents(__DIR__.'/../resources/init/no_signature_tag.xml')
+                file_get_contents(__DIR__.'/../resources/init/no_signature_tag.xml')
             ),
         ]);
         $handler = HandlerStack::create($mock);
 
-        /** @var \PagOnline\Init\IgfsCgInit $obj */
+        /** @var IgfsCgInit $obj */
         $obj = $this->makeIgfsCg();
         $obj->setHttpClient(new Client(['handler' => $handler]));
         $this->setIgfsBaseValues($obj);

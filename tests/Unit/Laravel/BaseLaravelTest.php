@@ -31,10 +31,10 @@ class BaseLaravelTest extends OrchestraTestCase
             return new IgfsCgFactory();
         });
         $this->app->alias('igfscg', IgfsCgFactory::class);
-        /** @var \PagOnline\Init\IgfsCgInit $igfsCgInit */
+        /** @var PagOnline\Init\IgfsCgInit $igfsCgInit */
         $igfsCgInit = \IgfsCg::make(PagOnline\Actions::IGFS_CG_INIT);
         $this->assertIsObject($igfsCgInit);
-        $this->assertObjectHasAttribute('serverURL', $igfsCgInit);
+        $this->assertObjectHasProperty('serverURL', $igfsCgInit);
         $this->assertEquals($this->poServerUrl, $igfsCgInit->serverURL);
     }
 
@@ -75,7 +75,7 @@ class BaseLaravelTest extends OrchestraTestCase
     protected function getPackageAliases($app): array
     {
         return [
-            'IgfsCg' => \PagOnline\Laravel\Facades\IgfsCgFacade::class,
+            'IgfsCg' => PagOnline\Laravel\Facades\IgfsCgFacade::class,
             'config' => \Illuminate\Config\Repository::class,
         ];
     }

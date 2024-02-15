@@ -5,7 +5,6 @@ namespace PagOnline\Tests\Unit;
 use PagOnline\Exceptions\IgfsException;
 use PagOnline\Exceptions\IgfsMissingParException;
 use PagOnline\IgfsCgInterface;
-use ReflectionClass;
 
 /**
  * Class IgfsCgBaseTest.
@@ -117,7 +116,7 @@ abstract class IgfsCgBaseTest extends IgfsTestCase
         $this->setIgfsRequiredParamenters($obj);
         $request = $buildRequestMethod->invoke($obj);
         $this->assertIsString($request);
-        $this->assertGreaterThan(0, \mb_strlen($request));
+        $this->assertGreaterThan(0, mb_strlen($request));
     }
 
     /** @test */
@@ -174,7 +173,7 @@ abstract class IgfsCgBaseTest extends IgfsTestCase
      */
     protected function getClassMethod($name): \ReflectionMethod
     {
-        $class = new ReflectionClass($this->igfsCgClass);
+        $class = new \ReflectionClass($this->igfsCgClass);
         $method = $class->getMethod($name);
         $method->setAccessible(true);
 
@@ -182,7 +181,7 @@ abstract class IgfsCgBaseTest extends IgfsTestCase
     }
 
     /**
-     * @param \PagOnline\IgfsCgInterface $class
+     * @param IgfsCgInterface $class
      */
     protected function setIgfsBaseValues(&$class): void
     {
@@ -201,7 +200,7 @@ abstract class IgfsCgBaseTest extends IgfsTestCase
     }
 
     /**
-     * @return \PagOnline\IgfsCgInterface
+     * @return IgfsCgInterface
      */
     protected function makeIgfsCg(): IgfsCgInterface
     {

@@ -7,10 +7,10 @@ use PHPUnit\Framework\TestCase;
 class IgfsTestCase extends TestCase
 {
     /**
-     * Compatibility function for older PHPUnit versions
+     * Compatibility function for older PHPUnit versions.
      *
-     * @param string $pattern
-     * @param string $value
+     * @param  string $pattern
+     * @param  string $value
      * @return void
      */
     public function assertMatchesRegex(string $pattern, string $value): void
@@ -21,5 +21,4 @@ class IgfsTestCase extends TestCase
             $this->assertRegExp($pattern, $value);
         }
     }
-
 }

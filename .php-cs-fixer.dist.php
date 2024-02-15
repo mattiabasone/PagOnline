@@ -37,7 +37,6 @@ return (new \PhpCsFixer\Config())
         'protected_to_private' => false,
         'strict_param' => true,
         'single_quote' => false,
-        'single_blank_line_before_namespace' => true,
         'single_blank_line_at_eof' => true,
         'single_trait_insert_per_statement' => false,
         'whitespace_after_comma_in_array' => true,

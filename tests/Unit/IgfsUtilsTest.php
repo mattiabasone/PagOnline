@@ -76,7 +76,7 @@ class IgfsUtilsTest extends IgfsTestCase
     /** @test */
     public function shouldParseResponseFields(): void
     {
-        $xmlString = \file_get_contents(__DIR__.'/resources/base.xml');
+        $xmlString = file_get_contents(__DIR__.'/resources/base.xml');
         $dom = new \SimpleXMLElement($xmlString, LIBXML_NOERROR, false);
         $xmlArray = IgfsUtils::parseResponseFields($dom);
         $this->assertIsArray($xmlArray);

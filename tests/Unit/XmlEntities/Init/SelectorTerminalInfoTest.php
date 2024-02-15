@@ -37,11 +37,11 @@ class SelectorTerminalInfoTest extends TestCase
     /** @test */
     public function shouldFormatToXml(): void
     {
-        /** @var \PagOnline\XmlEntities\Init\SelectorTerminalInfo $object */
+        /** @var SelectorTerminalInfo $object */
         $object = SelectorTerminalInfo::fromXml(
-            \file_get_contents(__DIR__.'/../../resources/selector_terminal_info.xml')
+            file_get_contents(__DIR__.'/../../resources/selector_terminal_info.xml')
         );
-        $this->assertObjectHasAttribute('description', $object);
+        $this->assertObjectHasProperty('description', $object);
         $this->assertEquals('Lorem Ipsum description', $object->description);
         $this->assertIsArray($object->imgURL);
     }
@@ -49,8 +49,8 @@ class SelectorTerminalInfoTest extends TestCase
     /** @test */
     public function shouldReturnXmlStringWhenGeneratedFromXml(): void
     {
-        /** @var \PagOnline\XmlEntities\Init\SelectorTerminalInfo $object */
-        $baseXmlResource = \file_get_contents(__DIR__.'/../../resources/selector_terminal_info.xml');
+        /** @var SelectorTerminalInfo $object */
+        $baseXmlResource = file_get_contents(__DIR__.'/../../resources/selector_terminal_info.xml');
         /** @var \PagOnline\XmlEntities\Level3Info $level3Info */
         $object = SelectorTerminalInfo::fromXml($baseXmlResource);
         $this->assertXmlStringEqualsXmlString($baseXmlResource, $object->toXml('SelectorTerminalinfo'));

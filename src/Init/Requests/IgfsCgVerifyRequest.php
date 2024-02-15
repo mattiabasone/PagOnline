@@ -9,7 +9,7 @@ use PagOnline\BaseIgfsCgRequest;
  */
 final class IgfsCgVerifyRequest extends BaseIgfsCgRequest
 {
-    const CONTENT = <<<XML
+    public const CONTENT = <<<XML
 <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://services.api.web.cg.igfs.apps.netsw.it/">
 <soapenv:Body>
 <ser:Verify>

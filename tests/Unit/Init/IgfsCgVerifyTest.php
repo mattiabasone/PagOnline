@@ -33,7 +33,7 @@ class IgfsCgVerifyTest extends IgfsCgBaseTest
     /** @test */
     public function shouldCheckFieldsAndPass(): void
     {
-        /** @var \PagOnline\Init\IgfsCgVerify $obj */
+        /** @var IgfsCgVerify $obj */
         $obj = $this->makeIgfsCg();
         $obj->paymentID = 'paymentId';
         $foo = $this->getClassMethod('checkFields');
@@ -69,24 +69,24 @@ class IgfsCgVerifyTest extends IgfsCgBaseTest
             new Response(
                 200,
                 ['Content-Type' => 'text/xml; charset="utf-8"'],
-                \file_get_contents(__DIR__.'/../resources/verify/success.xml')
+                file_get_contents(__DIR__.'/../resources/verify/success.xml')
             ),
             new Response(500),
             new Response(
                 200,
                 ['Content-Type' => 'text/xml; charset="utf-8"'],
-                \file_get_contents(__DIR__.'/../resources/verify/invalid_signature.xml')
+                file_get_contents(__DIR__.'/../resources/verify/invalid_signature.xml')
             ),
             new Response(
                 200,
                 ['Content-Type' => 'text/xml; charset="utf-8"'],
-                \file_get_contents(__DIR__.'/../resources/verify/invalid_receipt_pdf.xml')
+                file_get_contents(__DIR__.'/../resources/verify/invalid_receipt_pdf.xml')
             ),
         ]);
 
         $handler = HandlerStack::create($mock);
 
-        /** @var \PagOnline\Init\IgfsCgVerify $obj */
+        /** @var IgfsCgVerify $obj */
         $obj = $this->makeIgfsCg();
         $obj->shopID = '5c71649051ef5';
         $obj->paymentID = '00054481661101578102';
