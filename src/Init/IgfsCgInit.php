@@ -54,7 +54,7 @@ class IgfsCgInit extends BaseIgfsCgInit
      */
     protected $requestNamespace = Requests\IgfsCgInitRequest::class;
 
-    public function resetFields()
+    public function resetFields(): void
     {
         parent::resetFields();
         $this->shopUserRef = null;

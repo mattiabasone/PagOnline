@@ -14,7 +14,7 @@ class IgfsCgTokenizerDelete extends BaseIgfsCgTokenizer
      */
     protected $requestNamespace = Requests\IgfsCgTokenizerDeleteRequest::class;
 
-    public function resetFields()
+    public function resetFields(): void
     {
         parent::resetFields();
         $this->payInstrToken = null;

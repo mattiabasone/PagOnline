@@ -31,7 +31,7 @@ class IgfsCgSelector extends BaseIgfsCgInit
     /**
      * {@inheritdoc}
      */
-    public function resetFields()
+    public function resetFields(): void
     {
         parent::resetFields();
         $this->shopUserRef = null;

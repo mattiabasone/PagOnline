@@ -36,7 +36,7 @@ class IgfsCgPayByMailInit extends BaseIgfsCgPayByMail
      */
     protected $requestNamespace = Requests\IgfsCgPayByMailInitRequest::class;
 
-    public function resetFields()
+    public function resetFields(): void
     {
         parent::resetFields();
         $this->shopUserRef = null;

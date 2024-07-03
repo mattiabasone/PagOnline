@@ -19,7 +19,7 @@ class IgfsCgMpiAuth extends BaseIgfsCgMpi
      */
     protected $requestNamespace = Requests\IgfsCgMpiAuthRequest::class;
 
-    public function resetFields()
+    public function resetFields(): void
     {
         parent::resetFields();
         $this->paRes = null;

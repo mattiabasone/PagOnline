@@ -24,7 +24,7 @@ class IgfsCgPayByMailVerify extends BaseIgfsCgPayByMail
     /**
      * {@inheritdoc}
      */
-    public function resetFields()
+    public function resetFields(): void
     {
         parent::resetFields();
         $this->mailID = null;
