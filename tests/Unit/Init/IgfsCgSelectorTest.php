@@ -5,18 +5,17 @@ namespace PagOnline\Tests\Unit\Init;
 use PagOnline\Exceptions\IgfsMissingParException;
 use PagOnline\Init\IgfsCgSelector;
 use PagOnline\Init\Requests\IgfsCgSelectorRequest;
-use PagOnline\Tests\Unit\IgfsCgBaseTest;
+use PagOnline\Tests\Unit\IgfsCgBaseTestCase;
 
 /**
  * Class IgfsCgInitTest.
  */
-class IgfsCgSelectorTest extends IgfsCgBaseTest
+class IgfsCgSelectorTest extends IgfsCgBaseTestCase
 {
     protected $igfsCgClass = IgfsCgSelector::class;
     protected $igfsCgRequest = IgfsCgSelectorRequest::CONTENT;
 
-    /** @test */
-    public function shouldChecksFieldsAndRaiseExceptionMissingTrType(): void
+    public function testChecksFieldsAndRaiseExceptionMissingTrType(): void
     {
         /* @var \PagOnline\Init\IgfsCgSelector $obj */
         $this->expectException(IgfsMissingParException::class);
@@ -27,8 +26,7 @@ class IgfsCgSelectorTest extends IgfsCgBaseTest
         $checkFieldsMethod->invoke($obj);
     }
 
-    /** @test */
-    public function shouldChecksFieldsAndRaiseExceptionMissingAmount(): void
+    public function testChecksFieldsAndRaiseExceptionMissingAmount(): void
     {
         /* @var \PagOnline\Init\IgfsCgSelector $obj */
         $this->expectException(IgfsMissingParException::class);
@@ -39,8 +37,7 @@ class IgfsCgSelectorTest extends IgfsCgBaseTest
         $checkFieldsMethod->invoke($obj);
     }
 
-    /** @test */
-    public function shouldChecksFieldsAndRaiseExceptionMissingCurrencyCode(): void
+    public function testChecksFieldsAndRaiseExceptionMissingCurrencyCode(): void
     {
         /* @var \PagOnline\Init\IgfsCgSelector $obj */
         $this->expectException(IgfsMissingParException::class);
@@ -52,8 +49,7 @@ class IgfsCgSelectorTest extends IgfsCgBaseTest
         $checkFieldsMethod->invoke($obj);
     }
 
-    /** @test */
-    public function shouldChecksFieldsAndRaiseExceptionMissingLangID(): void
+    public function testChecksFieldsAndRaiseExceptionMissingLangID(): void
     {
         /* @var \PagOnline\Init\IgfsCgSelector $obj */
         $this->expectException(IgfsMissingParException::class);
@@ -67,8 +63,7 @@ class IgfsCgSelectorTest extends IgfsCgBaseTest
         $checkFieldsMethod->invoke($obj);
     }
 
-    /** @test */
-    public function shouldChecksFieldsAndRaiseExceptionMissingPayInstrToken(): void
+    public function testChecksFieldsAndRaiseExceptionMissingPayInstrToken(): void
     {
         /* @var \PagOnline\Init\IgfsCgSelector $obj */
         $this->expectException(IgfsMissingParException::class);
@@ -80,10 +75,9 @@ class IgfsCgSelectorTest extends IgfsCgBaseTest
         $checkFieldsMethod->invoke($obj);
     }
 
-    /** @test */
-    public function shouldCheckFieldsAndPass(): void
+    public function testCheckFieldsAndPass(): void
     {
-        /** @var \PagOnline\Init\IgfsCgSelector $obj */
+        /** @var IgfsCgSelector $obj */
         $obj = $this->makeIgfsCg();
         $obj->amount = 500;
         $obj->currencyCode = 'EU';
@@ -100,8 +94,7 @@ class IgfsCgSelectorTest extends IgfsCgBaseTest
         $this->assertNull($exception);
     }
 
-    /** @test */
-    public function shouldRaiseExceptionForMissingTrType(): void
+    public function testRaiseExceptionForMissingTrType(): void
     {
         $this->expectException(IgfsMissingParException::class);
         /** @var \PagOnline\Init\IgfsCgInit $obj */

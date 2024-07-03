@@ -103,6 +103,7 @@ class IgfsCgPayByMailVerify extends BaseIgfsCgPayByMail
             IgfsUtils::getValue($response, 'tranID'), // ORDERID
             IgfsUtils::getValue($response, 'status'), // STATUS
         ];
+
         // signature dove il buffer e' cosi composto TID|SHOPID|RC|ERRORDESC|MAILID|STATUS
         return $this->getSignature($fields);
     }

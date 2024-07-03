@@ -107,8 +107,8 @@ class IgfsCgInit extends BaseIgfsCgInit
             $this->shopUserRef, // SHOPUSERREF
             $this->shopUserName, // SHOPUSERNAME
             $this->shopUserAccount, // SHOPUSERACCOUNT
-            $this->shopUserMobilePhone, //SHOPUSERMOBILEPHONE
-            $this->shopUserIMEI, //SHOPUSERIMEI
+            $this->shopUserMobilePhone, // SHOPUSERMOBILEPHONE
+            $this->shopUserIMEI, // SHOPUSERIMEI
             $this->trType, // TRTYPE
             $this->amount, // AMOUNT
             $this->currencyCode, // CURRENCYCODE
@@ -266,6 +266,7 @@ class IgfsCgInit extends BaseIgfsCgInit
             IgfsUtils::getValue($response, 'paymentID'), // PAYMENTID
             IgfsUtils::getValue($response, 'redirectURL'),  // REDIRECTURL
         ];
+
         // signature dove il buffer e' cosi composto TID|SHOPID|RC|ERRORDESC|PAYMENTID|REDIRECTURL
         return $this->getSignature($fields);
     }

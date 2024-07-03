@@ -5,9 +5,6 @@ namespace PagOnline\XmlEntities;
 use PagOnline\IgfsUtils;
 use PagOnline\XmlEntities\Traits\CastProperties;
 use PagOnline\XmlEntities\Traits\EntityAttributes;
-use ReflectionObject;
-use ReflectionProperty;
-use SimpleXMLElement;
 
 abstract class BaseXmlEntity implements XmlEntityInterface
 {
@@ -90,7 +87,7 @@ abstract class BaseXmlEntity implements XmlEntityInterface
      *
      * @param string $xml
      *
-     * @return null|\PagOnline\XmlEntities\XmlEntityInterface
+     * @return null|XmlEntityInterface
      */
     public static function fromXml($xml): ?XmlEntityInterface
     {
@@ -98,7 +95,7 @@ abstract class BaseXmlEntity implements XmlEntityInterface
             return null;
         }
 
-        $dom = new SimpleXMLElement($xml, LIBXML_NOERROR, false);
+        $dom = new \SimpleXMLElement($xml, LIBXML_NOERROR, false);
         if ($dom->children()->count() === 0) {
             return null;
         }
@@ -143,7 +140,7 @@ abstract class BaseXmlEntity implements XmlEntityInterface
      */
     protected function loadAttributes(): void
     {
-        $publicProperties = (new ReflectionObject($this))->getProperties(ReflectionProperty::IS_PUBLIC);
+        $publicProperties = (new \ReflectionObject($this))->getProperties(\ReflectionProperty::IS_PUBLIC);
         foreach ($publicProperties as $publicProperty) {
             $this->attributes[] = $publicProperty->getName();
         }
@@ -164,7 +161,7 @@ abstract class BaseXmlEntity implements XmlEntityInterface
      * @param \SimpleXMLElement $dom
      * @param string            $attribute
      */
-    protected function setCustomAttributeFromDom(SimpleXMLElement $dom, $attribute): void
+    protected function setCustomAttributeFromDom(\SimpleXMLElement $dom, $attribute): void
     {
         if ($this->entityAttributes[$attribute]['type'] === 'array') {
             $value = [];

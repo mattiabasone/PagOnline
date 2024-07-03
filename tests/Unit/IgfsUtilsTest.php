@@ -6,91 +6,79 @@ use PagOnline\IgfsUtils;
 
 class IgfsUtilsTest extends IgfsTestCase
 {
-    /**
-     * @test
-     */
-    public function shouldReturnUuid(): void
+    public function testReturnUuid(): void
     {
-        $this->assertIsString(IgfsUtils::getUniqueBoundaryValue());
+        self::assertIsString(IgfsUtils::getUniqueBoundaryValue());
     }
 
-    /** @test */
-    public function shouldReturnUniqueBoundaryValue(): void
+    public function testReturnUniqueBoundaryValue(): void
     {
         $uniqueId = IgfsUtils::getUniqueBoundaryValue();
-        $this->assertMatchesRegex('([a-z0-9]{13})', $uniqueId);
+        self::assertMatchesRegularExpression('([a-z0-9]{13})', $uniqueId);
     }
 
-    /** @test */
-    public function shouldParseDateFormat(): void
+    public function testParseDateFormat(): void
     {
         $dateTimeObject = IgfsUtils::parseDateFormat('2018-10-10', 'Y-m-d');
-        $this->assertInstanceOf(\DateTimeImmutable::class, $dateTimeObject);
+        self::assertInstanceOf(\DateTimeImmutable::class, $dateTimeObject);
     }
 
-    /** @test */
-    public function shouldNotParseDateFormat(): void
+    public function testNotParseDateFormat(): void
     {
         $dateTimeObject = IgfsUtils::parseDateFormat('2018-10-10', 'd-m-Y');
-        $this->assertNull($dateTimeObject);
+        self::assertNull($dateTimeObject);
     }
 
-    /** @test */
-    public function shouldReturnDateTimeClass(): void
+    public function testReturnDateTimeClass(): void
     {
         $dateTime = new \DateTimeImmutable('2019-02-19 00:00:00');
-        $this->assertEquals($dateTime, IgfsUtils::parseXMLGregorianCalendar('19-Feb-2019 00:00:00'));
+        self::assertEquals($dateTime, IgfsUtils::parseXMLGregorianCalendar('19-Feb-2019 00:00:00'));
     }
 
-    /** @test */
-    public function shouldNotReturnDateTimeClass(): void
+    public function testNotReturnDateTimeClass(): void
     {
-        $this->assertNull(IgfsUtils::parseXMLGregorianCalendar('2019-02-19 00:00:00'));
-        $this->assertNull(IgfsUtils::parseXMLGregorianCalendar(null));
-        $this->assertNull(IgfsUtils::parseXMLGregorianCalendar(''));
+        self::assertNull(IgfsUtils::parseXMLGregorianCalendar('2019-02-19 00:00:00'));
+        self::assertNull(IgfsUtils::parseXMLGregorianCalendar(null));
+        self::assertNull(IgfsUtils::parseXMLGregorianCalendar(''));
     }
 
-    /** @test */
-    public function shouldFormatTimestampToGregorianCalendar(): void
+    public function testFormatTimestampToGregorianCalendar(): void
     {
         $datetimeObject = \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2019-02-19 00:00:00');
-        $this->assertEquals(
+        self::assertEquals(
             $datetimeObject->format('Y-m-d\TH:i:sP'),
             IgfsUtils::formatXMLGregorianCalendar($datetimeObject->getTimestamp())
         );
     }
 
-    /** @test */
-    public function shouldNotFormatTimestampToGregorianCalendar(): void
+    public function testNotFormatTimestampToGregorianCalendar(): void
     {
         $datetimeObject = \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2019-02-19 00:00:00');
-        $this->assertNotEquals(
+        self::assertNotEquals(
             $datetimeObject->format('Y-m-d\TH:i:sP'),
             IgfsUtils::formatXMLGregorianCalendar(0)
         );
 
-        $this->assertNull(IgfsUtils::formatXMLGregorianCalendar(''));
-        $this->assertNull(IgfsUtils::formatXMLGregorianCalendar(null));
+        self::assertNull(IgfsUtils::formatXMLGregorianCalendar(''));
+        self::assertNull(IgfsUtils::formatXMLGregorianCalendar(null));
     }
 
-    /** @test */
-    public function shouldParseResponseFields(): void
+    public function testParseResponseFields(): void
     {
-        $xmlString = \file_get_contents(__DIR__.'/resources/base.xml');
+        $xmlString = file_get_contents(__DIR__.'/resources/base.xml');
         $dom = new \SimpleXMLElement($xmlString, LIBXML_NOERROR, false);
         $xmlArray = IgfsUtils::parseResponseFields($dom);
-        $this->assertIsArray($xmlArray);
-        $this->assertArrayHasKey('apiVersion', $xmlArray);
+        self::assertIsArray($xmlArray);
+        self::assertArrayHasKey('apiVersion', $xmlArray);
     }
 
-    /** @test */
-    public function shouldGetValueFromArrayMap(): void
+    public function testGetValueFromArrayMap(): void
     {
         $array = [
             'key1' => 1234,
         ];
 
-        $this->assertEquals($array['key1'], IgfsUtils::getValue($array, 'key1'));
-        $this->assertNull(IgfsUtils::getValue($array, 'key2'));
+        self::assertEquals($array['key1'], IgfsUtils::getValue($array, 'key1'));
+        self::assertNull(IgfsUtils::getValue($array, 'key2'));
     }
 }

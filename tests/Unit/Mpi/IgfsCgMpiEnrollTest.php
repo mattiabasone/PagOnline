@@ -5,18 +5,17 @@ namespace PagOnline\Tests\Unit\Mpi;
 use PagOnline\Exceptions\IgfsMissingParException;
 use PagOnline\Mpi\IgfsCgMpiEnroll;
 use PagOnline\Mpi\Requests\IgfsCgMpiEnrollRequest;
-use PagOnline\Tests\Unit\IgfsCgBaseTest;
+use PagOnline\Tests\Unit\IgfsCgBaseTestCase;
 
 /**
  * Class IgfsCgInitTest.
  */
-class IgfsCgMpiEnrollTest extends IgfsCgBaseTest
+class IgfsCgMpiEnrollTest extends IgfsCgBaseTestCase
 {
     protected $igfsCgClass = IgfsCgMpiEnroll::class;
     protected $igfsCgRequest = IgfsCgMpiEnrollRequest::CONTENT;
 
-    /** @test */
-    public function shouldChecksFieldsAndRaiseExceptionMissingAmount(): void
+    public function testChecksFieldsAndRaiseExceptionMissingAmount(): void
     {
         $this->expectException(IgfsMissingParException::class);
         $foo = $this->getClassMethod('checkFields');
@@ -24,8 +23,7 @@ class IgfsCgMpiEnrollTest extends IgfsCgBaseTest
         $foo->invoke($obj);
     }
 
-    /** @test */
-    public function shouldChecksFieldsAndRaiseExceptionMissingCurrencyCode(): void
+    public function testChecksFieldsAndRaiseExceptionMissingCurrencyCode(): void
     {
         $this->expectException(IgfsMissingParException::class);
         $foo = $this->getClassMethod('checkFields');
@@ -34,8 +32,7 @@ class IgfsCgMpiEnrollTest extends IgfsCgBaseTest
         $foo->invoke($obj);
     }
 
-    /** @test */
-    public function shouldChecksFieldsAndRaiseExceptionMissingPan(): void
+    public function testChecksFieldsAndRaiseExceptionMissingPan(): void
     {
         $this->expectException(IgfsMissingParException::class);
         $foo = $this->getClassMethod('checkFields');
@@ -45,8 +42,7 @@ class IgfsCgMpiEnrollTest extends IgfsCgBaseTest
         $foo->invoke($obj);
     }
 
-    /** @test */
-    public function shouldCheckFieldsAndPass(): void
+    public function testCheckFieldsAndPass(): void
     {
         /** @var \PagOnline\Mpi\IgfsCgMpiAuth $obj */
         $obj = $this->makeIgfsCg();
@@ -62,8 +58,7 @@ class IgfsCgMpiEnrollTest extends IgfsCgBaseTest
         $this->assertNull($exception);
     }
 
-    /** @test */
-    public function shouldRaiseExceptionForMissingShopId(): void
+    public function testRaiseExceptionForMissingShopId(): void
     {
         $this->expectException(IgfsMissingParException::class);
         /** @var \PagOnline\Init\IgfsCgInit $obj */

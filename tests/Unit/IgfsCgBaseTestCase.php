@@ -5,46 +5,38 @@ namespace PagOnline\Tests\Unit;
 use PagOnline\Exceptions\IgfsException;
 use PagOnline\Exceptions\IgfsMissingParException;
 use PagOnline\IgfsCgInterface;
-use ReflectionClass;
 
-/**
- * Class IgfsCgBaseTest.
- */
-abstract class IgfsCgBaseTest extends IgfsTestCase
+abstract class IgfsCgBaseTestCase extends IgfsTestCase
 {
     protected $igfsCgClass;
     protected $igfsCgAction;
 
-    /** @test */
-    public function shouldReturnRequestString()
+    public function testReturnRequestString(): void
     {
         $obj = new $this->igfsCgClass();
         $this->assertEquals($obj->getRequest(), $this->igfsCgRequest);
     }
 
-    /** @test */
-    public function resetFieldsTest(): void
+    public function testResetFields(): void
     {
         $class = $this->makeIgfsCg();
         $class->resetFields();
-        $this->assertNull($class->tid);
-        $this->assertNull($class->shopID);
-        $this->assertEquals($class->langID, 'EN');
+        self::assertNull($class->tid);
+        self::assertNull($class->shopID);
+        self::assertEquals('EN', $class->langID);
     }
 
-    /** @test */
-    public function shouldReturnServicePortString(): void
+    public function testReturnServicePortString(): void
     {
         /** @var \PagOnline\Init\IgfsCgInit $obj */
         $obj = $this->makeIgfsCg();
         $foo = $this->getClassMethod('getServicePort');
-        $this->assertIsString(
+        self::assertIsString(
             $foo->invoke($obj)
         );
     }
 
-    /** @test */
-    public function shouldChecksFieldsAndRaiseExceptionMissingServerUrl(): void
+    public function testChecksFieldsAndRaiseExceptionMissingServerUrl(): void
     {
         $foo = $this->getClassMethod('checkFields');
         $obj = new $this->igfsCgClass();
@@ -54,8 +46,7 @@ abstract class IgfsCgBaseTest extends IgfsTestCase
         $foo->invoke($obj);
     }
 
-    /** @test */
-    public function shouldChecksFieldsAndRaiseExceptionMissingKSig(): void
+    public function testChecksFieldsAndRaiseExceptionMissingKSig(): void
     {
         $foo = $this->getClassMethod('checkFields');
         $obj = new $this->igfsCgClass();
@@ -66,8 +57,7 @@ abstract class IgfsCgBaseTest extends IgfsTestCase
         $foo->invoke($obj);
     }
 
-    /** @test */
-    public function shouldChecksFieldsAndRaiseExceptionMissingTid(): void
+    public function testChecksFieldsAndRaiseExceptionMissingTid(): void
     {
         $foo = $this->getClassMethod('checkFields');
         $obj = new $this->igfsCgClass();
@@ -79,17 +69,15 @@ abstract class IgfsCgBaseTest extends IgfsTestCase
         $foo->invoke($obj);
     }
 
-    /** @test */
-    public function shouldFailGeneratingSignature(): void
+    public function testFailGeneratingSignature(): void
     {
         $this->expectException(IgfsException::class);
         $getSignatureMethod = $this->getClassMethod('getSignature');
         $obj = new $this->igfsCgClass();
-        $getSignatureMethod->invoke($obj, ['123', ['123', '456']]);
+        echo $getSignatureMethod->invoke($obj, [new \stdClass()]);
     }
 
-    /** @test */
-    public function shouldReplaceRequestPlaceholders(): void
+    public function testReplaceRequestPlaceholders(): void
     {
         $replaceRequestParameterMethod = $this->getClassMethod('replaceRequestParameter');
         $obj = new $this->igfsCgClass();
@@ -108,8 +96,7 @@ abstract class IgfsCgBaseTest extends IgfsTestCase
         $this->assertEquals('<mySuperField>testValue</mySuperField>', $fakeRequest);
     }
 
-    /** @test */
-    public function shouldBuildValidRequest(): void
+    public function testBuildValidRequest(): void
     {
         /** @var \PagOnline\Init\IgfsCgInit $obj */
         $obj = $this->makeIgfsCg();
@@ -117,11 +104,10 @@ abstract class IgfsCgBaseTest extends IgfsTestCase
         $this->setIgfsRequiredParamenters($obj);
         $request = $buildRequestMethod->invoke($obj);
         $this->assertIsString($request);
-        $this->assertGreaterThan(0, \mb_strlen($request));
+        $this->assertGreaterThan(0, mb_strlen($request));
     }
 
-    /** @test */
-    public function shouldReturnServerUrlAndServicePort(): void
+    public function testReturnServerUrlAndServicePort(): void
     {
         /** @var \PagOnline\BaseIgfsCg $obj */
         $obj = $this->makeIgfsCg();
@@ -135,8 +121,7 @@ abstract class IgfsCgBaseTest extends IgfsTestCase
         $this->assertEquals('http://my-server.it/'.$servicePortMethod->invoke($obj), $serverUrlT2);
     }
 
-    /** @test */
-    public function shouldReturnArrayForAdditionalSignatureFields(): void
+    public function testReturnArrayForAdditionalSignatureFields(): void
     {
         /** @var \PagOnline\Init\IgfsCgInit $obj */
         $obj = $this->makeIgfsCg();
@@ -145,8 +130,7 @@ abstract class IgfsCgBaseTest extends IgfsTestCase
         $this->assertIsArray($additionalFieldsArray);
     }
 
-    /** @test */
-    public function shouldReturnArray(): void
+    public function testReturnArray(): void
     {
         /** @var \PagOnline\Init\IgfsCgInit $obj */
         $obj = $this->makeIgfsCg();
@@ -154,15 +138,14 @@ abstract class IgfsCgBaseTest extends IgfsTestCase
         $this->assertIsArray($array);
     }
 
-    /** @test */
-    public function shouldReturnArrayUniqueBoundaryValue(): void
+    public function testReturnArrayUniqueBoundaryValue(): void
     {
         /** @var \PagOnline\Init\IgfsCgInit $obj */
         $obj = $this->makeIgfsCg();
         $getUniqueBoundaryValueMethod = $this->getClassMethod('getUniqueBoundaryValue');
         $uniqueId = $getUniqueBoundaryValueMethod->invoke($obj);
-        $this->assertIsString($uniqueId);
-        $this->assertMatchesRegex('([a-z0-9]{13})', $uniqueId);
+        self::assertIsString($uniqueId);
+        self::assertMatchesRegularExpression('([a-z0-9]{13})', $uniqueId);
     }
 
     /**
@@ -174,7 +157,7 @@ abstract class IgfsCgBaseTest extends IgfsTestCase
      */
     protected function getClassMethod($name): \ReflectionMethod
     {
-        $class = new ReflectionClass($this->igfsCgClass);
+        $class = new \ReflectionClass($this->igfsCgClass);
         $method = $class->getMethod($name);
         $method->setAccessible(true);
 
@@ -182,7 +165,7 @@ abstract class IgfsCgBaseTest extends IgfsTestCase
     }
 
     /**
-     * @param \PagOnline\IgfsCgInterface $class
+     * @param IgfsCgInterface $class
      */
     protected function setIgfsBaseValues(&$class): void
     {
@@ -201,7 +184,7 @@ abstract class IgfsCgBaseTest extends IgfsTestCase
     }
 
     /**
-     * @return \PagOnline\IgfsCgInterface
+     * @return IgfsCgInterface
      */
     protected function makeIgfsCg(): IgfsCgInterface
     {

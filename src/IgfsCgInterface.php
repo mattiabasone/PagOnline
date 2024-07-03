@@ -2,9 +2,6 @@
 
 namespace PagOnline;
 
-/**
- * Interface IgfsCgInterface.
- */
 interface IgfsCgInterface
 {
     /**

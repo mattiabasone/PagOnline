@@ -3,27 +3,25 @@
 namespace PagOnline\Tests\Unit\Tran;
 
 use PagOnline\Exceptions\IgfsMissingParException;
-use PagOnline\Tests\Unit\IgfsCgBaseTest;
+use PagOnline\Tests\Unit\IgfsCgBaseTestCase;
 use PagOnline\Tran\IgfsCgVoidAuth;
 use PagOnline\Tran\Requests\IgfsCgVoidAuthRequest;
 
 /**
  * Class IgfsCgInitTest.
  */
-class IgfsCgVoidAuthTest extends IgfsCgBaseTest
+class IgfsCgVoidAuthTest extends IgfsCgBaseTestCase
 {
     protected $igfsCgClass = IgfsCgVoidAuth::class;
     protected $igfsCgRequest = IgfsCgVoidAuthRequest::CONTENT;
 
-    /** @test */
-    public function shouldReturnRequestString(): void
+    public function testReturnRequestString(): void
     {
         $obj = new $this->igfsCgClass();
         $this->assertEquals($obj->getRequest(), $this->igfsCgRequest);
     }
 
-    /** @test */
-    public function shouldChecksFieldsAndRaiseException(): void
+    public function testChecksFieldsAndRaiseException(): void
     {
         $foo = $this->getClassMethod('checkFields');
         $obj = new $this->igfsCgClass();
@@ -33,8 +31,7 @@ class IgfsCgVoidAuthTest extends IgfsCgBaseTest
         $foo->invoke($obj);
     }
 
-    /** @test */
-    public function shouldCheckFieldsAndPass(): void
+    public function testCheckFieldsAndPass(): void
     {
         /** @var \PagOnline\Mpi\IgfsCgMpiAuth $obj */
         $obj = $this->makeIgfsCg();
@@ -50,8 +47,7 @@ class IgfsCgVoidAuthTest extends IgfsCgBaseTest
         $this->assertNull($exception);
     }
 
-    /** @test */
-    public function shouldRaiseExceptionForMissingShopId(): void
+    public function testRaiseExceptionForMissingShopId(): void
     {
         $this->expectException(IgfsMissingParException::class);
         /** @var \PagOnline\Init\IgfsCgInit $obj */

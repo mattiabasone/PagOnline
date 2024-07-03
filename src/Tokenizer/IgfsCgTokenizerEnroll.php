@@ -142,6 +142,7 @@ class IgfsCgTokenizerEnroll extends BaseIgfsCgTokenizer
             IgfsUtils::getValue($response, 'rc'), // RC
             IgfsUtils::getValue($response, 'errorDesc'), // ERRORDESC
             IgfsUtils::getValue($response, 'payInstrToken'), ]; // PAYINSTRTOKEN
+
         // signature dove il buffer e' cosi composto TID|SHOPID|RC|ERRORDESC
         return $this->getSignature($fields);
     }

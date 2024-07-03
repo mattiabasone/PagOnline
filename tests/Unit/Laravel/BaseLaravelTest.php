@@ -2,10 +2,12 @@
 
 namespace PagOnline\Tests\Unit\Laravel;
 
+use Illuminate\Config\Repository;
 use Illuminate\Support\Str;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
 use PagOnline;
 use PagOnline\IgfsCgFactory;
+use PagOnline\Laravel\Facades\IgfsCgFacade;
 use PagOnline\Laravel\PagOnlineServiceProvider;
 
 class BaseLaravelTest extends OrchestraTestCase
@@ -24,17 +26,16 @@ class BaseLaravelTest extends OrchestraTestCase
         $this->poSignatureKey = Str::random(24);
     }
 
-    /** @test */
-    public function shouldCreateFacade(): void
+    public function testCreateFacade(): void
     {
         $this->app->singleton('igfscg', function () {
             return new IgfsCgFactory();
         });
         $this->app->alias('igfscg', IgfsCgFactory::class);
-        /** @var \PagOnline\Init\IgfsCgInit $igfsCgInit */
+        /** @var PagOnline\Init\IgfsCgInit $igfsCgInit */
         $igfsCgInit = \IgfsCg::make(PagOnline\Actions::IGFS_CG_INIT);
         $this->assertIsObject($igfsCgInit);
-        $this->assertObjectHasAttribute('serverURL', $igfsCgInit);
+        self::assertObjectHasProperty('serverURL', $igfsCgInit);
         $this->assertEquals($this->poServerUrl, $igfsCgInit->serverURL);
     }
 
@@ -75,8 +76,8 @@ class BaseLaravelTest extends OrchestraTestCase
     protected function getPackageAliases($app): array
     {
         return [
-            'IgfsCg' => \PagOnline\Laravel\Facades\IgfsCgFacade::class,
-            'config' => \Illuminate\Config\Repository::class,
+            'IgfsCg' => IgfsCgFacade::class,
+            'config' => Repository::class,
         ];
     }
 }

@@ -9,3 +9,4 @@ clover.xml
 /tests/demo/paymentID.txt
 /tests/demo/shopID.txt
 /.php-cs-fixer.cache
+/.phpunit.cache/test-results

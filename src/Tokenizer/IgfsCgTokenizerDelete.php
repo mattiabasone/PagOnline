@@ -62,6 +62,7 @@ class IgfsCgTokenizerDelete extends BaseIgfsCgTokenizer
             IgfsUtils::getValue($response, 'shopID'), // SHOPID
             IgfsUtils::getValue($response, 'rc'), // RC
             IgfsUtils::getValue($response, 'errorDesc'), ]; // ERRORDESC
+
         // signature dove il buffer e' cosi composto TID|SHOPID|RC|ERRORDESC
         return $this->getSignature($fields);
     }

@@ -20,7 +20,7 @@ trait HttpClient
     protected $requestTimeout = 30;
 
     /**
-     * @var \GuzzleHttp\Client
+     * @var Client
      */
     protected $httpClient;
 
@@ -166,7 +166,7 @@ trait HttpClient
      */
     protected function getHttpRequestConfig()
     {
-        return \array_merge($this->baseHttpRequestConfig(), $this->httpCustomConfiguration);
+        return array_merge($this->baseHttpRequestConfig(), $this->httpCustomConfiguration);
     }
 
     /**

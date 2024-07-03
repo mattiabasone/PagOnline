@@ -9,47 +9,42 @@ use GuzzleHttp\Psr7\Response;
 use PagOnline\Exceptions\IgfsMissingParException;
 use PagOnline\Init\IgfsCgInit;
 use PagOnline\Init\Requests\IgfsCgInitRequest;
-use PagOnline\Tests\Unit\IgfsCgBaseTest;
+use PagOnline\Tests\Unit\IgfsCgBaseTestCase;
 use PagOnline\XmlEntities\Init\InitTerminalInfo;
 use PagOnline\XmlEntities\Level3Info;
 use PagOnline\XmlEntities\Level3InfoProduct;
 use PagOnline\XmlEntities\MandateInfo;
 
-/**
- * Class IgfsCgInitTest.
- */
-class IgfsCgInitTest extends IgfsCgBaseTest
+class IgfsCgInitTest extends IgfsCgBaseTestCase
 {
     protected $igfsCgClass = IgfsCgInit::class;
     protected $igfsCgRequest = IgfsCgInitRequest::CONTENT;
 
-    /** @test */
-    public function shouldChecksFieldsAndRaiseExceptionMissingTrType(): void
+    public function testChecksFieldsAndRaiseExceptionMissingTrType(): void
     {
+        $this->expectException(IgfsMissingParException::class);
+        $this->expectExceptionMessage('Missing trType');
+
         $foo = $this->getClassMethod('checkFields');
         /** @var IgfsCgInit $obj */
         $obj = $this->makeIgfsCg();
         $obj->trType = null;
-        $this->expectException(IgfsMissingParException::class);
-        $this->expectExceptionMessage('Missing trType');
         $foo->invoke($obj);
     }
 
-    /** @test */
-    public function shouldChecksFieldsAndRaiseExceptionMissingLangID(): void
+    public function testChecksFieldsAndRaiseExceptionMissingLangID(): void
     {
+        $this->expectException(IgfsMissingParException::class);
+
         $foo = $this->getClassMethod('checkFields');
         /** @var IgfsCgInit $obj */
         $obj = $this->makeIgfsCg();
         $obj->trType = 'AUTH';
         $obj->langID = null;
-        $this->expectException(IgfsMissingParException::class);
-        $this->expectExceptionMessage('Missing langID');
         $foo->invoke($obj);
     }
 
-    /** @test */
-    public function shouldChecksFieldsAndRaiseExceptionMissingNotifyURL(): void
+    public function testChecksFieldsAndRaiseExceptionMissingNotifyURL(): void
     {
         $foo = $this->getClassMethod('checkFields');
         /** @var IgfsCgInit $obj */
@@ -61,8 +56,7 @@ class IgfsCgInitTest extends IgfsCgBaseTest
         $foo->invoke($obj);
     }
 
-    /** @test */
-    public function shouldChecksFieldsAndRaiseExceptionMissingErrorURL(): void
+    public function testChecksFieldsAndRaiseExceptionMissingErrorURL(): void
     {
         $foo = $this->getClassMethod('checkFields');
         /** @var IgfsCgInit $obj */
@@ -75,8 +69,7 @@ class IgfsCgInitTest extends IgfsCgBaseTest
         $foo->invoke($obj);
     }
 
-    /** @test */
-    public function shouldChecksFieldsAndRaiseExceptionMissingPayInstrToken(): void
+    public function testChecksFieldsAndRaiseExceptionMissingPayInstrToken(): void
     {
         $foo = $this->getClassMethod('checkFields');
         /** @var IgfsCgInit $obj */
@@ -91,8 +84,7 @@ class IgfsCgInitTest extends IgfsCgBaseTest
         $foo->invoke($obj);
     }
 
-    /** @test */
-    public function shouldChecksFieldsAndRaiseExceptionMissingLevel3ProductCode(): void
+    public function testChecksFieldsAndRaiseExceptionMissingLevel3ProductCode(): void
     {
         $foo = $this->getClassMethod('checkFields');
         /** @var IgfsCgInit $obj */
@@ -111,8 +103,7 @@ class IgfsCgInitTest extends IgfsCgBaseTest
         $foo->invoke($obj);
     }
 
-    /** @test */
-    public function shouldChecksFieldsAndRaiseExceptionMissingLevel3ProductDescription(): void
+    public function testChecksFieldsAndRaiseExceptionMissingLevel3ProductDescription(): void
     {
         $foo = $this->getClassMethod('checkFields');
         /** @var IgfsCgInit $obj */
@@ -132,8 +123,7 @@ class IgfsCgInitTest extends IgfsCgBaseTest
         $foo->invoke($obj);
     }
 
-    /** @test */
-    public function shouldChecksFieldsAndRaiseExceptionMissingMandateInfo(): void
+    public function testChecksFieldsAndRaiseExceptionMissingMandateInfo(): void
     {
         $foo = $this->getClassMethod('checkFields');
         /** @var IgfsCgInit $obj */
@@ -155,10 +145,9 @@ class IgfsCgInitTest extends IgfsCgBaseTest
         $foo->invoke($obj);
     }
 
-    /** @test */
-    public function shouldCheckFieldsAndPass(): void
+    public function testCheckFieldsAndPass(): void
     {
-        /** @var \PagOnline\Init\IgfsCgInit $obj */
+        /** @var IgfsCgInit $obj */
         $obj = $this->makeIgfsCg();
         $this->setIgfsRequiredParamenters($obj);
         $checkFieldsMethod = $this->getClassMethod('checkFields');
@@ -191,10 +180,9 @@ class IgfsCgInitTest extends IgfsCgBaseTest
         $this->assertNull($exception);
     }
 
-    /** @test */
-    public function shouldRaiseExceptionForMissingShopId(): void
+    public function testRaiseExceptionForMissingShopId(): void
     {
-        /** @var \PagOnline\Init\IgfsCgInit $obj */
+        /** @var IgfsCgInit $obj */
         $obj = $this->makeIgfsCg();
         $this->setIgfsRequiredParamenters($obj);
         $obj->shopID = null;
@@ -204,8 +192,7 @@ class IgfsCgInitTest extends IgfsCgBaseTest
         $foo->invoke($obj);
     }
 
-    /** @test */
-    public function shouldExecuteInitRequests(): void
+    public function testExecuteInitRequests(): void
     {
         // Create a mock and queue two responses.
         $mock = new MockHandler([
@@ -213,25 +200,25 @@ class IgfsCgInitTest extends IgfsCgBaseTest
             new Response(
                 200,
                 ['Content-Type' => 'text/xml; charset="utf-8"'],
-                \file_get_contents(__DIR__.'/../resources/init/success.xml')
+                file_get_contents(__DIR__.'/../resources/init/success.xml')
             ),
             // Sixth
             new Response(
                 200,
                 ['Content-Type' => 'text/xml; charset="utf-8"'],
-                \file_get_contents(__DIR__.'/../resources/init/success.xml')
+                file_get_contents(__DIR__.'/../resources/init/success.xml')
             ),
             // Sixth
             new Response(
                 200,
                 ['Content-Type' => 'text/xml; charset="utf-8"'],
-                \file_get_contents(__DIR__.'/../resources/init/success.xml')
+                file_get_contents(__DIR__.'/../resources/init/success.xml')
             ),
         ]);
 
         $handler = HandlerStack::create($mock);
 
-        /** @var \PagOnline\Init\IgfsCgInit $obj */
+        /** @var IgfsCgInit $obj */
         $obj = $this->makeIgfsCg();
         $obj->setHttpClient(new Client(['handler' => $handler]));
         $this->setIgfsRequiredParamenters($obj);
@@ -262,29 +249,27 @@ class IgfsCgInitTest extends IgfsCgBaseTest
         $this->assertTrue($obj->execute());
     }
 
-    /** @test */
-    public function shouldFailProcessingErrorBodyResponse(): void
+    public function testFailProcessingErrorBodyResponse(): void
     {
         // Create a mock and queue two responses.
         $mock = new MockHandler([
             new Response(
                 200,
                 ['Content-Type' => 'text/xml; charset="utf-8"'],
-                \file_get_contents(__DIR__.'/../resources/init/error.xml')
+                file_get_contents(__DIR__.'/../resources/init/error.xml')
             ),
         ]);
 
         $handler = HandlerStack::create($mock);
 
-        /** @var \PagOnline\Init\IgfsCgInit $obj */
+        /** @var IgfsCgInit $obj */
         $obj = $this->makeIgfsCg();
         $obj->setHttpClient(new Client(['handler' => $handler]));
         $this->setIgfsRequiredParamenters($obj);
         $this->assertFalse($obj->execute());
     }
 
-    /** @test */
-    public function shouldFailProcessingInvalidBodyResponse(): void
+    public function testFailProcessingInvalidBodyResponse(): void
     {
         $mock = new MockHandler([
             new Response(
@@ -295,15 +280,14 @@ class IgfsCgInitTest extends IgfsCgBaseTest
         ]);
         $handler = HandlerStack::create($mock);
 
-        /** @var \PagOnline\Init\IgfsCgInit $obj */
+        /** @var IgfsCgInit $obj */
         $obj = $this->makeIgfsCg();
         $obj->setHttpClient(new Client(['handler' => $handler]));
         $this->setIgfsRequiredParamenters($obj);
         $this->assertFalse($obj->execute());
     }
 
-    /** @test */
-    public function shouldFailProcessingEmptyBodyResponse(): void
+    public function testFailProcessingEmptyBodyResponse(): void
     {
         $mock = new MockHandler([
             new Response(
@@ -314,15 +298,14 @@ class IgfsCgInitTest extends IgfsCgBaseTest
         ]);
         $handler = HandlerStack::create($mock);
 
-        /** @var \PagOnline\Init\IgfsCgInit $obj */
+        /** @var IgfsCgInit $obj */
         $obj = $this->makeIgfsCg();
         $obj->setHttpClient(new Client(['handler' => $handler]));
         $this->setIgfsRequiredParamenters($obj);
         $this->assertFalse($obj->execute());
     }
 
-    /** @test */
-    public function shouldFailProcessingUrlWithError500(): void
+    public function testFailProcessingUrlWithError500(): void
     {
         $mock = new MockHandler([
             new Response(500),
@@ -330,7 +313,7 @@ class IgfsCgInitTest extends IgfsCgBaseTest
 
         $handler = HandlerStack::create($mock);
 
-        /** @var \PagOnline\Init\IgfsCgInit $obj */
+        /** @var IgfsCgInit $obj */
         $obj = $this->makeIgfsCg();
         $this->setIgfsRequiredParamenters($obj);
         $obj->setHttpClient(new Client(['handler' => $handler]));
@@ -343,8 +326,7 @@ class IgfsCgInitTest extends IgfsCgBaseTest
         $this->assertFalse($obj->execute());
     }
 
-    /** @test */
-    public function shouldFailCheckingMultipleUrls(): void
+    public function testFailCheckingMultipleUrls(): void
     {
         $mock = new MockHandler([
             new Response(401),
@@ -353,7 +335,7 @@ class IgfsCgInitTest extends IgfsCgBaseTest
 
         $handler = HandlerStack::create($mock);
 
-        /** @var \PagOnline\Init\IgfsCgInit $obj */
+        /** @var IgfsCgInit $obj */
         $obj = $this->makeIgfsCg();
         $this->setIgfsRequiredParamenters($obj);
         $obj->setHttpClient(new Client(['handler' => $handler]));
@@ -369,24 +351,23 @@ class IgfsCgInitTest extends IgfsCgBaseTest
         $this->assertFalse($obj->execute());
     }
 
-    /** @test */
-    public function shouldFailProcessForMissingErrorAndSignatureTagsInResponse(): void
+    public function testFailProcessForMissingErrorAndSignatureTagsInResponse(): void
     {
         $mock = new MockHandler([
             new Response(
                 200,
                 ['Content-Type' => 'text/xml; charset="utf-8"'],
-                \file_get_contents(__DIR__.'/../resources/init/no_error_tag.xml')
+                file_get_contents(__DIR__.'/../resources/init/no_error_tag.xml')
             ),
             new Response(
                 200,
                 ['Content-Type' => 'text/xml; charset="utf-8"'],
-                \file_get_contents(__DIR__.'/../resources/init/no_signature_tag.xml')
+                file_get_contents(__DIR__.'/../resources/init/no_signature_tag.xml')
             ),
         ]);
         $handler = HandlerStack::create($mock);
 
-        /** @var \PagOnline\Init\IgfsCgInit $obj */
+        /** @var IgfsCgInit $obj */
         $obj = $this->makeIgfsCg();
         $obj->setHttpClient(new Client(['handler' => $handler]));
         $this->setIgfsBaseValues($obj);

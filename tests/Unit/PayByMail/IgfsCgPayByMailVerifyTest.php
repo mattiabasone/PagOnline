@@ -5,18 +5,17 @@ namespace PagOnline\Tests\Unit\PayByMail;
 use PagOnline\Exceptions\IgfsMissingParException;
 use PagOnline\PayByMail\IgfsCgPayByMailVerify;
 use PagOnline\PayByMail\Requests\IgfsCgPayByMailVerifyRequest;
-use PagOnline\Tests\Unit\IgfsCgBaseTest;
+use PagOnline\Tests\Unit\IgfsCgBaseTestCase;
 
 /**
  * Class IgfsCgInitTest.
  */
-class IgfsCgPayByMailVerifyTest extends IgfsCgBaseTest
+class IgfsCgPayByMailVerifyTest extends IgfsCgBaseTestCase
 {
     protected $igfsCgClass = IgfsCgPayByMailVerify::class;
     protected $igfsCgRequest = IgfsCgPayByMailVerifyRequest::CONTENT;
 
-    /** @test */
-    public function shouldChecksFieldsAndRaiseExceptionMissingMailId(): void
+    public function testChecksFieldsAndRaiseExceptionMissingMailId(): void
     {
         /* @var \PagOnline\PayByMail\IgfsCgPayByMailVerify */
         $this->expectException(IgfsMissingParException::class);
@@ -26,8 +25,7 @@ class IgfsCgPayByMailVerifyTest extends IgfsCgBaseTest
         $foo->invoke($obj);
     }
 
-    /** @test */
-    public function shouldCheckFieldsAndPass(): void
+    public function testCheckFieldsAndPass(): void
     {
         /** @var \PagOnline\Mpi\IgfsCgMpiAuth $obj */
         $obj = $this->makeIgfsCg();
@@ -43,8 +41,7 @@ class IgfsCgPayByMailVerifyTest extends IgfsCgBaseTest
         $this->assertNull($exception);
     }
 
-    /** @test */
-    public function shouldRaiseExceptionForMissingShopId(): void
+    public function testRaiseExceptionForMissingShopId(): void
     {
         $this->expectException(IgfsMissingParException::class);
         /** @var \PagOnline\Init\IgfsCgInit $obj */
