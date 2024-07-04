@@ -6,7 +6,6 @@ use PagOnline\BaseIgfsCg;
 use PagOnline\Exceptions\IgfsMissingParException;
 use PagOnline\IgfsUtils;
 use PagOnline\XmlEntities\Entry;
-use SimpleXMLElement;
 
 class IgfsCgAuth extends BaseIgfsCgTran
 {
@@ -131,8 +130,8 @@ class IgfsCgAuth extends BaseIgfsCgTran
             $this->shopUserRef, // SHOPUSERREF
             $this->shopUserName, // SHOPUSERNAME
             $this->shopUserAccount, // SHOPUSERACCOUNT
-            $this->shopUserMobilePhone, //SHOPUSERMOBILEPHONE
-            $this->shopUserIMEI, //SHOPUSERIMEI
+            $this->shopUserMobilePhone, // SHOPUSERMOBILEPHONE
+            $this->shopUserIMEI, // SHOPUSERIMEI
             $this->shopUserIP, // SHOPUSERIP
             $this->trType, // TRTYPE
             $this->amount, // AMOUNT
@@ -281,7 +280,7 @@ class IgfsCgAuth extends BaseIgfsCgTran
         $this->shopUserMobilePhone = IgfsUtils::getValue($response, 'shopUserMobilePhone');
         // Opzionale
         try {
-            $this->receiptPdf = \base64_decode(IgfsUtils::getValue($response, 'receiptPdf'), true);
+            $this->receiptPdf = base64_decode(IgfsUtils::getValue($response, 'receiptPdf'), true);
         } catch (\Exception $e) {
             $this->receiptPdf = null;
         }
@@ -289,16 +288,16 @@ class IgfsCgAuth extends BaseIgfsCgTran
         try {
             $xml = $response[BaseIgfsCg::$soapResponseTag];
 
-            $xml = \str_replace('<soap:', '<', $xml);
-            $xml = \str_replace('</soap:', '</', $xml);
-            $dom = new SimpleXMLElement($xml, LIBXML_NOERROR, false);
+            $xml = str_replace('<soap:', '<', $xml);
+            $xml = str_replace('</soap:', '</', $xml);
+            $dom = new \SimpleXMLElement($xml, LIBXML_NOERROR, false);
             if (\count($dom) == 0) {
                 return;
             }
 
-            $tmp = \str_replace('<Body>', '', $dom->Body->asXML());
-            $tmp = \str_replace('</Body>', '', $tmp);
-            $dom = new SimpleXMLElement($tmp, LIBXML_NOERROR, false);
+            $tmp = str_replace('<Body>', '', $dom->Body->asXML());
+            $tmp = str_replace('</Body>', '', $tmp);
+            $dom = new \SimpleXMLElement($tmp, LIBXML_NOERROR, false);
             if (\count($dom) == 0) {
                 return;
             }
@@ -337,6 +336,7 @@ class IgfsCgAuth extends BaseIgfsCgTran
             IgfsUtils::getValue($response, 'paymentID'), // PAYMENTID
             IgfsUtils::getValue($response, 'authCode'), // AUTHCODE
         ];
+
         // signature dove il buffer e' cosi composto TID|SHOPID|RC|ERRORCODE|ORDERID|PAYMENTID|AUTHCODE
         return $this->getSignature($fields);
     }

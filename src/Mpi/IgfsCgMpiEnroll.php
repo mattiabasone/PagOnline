@@ -38,7 +38,7 @@ class IgfsCgMpiEnroll extends BaseIgfsCgMpi
     /**
      * Reset request fields.
      */
-    public function resetFields()
+    public function resetFields(): void
     {
         parent::resetFields();
         $this->shopUserRef = null;
@@ -170,6 +170,7 @@ class IgfsCgMpiEnroll extends BaseIgfsCgMpi
             IgfsUtils::getValue($response, 'md'), // MD
             IgfsUtils::getValue($response, 'acsURL'), // ACSURL
             IgfsUtils::getValue($response, 'acsPage'), ]; // ACSPAGE
+
         // signature dove il buffer e' cosi composto TID|SHOPID|RC|ERRORCODE|ENRSTATUS|PAREQ|MD|ACSURL|ACSPAGE
         return $this->getSignature($fields);
     }

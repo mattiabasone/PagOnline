@@ -8,11 +8,7 @@ use PagOnline\Exceptions\IgfsException;
 use PagOnline\Exceptions\IgfsMissingParException;
 use PagOnline\Exceptions\IOException;
 use PagOnline\Traits\HttpClient;
-use SimpleXMLElement;
 
-/**
- * Class BaseIgfsCg.
- */
 abstract class BaseIgfsCg implements IgfsCgInterface
 {
     use HttpClient;
@@ -22,7 +18,7 @@ abstract class BaseIgfsCg implements IgfsCgInterface
      *
      * @var string
      */
-    const VERSION = '2.4.1.5';
+    public const VERSION = '2.4.1.5';
 
     /**
      * Signature Key.
@@ -36,18 +32,18 @@ abstract class BaseIgfsCg implements IgfsCgInterface
      *
      * @var null|string
      */
-    public $serverURL = null;
-    public $serverURLs = null;
+    public $serverURL;
+    public $serverURLs;
 
-    public $shopID = null;
+    public $shopID;
 
-    public $tid = null;
-    public $merID = null;
-    public $payInstr = null;
+    public $tid;
+    public $merID;
+    public $payInstr;
 
-    public $rc = null;
-    public $error = null;
-    public $errorDesc = null;
+    public $rc;
+    public $error;
+    public $errorDesc;
 
     protected static $soapBodyTag = 'Body';
     protected static $soapResponseParentTag = '';
@@ -62,18 +58,12 @@ abstract class BaseIgfsCg implements IgfsCgInterface
 
     protected $fields2Reset = false;
 
-    /**
-     * BaseIgfsCg constructor.
-     */
     public function __construct()
     {
         $this->generateHttpClient();
     }
 
-    /**
-     * Reset fields.
-     */
-    public function resetFields()
+    public function resetFields(): void
     {
         $this->tid = null;
         $this->merID = null;
@@ -115,7 +105,7 @@ abstract class BaseIgfsCg implements IgfsCgInterface
                 $mapResponse = $this->executeHttp($this->serverURL);
             } else {
                 $sURLs = $this->serverURLs;
-                $sURL = \array_shift($sURLs);
+                $sURL = array_shift($sURLs);
                 $finished = false;
                 while (!$finished) {
                     try {
@@ -123,7 +113,7 @@ abstract class BaseIgfsCg implements IgfsCgInterface
                         $finished = true;
                     } catch (ConnectionException $e) {
                         if (!empty($sURLs)) {
-                            $sURL = \array_shift($sURLs);
+                            $sURL = array_shift($sURLs);
                         } else {
                             throw $e;
                         }
@@ -206,12 +196,7 @@ abstract class BaseIgfsCg implements IgfsCgInterface
 
     /***
      * Generates a signature
-     *
-     * @param $signatureFields
-     *
      * @throws IgfsException
-     *
-     * @return string
      */
     protected function getSignature(array $signatureFields): string
     {
@@ -221,8 +206,8 @@ abstract class BaseIgfsCg implements IgfsCgInterface
                 $data .= (string) $value;
             }
 
-            return \base64_encode(\hash_hmac('sha256', $data, $this->kSig, true));
-        } catch (\Exception $e) {
+            return base64_encode(hash_hmac('sha256', $data, $this->kSig, true));
+        } catch (\Throwable $e) {
             throw new IgfsException($e);
         }
     }
@@ -238,7 +223,7 @@ abstract class BaseIgfsCg implements IgfsCgInterface
      */
     protected function setRequestSignature(&$request): void
     {
-        $signatureFields = \array_merge(
+        $signatureFields = array_merge(
             $this->getCommonRequestSignatureFields(),
             $this->getAdditionalRequestSignatureFields()
         );
@@ -302,7 +287,7 @@ abstract class BaseIgfsCg implements IgfsCgInterface
             $xmlTag .= $wrap_cdata ? "<![CDATA[{$value}]]>" : $value;
             $xmlTag .= "</{$parameter}>";
         }
-        $request = \str_replace('{'.$parameter.'}', $xmlTag, $request);
+        $request = str_replace('{'.$parameter.'}', $xmlTag, $request);
     }
 
     /**
@@ -327,12 +312,13 @@ abstract class BaseIgfsCg implements IgfsCgInterface
     /**
      * @param string $response
      *
-     * @return null|SimpleXMLElement
+     * @return null|\SimpleXMLElement
      */
-    protected function responseXmlToObject(string $response): ?SimpleXMLElement
+    protected function responseXmlToObject(string $response): ?\SimpleXMLElement
     {
         try {
-            $dom = new SimpleXMLElement($response, LIBXML_NOERROR, false);
+            $dom = new \SimpleXMLElement($response, LIBXML_NOERROR, false);
+
             /*$responseNode = $dom->children('soap', true)->{static::$soapBodyTag}
                 ->children('ns1', true)->{static::$soapResponseParentTag}
                 ->children()
@@ -399,8 +385,8 @@ abstract class BaseIgfsCg implements IgfsCgInterface
     /**
      * @param string $url
      *
-     * @throws \PagOnline\Exceptions\IOException
-     * @throws \PagOnline\Exceptions\IgfsException
+     * @throws IOException
+     * @throws IgfsException
      *
      * @return array
      */

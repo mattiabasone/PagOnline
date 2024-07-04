@@ -5,18 +5,17 @@ namespace PagOnline\Tests\Unit\Mpi;
 use PagOnline\Exceptions\IgfsMissingParException;
 use PagOnline\Mpi\IgfsCgMpiAuth;
 use PagOnline\Mpi\Requests\IgfsCgMpiAuthRequest;
-use PagOnline\Tests\Unit\IgfsCgBaseTest;
+use PagOnline\Tests\Unit\IgfsCgBaseTestCase;
 
 /**
  * Class IgfsCgInitTest.
  */
-class IgfsCgMpiAuthTest extends IgfsCgBaseTest
+class IgfsCgMpiAuthTest extends IgfsCgBaseTestCase
 {
     protected $igfsCgClass = IgfsCgMpiAuth::class;
     protected $igfsCgRequest = IgfsCgMpiAuthRequest::CONTENT;
 
-    /** @test */
-    public function shouldRaiseExceptionForMissingShopId(): void
+    public function testRaiseExceptionForMissingShopId(): void
     {
         $this->expectException(IgfsMissingParException::class);
         /** @var \PagOnline\Init\IgfsCgInit $obj */
@@ -26,8 +25,7 @@ class IgfsCgMpiAuthTest extends IgfsCgBaseTest
         $foo->invoke($obj);
     }
 
-    /** @test */
-    public function shouldChecksFieldsAndRaiseExceptionMissingPaRes(): void
+    public function testChecksFieldsAndRaiseExceptionMissingPaRes(): void
     {
         $this->expectException(IgfsMissingParException::class);
         $this->expectExceptionMessage('Missing paRes');
@@ -37,8 +35,7 @@ class IgfsCgMpiAuthTest extends IgfsCgBaseTest
         $foo->invoke($obj);
     }
 
-    /** @test */
-    public function shouldChecksFieldsAndRaiseExceptionMissingMd(): void
+    public function testChecksFieldsAndRaiseExceptionMissingMd(): void
     {
         $this->expectException(IgfsMissingParException::class);
         $this->expectExceptionMessage('Missing md');
@@ -49,10 +46,9 @@ class IgfsCgMpiAuthTest extends IgfsCgBaseTest
         $foo->invoke($obj);
     }
 
-    /** @test */
-    public function shouldCheckFieldsAndPass(): void
+    public function testCheckFieldsAndPass(): void
     {
-        /** @var \PagOnline\Mpi\IgfsCgMpiAuth $obj */
+        /** @var IgfsCgMpiAuth $obj */
         $obj = $this->makeIgfsCg();
         $foo = $this->getClassMethod('checkFields');
         $obj->paRes = 'paRes';

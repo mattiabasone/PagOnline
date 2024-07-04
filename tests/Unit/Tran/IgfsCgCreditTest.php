@@ -3,20 +3,19 @@
 namespace PagOnline\Tests\Unit\Tran;
 
 use PagOnline\Exceptions\IgfsMissingParException;
-use PagOnline\Tests\Unit\IgfsCgBaseTest;
+use PagOnline\Tests\Unit\IgfsCgBaseTestCase;
 use PagOnline\Tran\IgfsCgCredit;
 use PagOnline\Tran\Requests\IgfsCgCreditRequest;
 
 /**
  * Class IgfsCgInitTest.
  */
-class IgfsCgCreditTest extends IgfsCgBaseTest
+class IgfsCgCreditTest extends IgfsCgBaseTestCase
 {
     protected $igfsCgClass = IgfsCgCredit::class;
     protected $igfsCgRequest = IgfsCgCreditRequest::CONTENT;
 
-    /** @test */
-    public function shouldChecksFieldsAndRaiseException(): void
+    public function testChecksFieldsAndRaiseException(): void
     {
         $foo = $this->getClassMethod('checkFields');
         $obj = new $this->igfsCgClass();
@@ -28,8 +27,7 @@ class IgfsCgCreditTest extends IgfsCgBaseTest
         $this->expectExceptionMessage();
     }
 
-    /** @test */
-    public function shouldCheckFieldsAndPass(): void
+    public function testCheckFieldsAndPass(): void
     {
         /** @var \PagOnline\Mpi\IgfsCgMpiAuth $obj */
         $obj = $this->makeIgfsCg();
@@ -45,8 +43,7 @@ class IgfsCgCreditTest extends IgfsCgBaseTest
         $this->assertNull($exception);
     }
 
-    /** @test */
-    public function shouldRaiseExceptionForMissingShopId(): void
+    public function testRaiseExceptionForMissingShopId(): void
     {
         $this->expectException(IgfsMissingParException::class);
         /** @var \PagOnline\Init\IgfsCgInit $obj */

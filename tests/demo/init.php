@@ -10,10 +10,10 @@ include __DIR__.'/config.php';
 
 $server = $config['servers'][$config['enabled_server']];
 
-$shopID = \uniqid();
-\file_put_contents(__DIR__.'/shopID.txt', $shopID);
+$shopID = uniqid();
+file_put_contents(__DIR__.'/shopID.txt', $shopID);
 
-$init = new \PagOnline\Init\IgfsCgInit();
+$init = new PagOnline\Init\IgfsCgInit();
 $init->setRequestTimeout(15);
 
 $init->serverURL = $server['url'];
@@ -36,12 +36,12 @@ if (!$init->execute()) {
     // ====================================================================
     // = redirect del client su pagina di errore definita dall’Esercente =
     // ====================================================================
-    \header('location: error.php?rc='.\urlencode($init->rc).'&errorDesc='.
-        \urlencode($init->errorDesc));
-    die();
+    header('location: error.php?rc='.urlencode($init->rc).'&errorDesc='.
+        urlencode($init->errorDesc));
+    exit;
 }
 
-\file_put_contents(__DIR__.'/paymentID.txt', $init->paymentID);
+file_put_contents(__DIR__.'/paymentID.txt', $init->paymentID);
 
 // NOTA: Salvo il $init->paymentID relativo alla richiesta (es. sul DB)...
 // var_dump($init);
@@ -49,4 +49,4 @@ if (!$init->execute()) {
 // ====================================================================
 // = redirect del client verso URL PagOnline BuyNow
 // ====================================================================
-\header('location: '.$init->redirectURL);
+header('location: '.$init->redirectURL);

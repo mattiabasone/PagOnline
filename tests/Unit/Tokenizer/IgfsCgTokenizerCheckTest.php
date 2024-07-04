@@ -3,20 +3,19 @@
 namespace PagOnline\Tests\Unit\Tokenizer;
 
 use PagOnline\Exceptions\IgfsMissingParException;
-use PagOnline\Tests\Unit\IgfsCgBaseTest;
+use PagOnline\Tests\Unit\IgfsCgBaseTestCase;
 use PagOnline\Tokenizer\IgfsCgTokenizerCheck;
 use PagOnline\Tokenizer\Requests\IgfsCgTokenizerCheckRequest;
 
 /**
  * Class IgfsCgInitTest.
  */
-class IgfsCgTokenizerCheckTest extends IgfsCgBaseTest
+class IgfsCgTokenizerCheckTest extends IgfsCgBaseTestCase
 {
     protected $igfsCgClass = IgfsCgTokenizerCheck::class;
     protected $igfsCgRequest = IgfsCgTokenizerCheckRequest::CONTENT;
 
-    /** @test */
-    public function shouldChecksFieldsAndRaiseExceptionMissingPayInstrToken(): void
+    public function testChecksFieldsAndRaiseExceptionMissingPayInstrToken(): void
     {
         $this->expectException(IgfsMissingParException::class);
         $this->expectExceptionMessage('Missing payInstrToken');
@@ -25,8 +24,7 @@ class IgfsCgTokenizerCheckTest extends IgfsCgBaseTest
         $foo->invoke($obj);
     }
 
-    /** @test */
-    public function shouldCheckFieldsAndPass(): void
+    public function testCheckFieldsAndPass(): void
     {
         /** @var \PagOnline\Mpi\IgfsCgMpiAuth $obj */
         $obj = $this->makeIgfsCg();
@@ -42,8 +40,7 @@ class IgfsCgTokenizerCheckTest extends IgfsCgBaseTest
         $this->assertNull($exception);
     }
 
-    /** @test */
-    public function shouldRaiseExceptionForMissingShopId(): void
+    public function testRaiseExceptionForMissingShopId(): void
     {
         $this->expectException(IgfsMissingParException::class);
         /** @var \PagOnline\Init\IgfsCgInit $obj */

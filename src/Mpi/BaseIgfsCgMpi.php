@@ -12,7 +12,7 @@ abstract class BaseIgfsCgMpi extends BaseIgfsCg
      */
     public $xid;
 
-    public function resetFields()
+    public function resetFields(): void
     {
         parent::resetFields();
         $this->xid = null;

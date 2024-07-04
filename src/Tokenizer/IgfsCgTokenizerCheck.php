@@ -22,7 +22,7 @@ class IgfsCgTokenizerCheck extends BaseIgfsCgTokenizer
     /**
      * {@inheritdoc}
      */
-    public function resetFields()
+    public function resetFields(): void
     {
         parent::resetFields();
         $this->payInstrToken = null;
@@ -95,6 +95,7 @@ class IgfsCgTokenizerCheck extends BaseIgfsCgTokenizer
             IgfsUtils::getValue($response, 'rc'), // RC
             IgfsUtils::getValue($response, 'errorDesc'), // ERRORDESC
         ];
+
         // signature dove il buffer e' cosi composto TID|SHOPID|RC|ERRORDESC
         return $this->getSignature($fields);
     }

@@ -19,7 +19,7 @@ class IgfsCgMpiAuth extends BaseIgfsCgMpi
      */
     protected $requestNamespace = Requests\IgfsCgMpiAuthRequest::class;
 
-    public function resetFields()
+    public function resetFields(): void
     {
         parent::resetFields();
         $this->paRes = null;
@@ -96,6 +96,7 @@ class IgfsCgMpiAuth extends BaseIgfsCgMpi
             IgfsUtils::getValue($response, 'cavv'), // CAVV
             IgfsUtils::getValue($response, 'eci'),
         ]; // ECI
+
         // signature dove il buffer e' cosi composto TID|SHOPID|RC|ERRORCODE|AUTHSTATUS|CAVV|ECI
         return $this->getSignature($fields);
     }

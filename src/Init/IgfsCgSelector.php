@@ -31,7 +31,7 @@ class IgfsCgSelector extends BaseIgfsCgInit
     /**
      * {@inheritdoc}
      */
-    public function resetFields()
+    public function resetFields(): void
     {
         parent::resetFields();
         $this->shopUserRef = null;
@@ -131,7 +131,7 @@ class IgfsCgSelector extends BaseIgfsCgInit
             if (\count($termInfos) > 0) {
                 $this->termInfo = [];
                 foreach ($termInfos as $item) {
-                    \array_push($this->termInfo, SelectorTerminalInfo::fromXml($item->asXML()));
+                    array_push($this->termInfo, SelectorTerminalInfo::fromXml($item->asXML()));
                 }
             }
         } catch (\Exception $e) {
@@ -154,6 +154,7 @@ class IgfsCgSelector extends BaseIgfsCgInit
             IgfsUtils::getValue($response, 'rc'), // RC
             IgfsUtils::getValue($response, 'errorDesc'), // ERRORDESC
         ];
+
         // signature dove il buffer e' cosi composto TID|SHOPID|RC|ERRORDESC|PAYMENTID|REDIRECTURL
         return $this->getSignature($fields);
     }

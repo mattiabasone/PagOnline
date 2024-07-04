@@ -10,14 +10,12 @@ use PHPUnit\Framework\TestCase;
  */
 class ErrorsTest extends TestCase
 {
-    /** @test */
-    public function shouldReturnErrorMessage(): void
+    public function testReturnErrorMessage(): void
     {
         $this->assertIsString(Errors::getMessage(Errors::IGFS_000));
     }
 
-    /** @test */
-    public function shouldNotReturnErrorMessage(): void
+    public function testNotReturnErrorMessage(): void
     {
         $this->assertNull(Errors::getMessage('NONE'));
     }

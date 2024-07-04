@@ -36,7 +36,7 @@ class IgfsCgPayByMailInit extends BaseIgfsCgPayByMail
      */
     protected $requestNamespace = Requests\IgfsCgPayByMailInitRequest::class;
 
-    public function resetFields()
+    public function resetFields(): void
     {
         parent::resetFields();
         $this->shopUserRef = null;
@@ -73,8 +73,8 @@ class IgfsCgPayByMailInit extends BaseIgfsCgPayByMail
             $this->shopUserRef, // SHOPUSERREF
             $this->shopUserName, // SHOPUSERNAME
             $this->shopUserAccount, // SHOPUSERACCOUNT
-            $this->shopUserMobilePhone, //SHOPUSERMOBILEPHONE
-            $this->shopUserIMEI, //SHOPUSERIMEI
+            $this->shopUserMobilePhone, // SHOPUSERMOBILEPHONE
+            $this->shopUserIMEI, // SHOPUSERIMEI
             $this->trType, // TRTYPE
             $this->amount, // AMOUNT
             $this->currencyCode, // CURRENCYCODE
@@ -177,6 +177,7 @@ class IgfsCgPayByMailInit extends BaseIgfsCgPayByMail
             IgfsUtils::getValue($response, 'mailID'), // MAILID
             IgfsUtils::getValue($response, 'linkURL'),
         ];
+
         // signature dove il buffer e' cosi composto TID|SHOPID|RC|ERRORDESC|MAILID
         return $this->getSignature($fields);
     }

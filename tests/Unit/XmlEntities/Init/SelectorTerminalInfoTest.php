@@ -26,31 +26,28 @@ class SelectorTerminalInfoTest extends TestCase
         return $object;
     }
 
-    /** @test */
-    public function shouldLoadProperties(): void
+    public function testLoadProperties(): void
     {
         $object = $this->getBaseElement();
         $this->assertIsArray($object->getAttributes());
         $this->assertEquals($object->toArray()['tid'], '123456');
     }
 
-    /** @test */
-    public function shouldFormatToXml(): void
+    public function testFormatToXml(): void
     {
-        /** @var \PagOnline\XmlEntities\Init\SelectorTerminalInfo $object */
+        /** @var SelectorTerminalInfo $object */
         $object = SelectorTerminalInfo::fromXml(
-            \file_get_contents(__DIR__.'/../../resources/selector_terminal_info.xml')
+            file_get_contents(__DIR__.'/../../resources/selector_terminal_info.xml')
         );
-        $this->assertObjectHasAttribute('description', $object);
+        self::assertObjectHasProperty('description', $object);
         $this->assertEquals('Lorem Ipsum description', $object->description);
         $this->assertIsArray($object->imgURL);
     }
 
-    /** @test */
-    public function shouldReturnXmlStringWhenGeneratedFromXml(): void
+    public function testReturnXmlStringWhenGeneratedFromXml(): void
     {
-        /** @var \PagOnline\XmlEntities\Init\SelectorTerminalInfo $object */
-        $baseXmlResource = \file_get_contents(__DIR__.'/../../resources/selector_terminal_info.xml');
+        /** @var SelectorTerminalInfo $object */
+        $baseXmlResource = file_get_contents(__DIR__.'/../../resources/selector_terminal_info.xml');
         /** @var \PagOnline\XmlEntities\Level3Info $level3Info */
         $object = SelectorTerminalInfo::fromXml($baseXmlResource);
         $this->assertXmlStringEqualsXmlString($baseXmlResource, $object->toXml('SelectorTerminalinfo'));

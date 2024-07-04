@@ -45,7 +45,7 @@ class IgfsCgVerify extends BaseIgfsCgInit
     /**
      * {@inheritdoc}
      */
-    public function resetFields()
+    public function resetFields(): void
     {
         parent::resetFields();
         $this->paymentID = null;
@@ -159,7 +159,7 @@ class IgfsCgVerify extends BaseIgfsCgInit
         // Opzionale
         $this->shopUserMobilePhone = IgfsUtils::getValue($response, 'shopUserMobilePhone');
         // Opzionale
-        $this->receiptPdf = (string) \base64_decode(IgfsUtils::getValue($response, 'receiptPdf'), true);
+        $this->receiptPdf = (string) base64_decode(IgfsUtils::getValue($response, 'receiptPdf'), true);
         if (empty($this->receiptPdf)) {
             $this->receiptPdf = null;
         }
@@ -173,7 +173,7 @@ class IgfsCgVerify extends BaseIgfsCgInit
         if (isset($xml_response['payAddData'])) {
             $this->payAddData = [];
             foreach ($responseNode->xpath('//payAddData') as $item) {
-                \array_push($this->payAddData, Entry::fromXml($item->asXML()));
+                array_push($this->payAddData, Entry::fromXml($item->asXML()));
             }
         }
     }
@@ -198,6 +198,7 @@ class IgfsCgVerify extends BaseIgfsCgInit
             IgfsUtils::getValue($response, 'enrStatus'), // ENRSTATUS
             IgfsUtils::getValue($response, 'authStatus'), // AUTHSTATUS
         ];
+
         // signature dove il buffer e' cosi composto TID|SHOPID|RC|ERRORDESC|PAYMENTID|REDIRECTURL
         return $this->getSignature($fields);
     }

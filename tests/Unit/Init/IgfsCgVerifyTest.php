@@ -10,18 +10,14 @@ use PagOnline\Errors;
 use PagOnline\Exceptions\IgfsMissingParException;
 use PagOnline\Init\IgfsCgVerify;
 use PagOnline\Init\Requests\IgfsCgVerifyRequest;
-use PagOnline\Tests\Unit\IgfsCgBaseTest;
+use PagOnline\Tests\Unit\IgfsCgBaseTestCase;
 
-/**
- * Class IgfsCgInitTest.
- */
-class IgfsCgVerifyTest extends IgfsCgBaseTest
+class IgfsCgVerifyTest extends IgfsCgBaseTestCase
 {
     protected $igfsCgClass = IgfsCgVerify::class;
     protected $igfsCgRequest = IgfsCgVerifyRequest::CONTENT;
 
-    /** @test */
-    public function shouldChecksFieldsAndRaiseException(): void
+    public function testChecksFieldsAndRaiseException(): void
     {
         $this->expectException(IgfsMissingParException::class);
         $this->expectExceptionMessage('Missing paymentID');
@@ -30,10 +26,9 @@ class IgfsCgVerifyTest extends IgfsCgBaseTest
         $foo->invoke($obj);
     }
 
-    /** @test */
-    public function shouldCheckFieldsAndPass(): void
+    public function testCheckFieldsAndPass(): void
     {
-        /** @var \PagOnline\Init\IgfsCgVerify $obj */
+        /** @var IgfsCgVerify $obj */
         $obj = $this->makeIgfsCg();
         $obj->paymentID = 'paymentId';
         $foo = $this->getClassMethod('checkFields');
@@ -48,8 +43,7 @@ class IgfsCgVerifyTest extends IgfsCgBaseTest
         $this->assertNull($exception);
     }
 
-    /** @test */
-    public function shouldRaiseExceptionForMissingShopId(): void
+    public function testRaiseExceptionForMissingShopId(): void
     {
         $this->expectException(IgfsMissingParException::class);
         /** @var \PagOnline\Init\IgfsCgInit $obj */
@@ -61,32 +55,31 @@ class IgfsCgVerifyTest extends IgfsCgBaseTest
         $foo->invoke($obj);
     }
 
-    /** @test */
-    public function shouldExecuteVerifyRequests(): void
+    public function testExecuteVerifyRequests(): void
     {
         // Create a mock and queue two responses.
         $mock = new MockHandler([
             new Response(
                 200,
                 ['Content-Type' => 'text/xml; charset="utf-8"'],
-                \file_get_contents(__DIR__.'/../resources/verify/success.xml')
+                file_get_contents(__DIR__.'/../resources/verify/success.xml')
             ),
             new Response(500),
             new Response(
                 200,
                 ['Content-Type' => 'text/xml; charset="utf-8"'],
-                \file_get_contents(__DIR__.'/../resources/verify/invalid_signature.xml')
+                file_get_contents(__DIR__.'/../resources/verify/invalid_signature.xml')
             ),
             new Response(
                 200,
                 ['Content-Type' => 'text/xml; charset="utf-8"'],
-                \file_get_contents(__DIR__.'/../resources/verify/invalid_receipt_pdf.xml')
+                file_get_contents(__DIR__.'/../resources/verify/invalid_receipt_pdf.xml')
             ),
         ]);
 
         $handler = HandlerStack::create($mock);
 
-        /** @var \PagOnline\Init\IgfsCgVerify $obj */
+        /** @var IgfsCgVerify $obj */
         $obj = $this->makeIgfsCg();
         $obj->shopID = '5c71649051ef5';
         $obj->paymentID = '00054481661101578102';

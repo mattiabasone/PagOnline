@@ -6,9 +6,6 @@ use PagOnline\XmlEntities\Level3Info;
 use PagOnline\XmlEntities\Level3InfoProduct;
 use PHPUnit\Framework\TestCase;
 
-/**
- * Class Level3InfoTest.
- */
 class Level3InfoTest extends TestCase
 {
     public function getBaseElement(): Level3Info
@@ -28,53 +25,48 @@ class Level3InfoTest extends TestCase
         return $level3Info;
     }
 
-    /** @test */
-    public function shouldLoadProperties(): void
+    public function testLoadProperties(): void
     {
         $level3Info = $this->getBaseElement();
-        $this->assertIsArray($level3Info->getAttributes());
-        $this->assertEquals($level3Info->toArray()['vat'], 22);
+        self::assertIsArray($level3Info->getAttributes());
+        self::assertEquals(22, $level3Info->toArray()['vat']);
     }
 
-    /** @test */
-    public function shouldReturnXmlString(): void
+    public function testReturnXmlString(): void
     {
         $level3Info = $this->getBaseElement();
-        $object = \simplexml_load_string($level3Info->toXml('Level3Info'));
+        $object = simplexml_load_string($level3Info->toXml('Level3Info'));
         $this->assertNotFalse($object);
         $this->assertInstanceOf(\SimpleXMLElement::class, $object);
     }
 
-    /** @test */
-    public function shouldHaveXmlNodes(): void
+    public function testHaveXmlNodes(): void
     {
         $level3Info = $this->getBaseElement();
 
-        $object = \simplexml_load_string($level3Info->toXml('Level3Info'));
+        $object = simplexml_load_string($level3Info->toXml('Level3Info'));
 
-        $this->assertObjectHasAttribute('billingEmail', $object);
-        $this->assertObjectHasAttribute('vat', $object);
-        $this->assertObjectHasAttribute('product', $object);
-        $this->assertObjectNotHasAttribute('note', $object);
+        self::assertObjectHasProperty('billingEmail', $object);
+        self::assertObjectHasProperty('vat', $object);
+        self::assertObjectHasProperty('product', $object);
+        self::assertObjectNotHasProperty('note', $object);
     }
 
-    /** @test */
-    public function shouldFormatToXml(): void
+    public function testFormatToXml(): void
     {
-        /** @var \PagOnline\XmlEntities\Level3Info $level3Info */
+        /** @var Level3Info $level3Info */
         $level3Info = Level3Info::fromXml(
-            \file_get_contents(__DIR__.'/../resources/level3info.xml')
+            file_get_contents(__DIR__.'/../resources/level3info.xml')
         );
-        $this->assertObjectHasAttribute('billingEmail', $level3Info);
-        $this->assertEquals('email@example.org', $level3Info->billingEmail);
-        $this->assertIsArray($level3Info->product);
+        self::assertObjectHasProperty('billingEmail', $level3Info);
+        self::assertEquals('email@example.org', $level3Info->billingEmail);
+        self::assertIsArray($level3Info->product);
     }
 
-    /** @test */
-    public function shouldReturnXmlStringWhenGeneratedFromXml(): void
+    public function testReturnXmlStringWhenGeneratedFromXml(): void
     {
-        $baseXmlResource = \file_get_contents(__DIR__.'/../resources/level3info.xml');
-        /** @var \PagOnline\XmlEntities\Level3Info $level3Info */
+        $baseXmlResource = file_get_contents(__DIR__.'/../resources/level3info.xml');
+        /** @var Level3Info $level3Info */
         $level3Info = Level3Info::fromXml($baseXmlResource);
         $this->assertXmlStringEqualsXmlString($baseXmlResource, $level3Info->toXml('Level3Info'));
     }
