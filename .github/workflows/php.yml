@@ -44,7 +44,7 @@ jobs:
         run: vendor/bin/phpunit --coverage-text --coverage-clover clover.xml
 
       - name: Upload Scrutinizer coverage
-        if: matrix.php-versions == '8.3'
+        if: matrix.php-versions == '8.0'
         uses: sudo-bot/action-scrutinizer@latest
         with:
           cli-args: "--format=php-clover clover.xml"
