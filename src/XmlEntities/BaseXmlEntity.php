@@ -10,14 +10,8 @@ abstract class BaseXmlEntity implements XmlEntityInterface
 {
     use CastProperties, EntityAttributes;
 
-    /**
-     * @var array
-     */
-    protected $attributes = [];
+    protected array $attributes = [];
 
-    /**
-     * BaseXmlEntity constructor.
-     */
     public function __construct()
     {
         $this->loadAttributes();
@@ -25,8 +19,6 @@ abstract class BaseXmlEntity implements XmlEntityInterface
 
     /**
      * Get object attributes.
-     *
-     * @return array
      */
     public function getAttributes(): array
     {
@@ -86,8 +78,7 @@ abstract class BaseXmlEntity implements XmlEntityInterface
      * Generate BaseXmlEntity.
      *
      * @param string $xml
-     *
-     * @return null|XmlEntityInterface
+     * @throws \Exception
      */
     public static function fromXml($xml): ?XmlEntityInterface
     {
@@ -103,6 +94,7 @@ abstract class BaseXmlEntity implements XmlEntityInterface
         $xmlArray = IgfsUtils::parseResponseFields($dom);
         $object = null;
         if (\count($xmlArray) > 0) {
+            /** @phpstan-ignore-next-line */
             $object = new static();
             foreach ($object->getAttributes() as $attribute) {
                 if (!$object->isEntityAttribute($attribute)) {
@@ -122,9 +114,6 @@ abstract class BaseXmlEntity implements XmlEntityInterface
         return $object;
     }
 
-    /**
-     * @return array
-     */
     public function toArray(): array
     {
         $returnArray = [];
@@ -158,8 +147,7 @@ abstract class BaseXmlEntity implements XmlEntityInterface
     }
 
     /**
-     * @param \SimpleXMLElement $dom
-     * @param string            $attribute
+     * @param string $attribute
      */
     protected function setCustomAttributeFromDom(\SimpleXMLElement $dom, $attribute): void
     {

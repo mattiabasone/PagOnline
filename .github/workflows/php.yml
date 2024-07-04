@@ -43,8 +43,13 @@ jobs:
       - name: Run PHPUnit
         run: vendor/bin/phpunit --coverage-text --coverage-clover clover.xml
 
+      - name: Mark directory as safe
+        if: matrix.php-versions == '8.0'
+        run: |
+          git config --global --add safe.directory /github/workspace
+
       - name: Upload Scrutinizer coverage
         if: matrix.php-versions == '8.0'
         uses: sudo-bot/action-scrutinizer@latest
         with:
-          cli-args: "--format=php-clover clover.xml"
+          cli-args: "--format=php-clover clover.xml --revision=${{ github.event.pull_request.head.sha || github.sha }}"
