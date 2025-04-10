@@ -12,7 +12,7 @@ on:
 
 jobs:
   test:
-    name: Test PHP ${{ matrix.php-versions }}
+    name: Test PHP ${{ matrix.php.version }} ${{ matrix.php.composer }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -70,7 +70,15 @@ jobs:
       - name: "[Coveralls] Extract branch name"
         if: matrix.php.version == '8.3' && matrix.php.composer == '--prefer-stable'
         shell: bash
-        run: echo "branch=$(echo ${GITHUB_REF#refs/heads/})" >> $GITHUB_OUTPUT
+        run: |
+            if [ -n "${GITHUB_HEAD_REF}" ]; then
+              echo "Branch from PR: ${GITHUB_HEAD_REF}"
+              echo "branch=${GITHUB_HEAD_REF}" >> $GITHUB_OUTPUT
+            else
+              branch_name="${GITHUB_REF#refs/heads/}"
+              echo "Branch from push: ${branch_name}"
+              echo "branch=${branch_name}" >> $GITHUB_OUTPUT
+            fi
         id: extract_branch
 
       - name: "[Coveralls] Checkout branch"
