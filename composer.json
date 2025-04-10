@@ -24,7 +24,7 @@
         "ext-libxml": "*",
         "ext-mbstring": "*",
         "ext-simplexml": "*",
-        "illuminate/support": "^9.0|^10.0|^11.0",
+        "illuminate/support": "^9.0|^10.0|^11.0|^12.0",
         "guzzlehttp/guzzle": "~6.0|^7.0"
     },
     "require-dev": {
@@ -32,7 +32,7 @@
         "phpunit/phpunit": "^10.5|^11.0",
         "phpstan/phpstan": "^1.11|^2.0",
         "illuminate/config": "^9.0|^10.0|^11.0",
-        "orchestra/testbench": "^7.0|^8.0|^9.0",
+        "orchestra/testbench": "^7.0|^8.0|^9.0|^10.0",
         "php-coveralls/php-coveralls": "^2.7"
     },
     "autoload": {
