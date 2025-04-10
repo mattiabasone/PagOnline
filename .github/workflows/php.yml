@@ -1,14 +1,38 @@
 name: Test
 
-on: [push]
+on:
+  pull_request:
+    branches: ["master"]
+    paths-ignore:
+      - "README.md"
+      - ".gitignore"
+      - "LICENSE.md"
+  push:
+    branches: ["master"]
+
 jobs:
   test:
-
     name: Test PHP ${{ matrix.php-versions }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php-versions: ['8.0', '8.1', '8.2', '8.3']
+        php:
+          - version: '8.1'
+            composer: --prefer-lowest
+          - version: '8.2'
+            composer: --prefer-lowest
+          - version: '8.3'
+            composer: --prefer-lowest
+          - version: '8.4'
+            composer: --prefer-lowest
+          - version: '8.1'
+            composer: --prefer-stable
+          - version: '8.2'
+            composer: --prefer-stable
+          - version: '8.3'
+            composer: --prefer-stable
+          - version: '8.4'
+            composer: --prefer-stable
 
     steps:
       - uses: actions/checkout@v4
@@ -21,7 +45,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: ${{ matrix.php-versions }}
+          php-version: ${{ matrix.php.version }}
           extensions: curl, mbstring, intl, libxml, simplexml
           coverage: xdebug
 
@@ -38,24 +62,24 @@ jobs:
           restore-keys: ${{ runner.os }}-composer-
 
       - name: Install dependencies
-        run: (test -d vendor && echo vendor directory exists) || composer install --prefer-dist --no-progress --no-suggest
+        run: (test -d vendor && echo vendor directory exists) || composer update --no-interaction --no-scripts --no-ansi ${{ matrix.php.composer }}
 
       - name: Run PHPUnit
         run: vendor/bin/phpunit --coverage-text --coverage-clover clover.xml
 
       - name: "[Coveralls] Extract branch name"
-        if: matrix.php-versions == '8.3'
+        if: matrix.php.version == '8.3' && matrix.php.composer == '--prefer-stable'
         shell: bash
         run: echo "branch=$(echo ${GITHUB_REF#refs/heads/})" >> $GITHUB_OUTPUT
         id: extract_branch
 
       - name: "[Coveralls] Checkout branch"
-        if: matrix.php-versions == '8.3'
+        if: matrix.php.version == '8.3' && matrix.php.composer == '--prefer-stable'
         shell: bash
         run: git fetch && git checkout ${{ steps.extract_branch.outputs.branch }}
 
       - name: "[Coveralls] Send report"
-        if: matrix.php-versions == '8.3'
+        if: matrix.php.version == '8.3' && matrix.php.composer == '--prefer-stable'
         run: ./vendor/bin/php-coveralls -v -x clover.xml -o coveralls-upload.json
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
