@@ -67,6 +67,10 @@ jobs:
       - name: Run PHPUnit
         run: vendor/bin/phpunit --coverage-text --coverage-clover clover.xml
 
+      - name: Static Analysis
+        if: matrix.php.version == '8.3' && matrix.php.composer == '--prefer-stable'
+        run: composer analyse
+
       - name: "[Coveralls] Extract branch name"
         if: matrix.php.version == '8.3' && matrix.php.composer == '--prefer-stable'
         shell: bash
